@@ -7,7 +7,7 @@ const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const mongoose = require('mongoose')
 const routes = require(join(__dirname, 'api', 'routes', 'v1'))
-require(join(__dirname, 'database'))
+require(join(__dirname, 'config', 'database'))
 
 // Prevent common security vulnerabilities
 app.use(helmet())

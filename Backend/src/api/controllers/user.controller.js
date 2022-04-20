@@ -5,10 +5,12 @@ const bcrypt = require('bcryptjs')
 const jwtsecret = process.env.SECRET_JWT || 'secret123'
 const expiresIn = process.env.JWT_EXPIRES_IN || '7d'
 
-const createToken = id => {
+const createToken = (id, email, name) => {
   return jwt.sign(
     {
-      id
+      id,
+      email,
+      name
     },
     jwtsecret,
     {
@@ -38,7 +40,7 @@ exports.signup = async (req, res) => {
     const salt = await bcrypt.genSalt(10)
     newUser.password = await bcrypt.hash(newUser.password, salt)
     await newUser.save()
-    const token = createToken(newUser.id)
+    const token = createToken(newUser.id, newUser.email, newUser.name)
     res.header('auth-token', token).json({
       message: 'User created',
       token
@@ -65,7 +67,7 @@ exports.login = async (req, res) => {
         message: 'Incorrect password'
       })
     }
-    const token = createToken(user.id)
+    const token = createToken(user.id, user.email, user.name)
     res.header('auth-token', token).json({
       message: 'User logged in',
       token
