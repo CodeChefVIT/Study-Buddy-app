@@ -1,4 +1,5 @@
-const User = require('../models/User')
+const { join } = require('path')
+const User = require(join(__dirname, '..', 'models', 'User.model'))
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const jwtsecret = process.env.SECRET_JWT || 'secret123'

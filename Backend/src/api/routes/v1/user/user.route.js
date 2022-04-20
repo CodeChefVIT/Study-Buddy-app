@@ -1,8 +1,9 @@
+const { join } = require('path')
 const router = require('express').Router()
 const Joi = require('joi')
-const user = require('../../../controllers/user.js')
-const validate = require('../../../middleware/validate.js')
-const { authorise } = require('../../../middleware/authorise.js')
+const user = require(join(__dirname, '..', '..', '..', 'controllers', 'user.controller'))
+const validate = require(join(__dirname, '..', '..', '..', 'middleware', 'validate.middleware'))
+const { authorise } = require(join(__dirname, '..', '..', '..', 'middleware', 'authorise.middleware'))
 
 const schema = {
   signup: Joi.object({

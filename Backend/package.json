@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "lint": "standard --fix"
   },
   "author": "BearTS <bear@tamako.tech>",
   "license": "MIT",
@@ -18,7 +19,8 @@
     "helmet": "^5.0.2",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.3.0"
+    "mongoose": "^6.3.0",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "eslint": "^8.13.0",
