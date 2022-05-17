@@ -5,6 +5,7 @@ const UserSchema = new mongoose.Schema(
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    verified: { type: Boolean, default: false },
     avatar: { type: String },
     graduatingYear: { type: Number },
     major: { type: String },
@@ -13,5 +14,6 @@ const UserSchema = new mongoose.Schema(
   },
   { timestamps: true }
 )
-
+// subjects 
+// refer 
 module.exports = mongoose.model('User', UserSchema)

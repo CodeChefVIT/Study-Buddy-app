@@ -20,7 +20,7 @@ const createToken = (id, email, name) => {
 }
 
 exports.signup = async (req, res) => {
-  const { name, email, password, avatar, graduatingYear, major, bio } = req.body
+  const { name, email, password, avatar, graduatingYear, major, bio, confirm } = req.body
   try {
     const user = await User.findOne({ email })
     if (user) {
@@ -32,12 +32,16 @@ exports.signup = async (req, res) => {
       name,
       email,
       password,
+      confirm,
       avatar,
       graduatingYear,
       major,
       bio
     })
     const salt = await bcrypt.genSalt(10)
+    if (!(password === confirm)) return res.status(400).json({
+      message: 'Passwords do not match'
+    })
     newUser.password = await bcrypt.hash(newUser.password, salt)
     await newUser.save()
     const token = createToken(newUser.id, newUser.email, newUser.name)

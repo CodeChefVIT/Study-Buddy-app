@@ -4,12 +4,15 @@ const Joi = require('joi')
 const user = require(join(__dirname, '..', '..', '..', 'controllers', 'user.controller'))
 const validate = require(join(__dirname, '..', '..', '..', 'middleware', 'validate.middleware'))
 const { authorise } = require(join(__dirname, '..', '..', '..', 'middleware', 'authorise.middleware'))
-
+const vitEmailRegex = /^([A-Za-z]+\.[A-za-z]+[0-9]{4,4}@vitstudent.ac.in)/gm;
+// to do
+// add verification
 const schema = {
   signup: Joi.object({
     name: Joi.string().required(),
-    email: Joi.string().required().email(),
+    email: Joi.string().regex(vitEmailRegex).required(),
     password: Joi.string().required(),
+    confirm: Joi.string().required(),
     avatar: Joi.string(),
     graduatingYear: Joi.number(),
     major: Joi.string(),
