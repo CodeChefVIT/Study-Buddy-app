@@ -1,9 +1,23 @@
 const { join } = require('path')
 const User = require(join(__dirname, '..', 'models', 'User.model'))
 const jwt = require('jsonwebtoken')
+const nodemailer = require('nodemailer')
 const bcrypt = require('bcryptjs')
 const jwtsecret = process.env.SECRET_JWT || 'secret123'
 const expiresIn = process.env.JWT_EXPIRES_IN || '7d'
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTPHOST, // enter host name
+  port: process.env.SMTPPORT, // enter port name
+  secure: false, // true for 465, false for other ports
+  auth: {
+    user: process.env.SMTPUSER, // write your smtp account user name
+    pass: process.env.SMTPPASS // write your smtp account user password
+  },
+  tls: {
+    rejectUnauthorized: false // Important for sendimg mail from localhost
+  }
+
+})
 
 const createToken = (id, email, name) => {
   return jwt.sign(
@@ -28,6 +42,7 @@ exports.signup = async (req, res) => {
         message: 'User already exists'
       })
     }
+    const hash = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
     const newUser = new User({
       name,
       email,
@@ -36,18 +51,31 @@ exports.signup = async (req, res) => {
       avatar,
       graduatingYear,
       major,
-      bio
+      bio,
+      hash
     })
     const salt = await bcrypt.genSalt(10)
-    if (!(password === confirm)) return res.status(400).json({
-      message: 'Passwords do not match'
-    })
+    if (!(password === confirm)) {
+      return res.status(400).json({
+        message: 'Passwords do not match'
+      })
+    }
     newUser.password = await bcrypt.hash(newUser.password, salt)
     await newUser.save()
-    const token = createToken(newUser.id, newUser.email, newUser.name)
-    res.header('auth-token', token).json({
-      message: 'User created',
-      token
+    // node mail
+    const link = 'http://' + req.get('host') + 'v1/user/verify?id=' + hash
+
+    // send mail with defined transport object
+    const info = await transporter.sendMail({
+      from: 'no-reply@studybuddy.com', // sender address
+      to: email, // list of receivers
+      subject: 'Verify Your Email', // Subject line
+      text: `Verify your email at + ${link}`, // plain text body
+      html: body // html body
+    })
+
+    res.status(200).json({
+      message: 'User created, Check email for verification'
     })
   } catch (error) {
     res.status(500).json({
@@ -65,6 +93,11 @@ exports.login = async (req, res) => {
         message: 'User does not exist'
       })
     }
+    if (!user.isVerified) {
+      return res.status(400).json({
+        message: 'User is not verified, Please check email'
+      })
+    }
     const isMatch = await bcrypt.compare(password, user.password)
     if (!isMatch) {
       return res.status(400).json({
@@ -75,6 +108,72 @@ exports.login = async (req, res) => {
     res.header('auth-token', token).json({
       message: 'User logged in',
       token
+    })
+  } catch (error) {
+    res.status(500).json({
+      message: 'Server error'
+    })
+  }
+}
+
+exports.verify = async (req, res) => {
+  const { id } = req.params
+  try {
+    const user = await User.findOne({ id })
+    if (!user) {
+      return res.status(400).json({
+        message: 'User does not exist'
+      })
+    }
+    if (user.isVerified) {
+      return res.status(400).json({
+        message: 'User is already verified'
+      })
+    }
+    user.isVerified = true
+    user.hash = ''
+    await user.save()
+    res.json({
+      message: 'User verified'
+    })
+  } catch (error) {
+    res.status(500).json({
+      message: 'Server error'
+    })
+  }
+}
+
+exports.resend = async (req, res) => {
+  const { email } = req.body
+  try {
+    const user = await User.findOne({ email })
+    if (!user) {
+      return res.status(400).json({
+        message: 'User does not exist'
+      })
+    }
+    if (user.isVerified) {
+      return res.status(400).json({
+        message: 'User is already verified'
+      })
+    }
+    const hash = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+    user.hash = hash
+    await user.save()
+
+    const link = 'http://' + req.get('host') + 'v1/user/verify?id=' + hash
+
+    // send mail with defined transport object
+    const info = await transporter.sendMail({
+      from: 'no-reply@studybuddy.com', // sender address
+      to: email, // list of receivers
+      subject: 'Verify Your Email', // Subject line
+      text: `Verify your email at + ${link}`, // plain text body
+      html: body // html body
+    })
+
+    res.json({
+      message: 'Verification Email Sent'
     })
   } catch (error) {
     res.status(500).json({
