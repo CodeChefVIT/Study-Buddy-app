@@ -66,12 +66,11 @@ exports.signup = async (req, res) => {
     const link = 'http://' + req.get('host') + 'v1/user/verify?id=' + hash
 
     // send mail with defined transport object
-    const info = await transporter.sendMail({
+    await transporter.sendMail({
       from: 'no-reply@studybuddy.com', // sender address
       to: email, // list of receivers
       subject: 'Verify Your Email', // Subject line
-      text: `Verify your email at + ${link}`, // plain text body
-      html: body // html body
+      text: `Verify your email at + ${link}`
     })
 
     res.status(200).json({
@@ -164,12 +163,11 @@ exports.resend = async (req, res) => {
     const link = 'http://' + req.get('host') + 'v1/user/verify?id=' + hash
 
     // send mail with defined transport object
-    const info = await transporter.sendMail({
+    await transporter.sendMail({
       from: 'no-reply@studybuddy.com', // sender address
       to: email, // list of receivers
       subject: 'Verify Your Email', // Subject line
-      text: `Verify your email at + ${link}`, // plain text body
-      html: body // html body
+      text: `Verify your email at + ${link}`// plain text body
     })
 
     res.json({
