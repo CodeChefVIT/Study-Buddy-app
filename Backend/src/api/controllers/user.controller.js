@@ -3,18 +3,20 @@ const User = require(join(__dirname, '..', 'models', 'User.model'))
 const jwt = require('jsonwebtoken')
 const nodemailer = require('nodemailer')
 const bcrypt = require('bcryptjs')
+
 const jwtsecret = process.env.SECRET_JWT || 'secret123'
 const expiresIn = process.env.JWT_EXPIRES_IN || '7d'
+
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTPHOST, // enter host name
-  port: process.env.SMTPPORT, // enter port name
+  host: process.env.SMTPHOST,
+  port: process.env.SMTPPORT,
   secure: false, // true for 465, false for other ports
   auth: {
-    user: process.env.SMTPUSER, // write your smtp account user name
-    pass: process.env.SMTPPASS // write your smtp account user password
+    user: process.env.SMTPUSER,
+    pass: process.env.SMTPPASS
   },
   tls: {
-    rejectUnauthorized: false // Important for sendimg mail from localhost
+    rejectUnauthorized: false // Important for sending mail from localhost
   }
 
 })
@@ -42,6 +44,7 @@ exports.signup = async (req, res) => {
         message: 'User already exists'
       })
     }
+    // email verification hash
     const hash = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
     const newUser = new User({
       name,
@@ -62,17 +65,15 @@ exports.signup = async (req, res) => {
     }
     newUser.password = await bcrypt.hash(newUser.password, salt)
     await newUser.save()
-    // node mail
-    const link = 'http://' + req.get('host') + 'v1/user/verify?id=' + hash
-
+    // link to send to user
+    const link = 'http://' + req.get('host') + '/api/v1/user/verify?id=' + hash
     // send mail with defined transport object
-    await transporter.sendMail({
-      from: 'no-reply@studybuddy.com', // sender address
-      to: email, // list of receivers
-      subject: 'Verify Your Email', // Subject line
-      text: `Verify your email at + ${link}`
-    })
-
+    // await transporter.sendMail({
+    //   from: 'no-reply@studybuddy.com', // sender address
+    //   to: email, // list of receivers
+    //   subject: 'Verify Your Email', // Subject line
+    //   text: `Verify your email at + ${link}`
+    // })
     res.status(200).json({
       message: 'User created, Check email for verification'
     })
@@ -160,7 +161,7 @@ exports.resend = async (req, res) => {
     user.hash = hash
     await user.save()
 
-    const link = 'http://' + req.get('host') + 'v1/user/verify?id=' + hash
+    const link = 'http://' + req.get('host') + '/api/v1/user/verify?id=' + hash
 
     // send mail with defined transport object
     await transporter.sendMail({

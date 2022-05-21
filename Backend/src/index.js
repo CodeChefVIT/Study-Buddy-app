@@ -27,14 +27,13 @@ app.use((req, res, next) => {
 
   next()
 })
+
 // Parse json body
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 // app.use(cors());
 
 mongoose.Promise = global.Promise
-
-app.use('/api/v1/', routes)
 
 if (!isProduction) {
   app.use(errorhandler())
@@ -57,7 +56,7 @@ if (!isProduction) {
 }
 
 // no stacktraces leaked to users
-app.use(function (err, req, res) {
+app.use(function (err, req, res, next) {
   res.status(err.status || 500)
   res.json({
     errors: {
@@ -66,6 +65,8 @@ app.use(function (err, req, res) {
     }
   })
 })
+
+app.use('/api/v1/', routes)
 
 const httpServer = http.createServer(app)
 const PORT = process.env.PORT || 3000
