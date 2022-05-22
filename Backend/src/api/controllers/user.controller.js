@@ -68,17 +68,17 @@ exports.signup = async (req, res) => {
     // link to send to user
     const link = 'http://' + req.get('host') + '/api/v1/user/verify?id=' + hash
     // send mail with defined transport object
-    // await transporter.sendMail({
-    //   from: 'no-reply@studybuddy.com', // sender address
-    //   to: email, // list of receivers
-    //   subject: 'Verify Your Email', // Subject line
-    //   text: `Verify your email at + ${link}`
-    // })
-    res.status(200).json({
+    await transporter.sendMail({
+      from: 'no-reply@studybuddy.com', // sender address
+      to: email, // list of receivers
+      subject: 'Verify Your Email', // Subject line
+      text: `Verify your email at + ${link}`
+    })
+    return res.status(200).json({
       message: 'User created, Check email for verification'
     })
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       message: 'Server error'
     })
   }
@@ -105,12 +105,12 @@ exports.login = async (req, res) => {
       })
     }
     const token = createToken(user.id, user.email, user.name)
-    res.header('auth-token', token).json({
+    return res.header('auth-token', token).status(200).json({
       message: 'User logged in',
       token
     })
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       message: 'Server error'
     })
   }
@@ -133,11 +133,11 @@ exports.verify = async (req, res) => {
     user.isVerified = true
     user.hash = ''
     await user.save()
-    res.json({
+    return res.json({
       message: 'User verified'
     })
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       message: 'Server error'
     })
   }
@@ -170,21 +170,41 @@ exports.resend = async (req, res) => {
       subject: 'Verify Your Email', // Subject line
       text: `Verify your email at + ${link}`// plain text body
     })
-
-    res.json({
+    return res.json({
       message: 'Verification Email Sent'
     })
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       message: 'Server error'
     })
   }
 }
 
 exports.edit = async (req, res) => {
-  const { name, email, avatar, currentPassword, graduatingYear, major, bio } = req.body
+  const { name, email, avatar, currentPassword, password, confirmPassword, graduatingYear, major, bio } = req.body
   try {
     const user = await User.findById(req.user.id)
+    if (name || bio || avatar || graduatingYear || major) {
+      if (name) {
+        user.name = name
+      }
+      if (bio) {
+        user.bio = bio
+      }
+      if (avatar) {
+        user.avatar = avatar
+      }
+      if (graduatingYear) {
+        user.graduatingYear = graduatingYear
+      }
+      if (major) {
+        user.major = major
+      }
+      await user.save()
+      return res.status(200).json({
+        message: 'User updated'
+      })
+    }
     const isMatch = await bcrypt.compare(currentPassword, user.password)
     if (!isMatch) {
       return res.status(400).json({
@@ -196,23 +216,23 @@ exports.edit = async (req, res) => {
         message: 'User does not exist'
       })
     }
-    if (name) user.name = name
     if (email) user.email = email
-    if (avatar) user.avatar = avatar
-    if (graduatingYear) user.graduatingYear = graduatingYear
-    if (major) user.major = major
-    if (bio) user.bio = bio
 
-    if (req.body.password) {
+    if (password) {
+      if (password !== confirmPassword) {
+        return res.status(400).json({
+          message: 'Passwords do not match'
+        })
+      }
       const salt = await bcrypt.genSalt(10)
       user.password = await bcrypt.hash(req.body.password, salt)
     }
     await user.save()
-    res.json({
+    return res.json({
       message: 'User updated'
     })
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       message: 'Server error'
     })
   }
@@ -226,13 +246,12 @@ exports.get = async (req, res) => {
         message: 'User does not exist'
       })
     }
-    const { password, ...data } = user._doc
-    res.json({
+    const { password, hash, __v, ...data } = user._doc
+    return res.status(200).json({
       data
     })
   } catch (error) {
-    console.log(error)
-    res.status(500).json({
+    return res.status(500).json({
       message: 'Server error'
     })
   }

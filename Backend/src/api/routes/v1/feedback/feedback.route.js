@@ -7,11 +7,9 @@ const { feedbackCreate, rateUs } = require(join(__dirname, '..', '..', '..', 'co
 
 const schema = {
   feedbackCreate: Joi.object({
-    user: Joi.string().required(),
     message: Joi.string().required()
   }),
   rateUs: Joi.object({
-    user: Joi.string().required(),
     rating: Joi.number().required()
   })
 }

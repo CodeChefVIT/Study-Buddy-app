@@ -22,9 +22,10 @@ const schema = {
   }),
   edit: Joi.object({
     name: Joi.string(),
-    currentPassword: Joi.string().required(),
+    currentPassword: Joi.string(),
     email: Joi.string().email(),
     password: Joi.string(),
+    confirmPassword: Joi.string(),
     avatar: Joi.string(),
     graduatingYear: Joi.number(),
     major: Joi.string(),
@@ -39,7 +40,7 @@ router.post('/signup', validate(schema.signup, 'body'), user.signup)
 
 router.post('/login', validate(schema.login, 'body'), user.login)
 
-router.post('/edit', authorise, validate(schema.edit, 'body'), user.edit)
+router.patch('/edit', authorise, validate(schema.edit, 'body'), user.edit)
 
 router.post('/resend', validate(schema.resend, 'body'), user.resend)
 

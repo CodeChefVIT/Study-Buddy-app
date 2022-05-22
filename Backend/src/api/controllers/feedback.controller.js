@@ -2,36 +2,43 @@ const { join } = require('path')
 const { Feedback, Rate } = require(join(__dirname, '..', 'models', 'Feedback.model'))
 
 exports.feedbackCreate = async (req, res) => {
-  const { user, message } = req.body
+  const { message } = req.body
+  const user = req.user.id
   try {
     const feedback = await Feedback.create({
       user,
       message
     })
-    res.json({
+    return res.json({
       message: 'Feedback created',
       feedback
     })
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       message: 'Server error'
     })
   }
 }
 
 exports.rateUs = async (req, res) => {
-  const { user, rating } = req.body
+  const { rating } = req.body
+  const user = req.user.id
   try {
+    if (rating < 1 || rating > 5) {
+      return res.status(400).json({
+        message: 'Rating must be between 1 and 5'
+      })
+    }
     const rate = await Rate.create({
       user,
       rating
     })
-    res.json({
+    return res.json({
       message: 'Rate created',
       rate
     })
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       message: 'Server error'
     })
   }
