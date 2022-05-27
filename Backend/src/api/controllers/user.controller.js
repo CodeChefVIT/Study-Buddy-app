@@ -36,7 +36,7 @@ const createToken = (id, email, name) => {
 }
 
 exports.signup = async (req, res) => {
-  const { name, email, password, avatar, graduatingYear, major, bio, confirm } = req.body
+  const { name, email, password, avatar, regno, graduatingYear, major, bio, confirm } = req.body
   try {
     const user = await User.findOne({ email })
     if (user) {
@@ -49,6 +49,7 @@ exports.signup = async (req, res) => {
     const newUser = new User({
       name,
       email,
+      regno,
       password,
       confirm,
       avatar,
@@ -133,9 +134,8 @@ exports.verify = async (req, res) => {
     user.isVerified = true
     user.hash = ''
     await user.save()
-    return res.json({
-      message: 'User verified'
-    })
+    // redirect
+    return res.redirect('https://studybuddy.com/')
   } catch (error) {
     return res.status(500).json({
       message: 'Server error'
@@ -184,7 +184,7 @@ exports.edit = async (req, res) => {
   const { name, email, avatar, currentPassword, password, confirmPassword, graduatingYear, major, bio } = req.body
   try {
     const user = await User.findById(req.user.id)
-    if (name || bio || avatar || graduatingYear || major) {
+    if (name || bio || regno || avatar || graduatingYear || major) {
       if (name) {
         user.name = name
       }
@@ -199,6 +199,9 @@ exports.edit = async (req, res) => {
       }
       if (major) {
         user.major = major
+      }
+      if (regno) {
+        user.regno = regno
       }
       await user.save()
       return res.status(200).json({

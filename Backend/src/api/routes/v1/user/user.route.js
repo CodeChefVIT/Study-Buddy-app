@@ -9,6 +9,7 @@ const schema = {
   signup: Joi.object({
     name: Joi.string().required(),
     email: Joi.string().regex(/^([A-Za-z]+\.[A-za-z]+[0-9]{4,4}@vitstudent.ac.in)/).required(),
+    regno: Joi.string().regex(/^[1-9]{1}[0-9]{1}[A-Z]{3}[0-9]{4}/),
     password: Joi.string().required(),
     confirm: Joi.string().required(),
     avatar: Joi.string(),
@@ -22,6 +23,7 @@ const schema = {
   }),
   edit: Joi.object({
     name: Joi.string(),
+    regno: Joi.string().regex(/^[1-9]{1}[0-9]{1}[A-Z]{3}[0-9]{4}/),
     currentPassword: Joi.string(),
     email: Joi.string().email(),
     password: Joi.string(),
