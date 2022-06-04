@@ -65,16 +65,15 @@ exports.signup = async (req, res) => {
       })
     }
     newUser.password = await bcrypt.hash(newUser.password, salt)
-    await newUser.save()
-    // link to send to user
     const link = 'http://' + req.get('host') + '/api/v1/user/verify?id=' + hash
-    // send mail with defined transport object
     await transporter.sendMail({
       from: 'no-reply@studybuddy.com', // sender address
       to: email, // list of receivers
       subject: 'Verify Your Email', // Subject line
       text: `Verify your email at + ${link}`
     })
+    await newUser.save()
+    // link to send to user
     return res.status(200).json({
       message: 'User created, Check email for verification'
     })
