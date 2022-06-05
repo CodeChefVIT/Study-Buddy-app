@@ -180,7 +180,7 @@ exports.resend = async (req, res) => {
 }
 
 exports.edit = async (req, res) => {
-  const { name, email, avatar, currentPassword, password, confirmPassword, graduatingYear, major, bio } = req.body
+  const { name, email, avatar, currentPassword, password, regno, confirmPassword, graduatingYear, major, bio } = req.body
   try {
     const user = await User.findById(req.user.id)
     if (name || bio || regno || avatar || graduatingYear || major) {
