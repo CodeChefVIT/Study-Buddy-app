@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 
+import "./sigunup-form.styles.css";
+
 const SignUpForm = () => {
   return (
     <div>

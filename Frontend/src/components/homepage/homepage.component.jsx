@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { ReactComponent as HeroLogo } from "./../../assets/Hero-Img.svg";
 
+import "./homepage.styles.css";
+
 const Homepage = () => {
   return (
     <div>
