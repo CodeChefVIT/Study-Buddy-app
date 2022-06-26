@@ -2,6 +2,8 @@ import { Fragment } from "react";
 import { Outlet, Link } from "react-router-dom";
 import { ReactComponent as Logo } from "./../../assets/Logo-Main.svg";
 
+import Footer from "./../footer/footer.component";
+
 const Navigation = () => {
   return (
     <Fragment>
@@ -25,6 +27,7 @@ const Navigation = () => {
         </nav>
       </div>
       <Outlet />
+      <Footer />
     </Fragment>
   );
 };
