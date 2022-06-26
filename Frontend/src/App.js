@@ -5,8 +5,6 @@ import Signin from "./routes/signin/signin.component";
 import Navigation from "./routes/navigation/navigation.component";
 import Home from "./routes/home/home.component";
 
-import "./App.scss";
-
 function App() {
   return (
     <Routes>
