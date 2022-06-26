@@ -1,0 +1,69 @@
+.heading-primary {
+  font-size: 6.2rem;
+  font-weight: 700;
+  line-height: 1.05;
+  color: #fff;
+  letter-spacing: -0.5px;
+  margin-bottom: 3.2rem;
+}
+
+.heading-secondary {
+  font-size: 2rem;
+  line-height: 1.6;
+  margin-bottom: 4.8rem;
+  color: #fff;
+}
+
+.heading-tertiary {
+  font-size: 2rem;
+  line-height: 1.6;
+  margin-bottom: 2.4rem;
+  color: #fff;
+}
+
+.para-primary {
+  font-size: 1.4rem;
+  margin: 2.4rem 0;
+  color: #fff;
+}
+
+.align-r {
+  text-align: right;
+}
+
+.align-c {
+  text-align: center;
+}
+
+.pad-r {
+  padding-right: 2rem;
+}
+
+.mar-t {
+  margin-top: 2rem;
+}
+
+.mar-b {
+  margin-bottom: 2rem;
+}
+
+.btn {
+  &:link,
+  &:visited {
+    display: inline-block;
+    background-color: #e67e22;
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: 600;
+    padding: 1.6rem 3.2rem;
+    border-radius: 9px;
+    text-decoration: none;
+    transition: all 1s;
+  }
+
+  &:hover,
+  &:active {
+    background-color: #ff5b7e;
+    color: #fff;
+  }
+}
