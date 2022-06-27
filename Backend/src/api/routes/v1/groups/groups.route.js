@@ -34,5 +34,6 @@ router.get('/user', authorise, groups.getUserGroups) // tested
 router.post('/create', authorise, validate(schema.createGroup, 'body'), groups.createGroup)
 router.get('/:id', authorise, validate(schema.getGroup, 'params'), groups.getGroup)
 router.post('/accept', authorise, validate(schema.acceptRequest, 'body'), groups.acceptRequest)
+router.post('/reject', authorise, validate(schema.acceptRequest, 'body'), groups.rejectRequest)
 
 module.exports = router
