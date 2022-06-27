@@ -1,7 +1,9 @@
+import SignInForm from "./../../components/signin-form/signin-form.component";
+
 const Signin = () => {
   return (
     <div>
-      <h1>Signin</h1>
+      <SignInForm />
     </div>
   );
 };
