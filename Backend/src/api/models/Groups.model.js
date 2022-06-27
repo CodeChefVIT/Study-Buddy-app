@@ -8,7 +8,7 @@ const GroupsSchema = new mongoose.Schema({
   requests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   admin: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   subject: { type: String, required: true },
-  quizes: [{ 
+  quizes: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Quiz'
   }],
@@ -20,7 +20,6 @@ const GroupsSchema = new mongoose.Schema({
   }],
   date: { type: Date, default: Date.now }
 })
-
 
 const QuizSchema = new mongoose.Schema({
   group: { type: mongoose.Schema.Types.ObjectId, ref: 'Groups' },
@@ -40,11 +39,10 @@ const QuizSchema = new mongoose.Schema({
   questions: [{
     question: { type: String, required: true },
     options: [{ type: String, required: true }],
-    answer: { type: String, required: true },
+    answer: { type: String, required: true }
   }],
   date: { type: Date, default: Date.now }
 })
-
 
 module.exports = {
   Groups: mongoose.model('Groups', GroupsSchema),

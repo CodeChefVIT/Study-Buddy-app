@@ -1,6 +1,6 @@
 const { join } = require('path')
 const Groups = require(join(__dirname, '..', 'models', 'Groups.model'))
-const Subject = require(join(__dirname, '..', 'models', 'Subjects.model'))
+// const Subject = require(join(__dirname, '..', 'models', 'Subjects.model'))
 const User = require(join(__dirname, '..', 'models', 'User.model'))
 const RandExp = require('randexp')
 const sendEmail = require(join(__dirname, '..', 'workers', 'sendEmail.worker'))
@@ -51,23 +51,19 @@ exports.requestGroup = async (req, res) => {
 
   try {
     // add user to requests array
-    if (!inviteCode) 
-      return res.status(400).json({ message: "No Invite Code Provided" })
+    if (!inviteCode) { return res.status(400).json({ message: 'No Invite Code Provided' }) }
     const group = await Groups.findOne({ inviteCode })
-    if (!group) 
-      return res.status(400).json({ message: 'Group does not exist' })
-    
+    if (!group) { return res.status(400).json({ message: 'Group does not exist' }) }
+
     const user = await User.findById(req.user.id)
-    
-    if (group.members.includes(user._id)) 
-      return res.status(400).json({ message: 'User already in group' })
-    
-    if (group.requests.includes(user._id))
-      return res.status(400).json({ message: 'User already requested to join group' })
-  
+
+    if (group.members.includes(user._id)) { return res.status(400).json({ message: 'User already in group' }) }
+
+    if (group.requests.includes(user._id)) { return res.status(400).json({ message: 'User already requested to join group' }) }
+
     group.requests.push(user._id)
     await group.save()
-    
+
     const admin = await User.findById(group.admin)
     await sendEmail.sendEmail(admin.email, 'Group Request', `${user.name} has requested to join the group ${group.name}`)
     return res.status(200).json({ message: 'Request sent' })
@@ -125,13 +121,11 @@ exports.createGroup = async (req, res) => {
     //   })
     // }
     // check modules schema
-    if (!name && !description && !subject && !modules) 
-      return res.status(400).json({ message: 'Invalid Data Provided' })
+    if (!name && !description && !subject && !modules) { return res.status(400).json({ message: 'Invalid Data Provided' }) }
     for (let i = 0; i < modules.length; i++) {
       // check if module array has name, daysToComplete
       modules[i].completedUsers = []
-      if (!modules[i].name && !modules[i].daysToComplete)
-        return res.status(400).json({ message: 'Invalid Data Provided' })
+      if (!modules[i].name && !modules[i].daysToComplete) { return res.status(400).json({ message: 'Invalid Data Provided' }) }
     }
     const group = new Groups({
       name,
@@ -204,18 +198,14 @@ exports.acceptRequest = async (req, res) => {
       })
     }
     const userObj = await User.findById(user)
-    if (!userObj) 
-      return res.status(400).json({ message: 'User does not exist' })
-    
-    if (groupObj.members.includes(userObj._id))
-      return res.status(400).json({ message: 'User is already in group' })
-    
-    if (groupObj.admin.toString() !== req.user.id) 
-      return res.status(400).json({ message: 'User is not admin' })
-    
-    if (!groupObj.requests.includes(userObj._id)) 
-      return res.status(400).json({ message: 'User has not requested to join group' })
-  
+    if (!userObj) { return res.status(400).json({ message: 'User does not exist' }) }
+
+    if (groupObj.members.includes(userObj._id)) { return res.status(400).json({ message: 'User is already in group' }) }
+
+    if (groupObj.admin.toString() !== req.user.id) { return res.status(400).json({ message: 'User is not admin' }) }
+
+    if (!groupObj.requests.includes(userObj._id)) { return res.status(400).json({ message: 'User has not requested to join group' }) }
+
     groupObj.members.push(userObj._id)
     groupObj.requests = groupObj.requests.filter(id => id.toString() !== userObj._id.toString())
     await groupObj.save()
@@ -269,5 +259,5 @@ exports.deleteRequest = async (req, res) => {
     })
   } catch (err) {
     return res.status(500).json({ message: err.message })
-  } 
+  }
 }
