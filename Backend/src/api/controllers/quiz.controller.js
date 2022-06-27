@@ -1,5 +1,6 @@
 const { join } = require('path')
 const { Groups, Quiz } = require(join(__dirname, '..', 'models', 'Groups.model'))
+const moment = require('moment')
 const User = require(join(__dirname, '..', 'models', 'User.model'))
 
 /*
@@ -11,13 +12,13 @@ const User = require(join(__dirname, '..', 'models', 'User.model'))
     Returns: Quiz Information
 */
 exports.getQuiz = async (req, res) => {
-  const { id: QuizID } = req.params
+  const { id } = req.params
   try {
-    const quiz = await Quiz.findById(QuizID)
+    const quiz = await Quiz.findById(id)
     // check if user is a part of the group
     if (!quiz) { return res.status(400).json({ message: 'Quiz does not exist' }) }
-    const Isgroup = await Groups.findById(quiz.group)
-    if (Isgroup.members.indexOf(req.user.id) === -1) { return res.status(400).json({ message: 'You are not a member of this group' }) }
+    const UserInGroup = await Groups.findById(quiz.group)
+    if (UserInGroup.members.indexOf(req.user.id) === -1) { return res.status(400).json({ message: 'You are not a member of this group' }) }
     const { group, time, creator, questions, date, ...data } = quiz
     // filter questions to not send the answer
     const filteredQuestions = questions.map(question => {
@@ -45,10 +46,11 @@ exports.createQuiz = async (req, res) => {
   try {
     // todo: Parse Time
     if (!(group && time && creator && questions)) { return res.status(400).json({ message: 'Missing required fields' }) }
-    const foundGroup = await Groups.findById(group)
-    if (!foundGroup) { return res.status(400).json({ message: 'Group does not exist' }) }
+    const parsedTime = moment(time, 'HH:mm:ss').format('HH:mm:ss')
     const foundUser = await User.findById(creator)
     if (!foundUser) { return res.status(400).json({ message: 'User does not exist' }) }
+    const foundGroup = await Groups.findById(group)
+    if (!foundGroup) { return res.status(400).json({ message: 'Group does not exist' }) }
     // check if the questions schema is valid
     for (let i = 0; i < questions.length; i++) {
       if (!questions[i].question || !questions[i].options || !questions[i].answer) { return res.status(400).json({ message: 'Invalid questions schema' }) }
@@ -57,7 +59,7 @@ exports.createQuiz = async (req, res) => {
     }
     const quiz = new Quiz({
       group,
-      time,
+      time: parsedTime,
       creator,
       attempted: [],
       questions
@@ -80,12 +82,15 @@ exports.createQuiz = async (req, res) => {
 exports.attemptQuiz = async (req, res) => {
   const { quizID, Questiondata } = req.body
   try {
-    const quiz = await Quiz.findById(quizID)
-    if (!quiz) { return res.status(400).json({ message: 'Quiz does not exist' }) }
-    const UserInGroup = await Groups.findById(quiz.group)
-    if (UserInGroup.members.indexOf(req.user.id) === -1) { return res.status(400).json({ message: 'You are not a member of this group' }) }
     const user = await User.findById(req.user.id)
     if (!user) { return res.status(400).json({ message: 'User does not exist' }) }
+
+    const quiz = await Quiz.findById(quizID)
+    if (!quiz) { return res.status(400).json({ message: 'Quiz does not exist' }) }
+
+    const UserInGroup = await Groups.findById(quiz.group)
+    if (UserInGroup.members.indexOf(req.user.id) === -1) { return res.status(400).json({ message: 'You are not a member of this group' }) }
+    
     let correct = true
     let score = 0
     const arr = []
@@ -140,8 +145,10 @@ exports.getQuizScore = async (req, res) => {
   try {
     const quiz = await Quiz.findById(quizID)
     if (!quiz) { return res.status(400).json({ message: 'Quiz does not exist' }) }
+
     const UserInGroup = await Groups.findById(quiz.group)
     if (UserInGroup.members.indexOf(req.user.id) === -1) { return res.status(400).json({ message: 'You are not a member of this group' }) }
+    
     const attempts = quiz.attempted
     const arr = []
     let found = true
@@ -181,6 +188,7 @@ exports.deleteQuiz = async (req, res) => {
   try {
     const quiz = await Quiz.findById(quizID)
     if (!quiz) { return res.status(400).json({ message: 'Quiz does not exist' }) }
+    
     const Group = await Groups.findById(quiz.group)
     // check if user is admin
     if (Group.admin !== req.user.id) { return res.status(400).json({ message: 'You are not an admin of this group' }) }

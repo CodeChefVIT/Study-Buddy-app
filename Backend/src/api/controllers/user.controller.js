@@ -1,25 +1,11 @@
 const { join } = require('path')
 const User = require(join(__dirname, '..', 'models', 'User.model'))
 const jwt = require('jsonwebtoken')
-const nodemailer = require('nodemailer')
 const bcrypt = require('bcryptjs')
+const sendEmail = require(join(__dirname, '..', 'workers', 'sendEmail.worker'))
 
 const jwtsecret = process.env.SECRET_JWT || 'secret123'
 const expiresIn = process.env.JWT_EXPIRES_IN || '7d'
-
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTPHOST,
-  port: process.env.SMTPPORT,
-  secure: false, // true for 465, false for other ports
-  auth: {
-    user: process.env.SMTPUSER,
-    pass: process.env.SMTPPASS
-  },
-  tls: {
-    rejectUnauthorized: false // Important for sending mail from localhost
-  }
-
-})
 
 const createToken = (id, email, name) => {
   return jwt.sign(
@@ -66,12 +52,7 @@ exports.signup = async (req, res) => {
     }
     newUser.password = await bcrypt.hash(newUser.password, salt)
     const link = 'http://' + req.get('host') + '/api/v1/user/verify?id=' + hash
-    await transporter.sendMail({
-      from: 'no-reply@studybuddy.com', // sender address
-      to: email, // list of receivers
-      subject: 'Verify Your Email', // Subject line
-      text: `Verify your email at + ${link}`
-    })
+    await sendEmail(email, 'Verify Your Email', `Verify your email at + ${link}`)
     await newUser.save()
     // link to send to user
     return res.status(200).json({
@@ -161,14 +142,7 @@ exports.resend = async (req, res) => {
     await user.save()
 
     const link = 'http://' + req.get('host') + '/api/v1/user/verify?id=' + hash
-
-    // send mail with defined transport object
-    await transporter.sendMail({
-      from: 'no-reply@studybuddy.com', // sender address
-      to: email, // list of receivers
-      subject: 'Verify Your Email', // Subject line
-      text: `Verify your email at + ${link}`// plain text body
-    })
+    await sendEmail(email, 'Verify Your Email', `Verify your email at + ${link}`)
     return res.json({
       message: 'Verification Email Sent'
     })

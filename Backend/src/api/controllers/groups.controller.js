@@ -47,15 +47,14 @@ exports.getAllGroups = async (req, res) => { // Get all groups based upon Subjec
   Returns: Success or Error
 */
 exports.requestGroup = async (req, res) => {
-  const { inviteCode } = req.query
+  const { inviteCode } = req.params
 
   try {
     // add user to requests array
     if (!inviteCode) { return res.status(400).json({ message: 'No Invite Code Provided' }) }
     const group = await Groups.findOne({ inviteCode })
     if (!group) { return res.status(400).json({ message: 'Group does not exist' }) }
-
-    const user = await User.findById(req.user.id)
+    const user = req.user
 
     if (group.members.includes(user._id)) { return res.status(400).json({ message: 'User already in group' }) }
 
@@ -111,22 +110,28 @@ exports.getUserGroups = async (req, res) => {
 exports.createGroup = async (req, res) => {
   const { name, description, subject, modules } = req.body
   try {
-    // invite code in the format: xxx-xxx-xxx
-    // create random code from 3-3-3
-    const inviteCode = new RandExp(/^[a-zA-Z0-9]{3}-[a-zA-Z0-9]{3}-[a-zA-Z0-9]{3}$/).gen()
+
+    if (!name && !description && !subject && !modules) { return res.status(400).json({ message: 'Invalid Data Provided' }) }
     // const subject = await Subject.findById(subjectID)
     // if (!subject) {
     //   return res.status(400).json({
     //     message: 'Subject does not exist'
     //   })
     // }
-    // check modules schema
-    if (!name && !description && !subject && !modules) { return res.status(400).json({ message: 'Invalid Data Provided' }) }
-    for (let i = 0; i < modules.length; i++) {
-      // check if module array has name, daysToComplete
-      modules[i].completedUsers = []
-      if (!modules[i].name && !modules[i].daysToComplete) { return res.status(400).json({ message: 'Invalid Data Provided' }) }
-    }
+  
+    // ! using JOI to validate data
+
+    // // check modules schema
+    // for (let i = 0; i < modules.length; i++) {
+    //   // check if module array has name, daysToComplete
+    //   modules[i].completedUsers = []
+    //   if (!modules[i].name && !modules[i].daysToComplete) { return res.status(400).json({ message: 'Invalid Data Provided' }) }
+    // }
+    // invite code in the format: xxx-xxx-xxx
+    // create random code from 3-3-3
+    const inviteCode = new RandExp(/^[a-zA-Z0-9]{3}-[a-zA-Z0-9]{3}-[a-zA-Z0-9]{3}$/).gen()
+
+
     const group = new Groups({
       name,
       description,
@@ -183,13 +188,13 @@ exports.getGroup = async (req, res) => {
   Type: GET
   Desc: Accept Request of User that Requested to Join Group
   Query: None
-  Params: None
-  Body: group (the id of the group), user (the id of the user)
+  Params: group (the id of the group), user (the id of the user)
+  Body: None
   Returns: Success or Error
 */
 
 exports.acceptRequest = async (req, res) => {
-  const { group, user } = req.body
+  const { group, user } = req.params
   try {
     const groupObj = await Groups.findById(group)
     if (!groupObj) {
@@ -222,12 +227,12 @@ exports.acceptRequest = async (req, res) => {
   Type: DELETE
   Desc: Delete a Request of a User that requested to join a Group
   Query: None
-  Params: None
-  Body: group (the id of the group), user (the id of the user)
+  Params: group (the id of the group), user (the id of the user)
+  Body: None
   Returns: Success
 */
-exports.deleteRequest = async (req, res) => {
-  const { group, user } = req.body
+exports.rejectRequest = async (req, res) => {
+  const { group, user } = req.params
   try {
     const groupObj = await Groups.findById(group)
     if (!groupObj) {
