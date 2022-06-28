@@ -13,12 +13,12 @@ const Navigation = () => {
             <li className="heading-secondary">Follow us on</li>
 
             <li>
-              <Link to="https://www.instagram.com/codechefvit/">
+              <a href="https://www.instagram.com/codechefvit/">
                 <ion-icon
                   name="logo-instagram"
                   className="social-icon"
                 ></ion-icon>
-              </Link>
+              </a>
             </li>
             <li>
               <Link to="https://twitter.com/codechefvit/">

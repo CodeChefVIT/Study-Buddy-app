@@ -20,6 +20,7 @@
   left: -8rem;
   top: 8rem;
 }
+
 .shape:last-child {
   background: linear-gradient(#ff5b7e, #9b0022);
 
@@ -39,4 +40,20 @@
   border: 2px solid #cf894b;
   box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
   padding: 50px 35px;
+}
+
+.log-nav-link:link,
+.log-nav-link:visited {
+  display: inline-block;
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+  font-size: 1.4rem;
+  transition: all 1s;
+  color: #e67e22;
+}
+
+.log-nav-link:hover,
+.log-nav-link:active {
+  color: #ff5b7e;
 }

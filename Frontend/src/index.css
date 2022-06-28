@@ -92,10 +92,34 @@ body {
   margin-bottom: 3.2rem;
 }
 
+.heading-primary-sm {
+  font-size: 4.8rem;
+  font-weight: 700;
+  line-height: 1.05;
+  color: #fff;
+  letter-spacing: -0.5px;
+  margin-bottom: 3.2rem;
+}
+
+.heading-primary-sm-2 {
+  font-size: 4.8rem;
+  font-weight: 700;
+  line-height: 1.05;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+
 .heading-secondary {
   font-size: 2rem;
   line-height: 1.6;
   margin-bottom: 4.8rem;
+  color: #fff;
+}
+
+.heading-secondary-sm {
+  font-size: 2rem;
+  line-height: 1.6;
+  margin-bottom: 2.4rem;
   color: #fff;
 }
 
@@ -112,6 +136,10 @@ body {
   color: #fff;
 }
 
+.align-l {
+  text-align: left;
+}
+
 .align-r {
   text-align: right;
 }
@@ -124,8 +152,23 @@ body {
   padding-right: 2rem;
 }
 
+.pad-t {
+  padding-top: 2rem;
+}
+
+.mar-l {
+  margin-left: 6rem;
+}
+
 .mar-t {
   margin-top: 2rem;
+}
+.mar-t-2 {
+  margin-top: 3rem;
+}
+
+.mar-t-3 {
+  margin-top: 5rem;
 }
 
 .mar-b {
