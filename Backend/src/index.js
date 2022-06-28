@@ -15,18 +15,18 @@ const isProduction = true
 app.use(helmet())
 app.use(morgan('dev'))
 // log origin of request
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization')
+// app.use((req, res, next) => {
+//   res.header('Access-Control-Allow-Origin', '*')
+//   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization')
 
-  if (req.method === 'OPTIONS') {
-    res.header('Access-Control-Allow-Methods', 'GET PATCH DELETE POST PUT')
-    return res.status(200).json({})
-  }
-  console.log(`${req.method} request from ${req.ip}`)
+//   if (req.method === 'OPTIONS') {
+//     res.header('Access-Control-Allow-Methods', 'GET PATCH DELETE POST PUT')
+//     return res.status(200).json({})
+//   }
+//   console.log(`${req.method} request from ${req.ip}`)
 
-  next()
-})
+//   next()
+// })
 
 // Parse json body
 app.use(bodyParser.json())
