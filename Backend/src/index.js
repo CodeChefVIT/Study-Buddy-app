@@ -5,7 +5,7 @@ const http = require('http')
 const helmet = require('helmet')
 const bodyParser = require('body-parser')
 const errorhandler = require('errorhandler')
-// const cors = require('cors');
+const cors = require('cors');
 const morgan = require('morgan')
 const mongoose = require('mongoose')
 const routes = require(join(__dirname, 'api', 'routes', 'v1'))
@@ -14,20 +14,13 @@ const isProduction = true
 // Prevent common security vulnerabilities
 app.use(helmet())
 app.use(morgan('dev'))
-// log origin of request
-// app.use((req, res, next) => {
-//   res.header('Access-Control-Allow-Origin', '*')
-//   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization')
+const corsOptions ={
+  origin:'*', 
+  credentials:true,            //access-control-allow-credentials:true
+  optionSuccessStatus:200,
+}
 
-//   if (req.method === 'OPTIONS') {
-//     res.header('Access-Control-Allow-Methods', 'GET PATCH DELETE POST PUT')
-//     return res.status(200).json({})
-//   }
-//   console.log(`${req.method} request from ${req.ip}`)
-
-//   next()
-// })
-
+app.use(cors(corsOptions))
 // Parse json body
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
