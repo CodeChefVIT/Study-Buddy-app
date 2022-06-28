@@ -8,7 +8,7 @@ const { authorise } = require(join(__dirname, '..', '..', '..', 'middleware', 'a
 const schema = {
   signup: Joi.object({
     name: Joi.string().required(),
-    email: Joi.string().regex(/^([A-Za-z]+\.[A-za-z]+[0-9]{4,4}@vitstudent.ac.in)/).required(),
+    email: Joi.string().regex(/^([A-Za-z]+\.[A-za-z]+[0-9]{4,4}@vitstudent.ac.in)/).required(), // ! Email Regex is not working for some cases
     regno: Joi.string().regex(/^[1-9]{1}[0-9]{1}[A-Z]{3}[0-9]{4}/),
     password: Joi.string().required(),
     confirm: Joi.string().required(),

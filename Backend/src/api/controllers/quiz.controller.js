@@ -6,6 +6,7 @@ const User = require(join(__dirname, '..', 'models', 'User.model'))
 /*
     Type: GET
     Desc: Get Quiz
+    Auth: Bearer Token
     Query: None
     Params: ID of the quiz
     Body: None
@@ -19,14 +20,15 @@ exports.getQuiz = async (req, res) => {
     if (!quiz) { return res.status(400).json({ message: 'Quiz does not exist' }) }
     const UserInGroup = await Groups.findById(quiz.group)
     if (UserInGroup.members.indexOf(req.user.id) === -1) { return res.status(400).json({ message: 'You are not a member of this group' }) }
-    const { group, time, creator, questions, date, ...data } = quiz
+    const { attempted, ...data } = quiz
     // filter questions to not send the answer
-    const filteredQuestions = questions.map(question => {
+    const filteredQuestions = data.questions.map(question => {
       return {
         question: question.question,
         options: question.options
       }
     })
+    const { group, time, creator } = data
     return res.status(200).json({ group, time, creator, questions: filteredQuestions, date })
   } catch (err) {
     return res.status(500).json({ message: 'Some Internal Error Occured' })
@@ -36,6 +38,7 @@ exports.getQuiz = async (req, res) => {
 /*
     Type: POST
     Desc: Create a new Quiz
+    Auth: Bearer Token
     Query: None
     Params: None
     Body: group (id of the group), time (time limit of the quiz), creator (id of the creator of quiz), questions (array of question ids)
@@ -74,6 +77,7 @@ exports.createQuiz = async (req, res) => {
 /*
     Type: POST
     Desc: Attempt a quiz
+    Auth: Bearer Token
     Query: None
     Params: None
     Body: quizID (id of the quiz), questions (array of question ids)
@@ -90,7 +94,7 @@ exports.attemptQuiz = async (req, res) => {
 
     const UserInGroup = await Groups.findById(quiz.group)
     if (UserInGroup.members.indexOf(req.user.id) === -1) { return res.status(400).json({ message: 'You are not a member of this group' }) }
-    
+
     let correct = true
     let score = 0
     const arr = []
@@ -148,7 +152,7 @@ exports.getQuizScore = async (req, res) => {
 
     const UserInGroup = await Groups.findById(quiz.group)
     if (UserInGroup.members.indexOf(req.user.id) === -1) { return res.status(400).json({ message: 'You are not a member of this group' }) }
-    
+
     const attempts = quiz.attempted
     const arr = []
     let found = true
@@ -175,12 +179,13 @@ exports.getQuizScore = async (req, res) => {
 }
 
 /*
-    Type: DELETE
-    Desc: Delete Quiz
-    Query: None
-    Params: quizID
-    Body: None
-    Returns: Success Message
+  Type: DELETE 
+  Desc: To Delete A Particular Quiz
+  Auth: Bearer Token
+  Query: None
+  Params: quizID 
+  Body: None 
+  Return: Success Message
 */
 
 exports.deleteQuiz = async (req, res) => {
@@ -188,7 +193,7 @@ exports.deleteQuiz = async (req, res) => {
   try {
     const quiz = await Quiz.findById(quizID)
     if (!quiz) { return res.status(400).json({ message: 'Quiz does not exist' }) }
-    
+
     const Group = await Groups.findById(quiz.group)
     // check if user is admin
     if (Group.admin !== req.user.id) { return res.status(400).json({ message: 'You are not an admin of this group' }) }
@@ -203,6 +208,7 @@ exports.deleteQuiz = async (req, res) => {
 // /*
 //     Type: GET
 //     Desc: Get Quiz By Module Name
+//     Auth: Bearer Token
 //     Query: None
 //     Params: groupID/moduleName
 //     Body: None

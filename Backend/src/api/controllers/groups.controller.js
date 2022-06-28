@@ -1,9 +1,10 @@
 const { join } = require('path')
-const Groups = require(join(__dirname, '..', 'models', 'Groups.model'))
+const {Groups} = require(join(__dirname, '..', 'models', 'Groups.model'))
 // const Subject = require(join(__dirname, '..', 'models', 'Subjects.model'))
 const User = require(join(__dirname, '..', 'models', 'User.model'))
 const RandExp = require('randexp')
 const sendEmail = require(join(__dirname, '..', 'workers', 'sendEmail.worker'))
+
 /*
   Type: GET
   Desc: Get All Groups
@@ -12,7 +13,7 @@ const sendEmail = require(join(__dirname, '..', 'workers', 'sendEmail.worker'))
   Params: None
   Returns: Array of Groups
 */
-exports.getAllGroups = async (req, res) => { // Get all groups based upon Subject if Specified
+exports.getAllGroups = async (req, res) => { 
   const { subject } = req.query
   const limit = parseInt(req.query.limit) || 10
   const page = parseInt(req.query.page) || 1
@@ -25,23 +26,29 @@ exports.getAllGroups = async (req, res) => { // Get all groups based upon Subjec
     }
     // hide requests
     for (let i = 0; i < groups.length; i++) {
+      groups[i] = Object.assign({}, groups[i].toObject(), { isAdmin: false })
+
       if (groups[i].admin.toString() === req.user.id) {
         groups[i].isAdmin = true
       } else {
-        groups[i].isAdmin = false
+        groups[i].admin = undefined
         groups[i].modules = undefined
         groups[i].requests = undefined
+        groups[i].members = undefined
       }
     }
+    
     return res.status(200).json({ groups })
   } catch (err) {
-    return res.status(500).json({ message: err.message })
+    console.log(err)
+    return res.status(500).json({ message: "Server Error" })
   }
 }
 
 /*
   Type: GET
   Desc: Request to Join Group
+  Auth: Bearer Token
   Query: inviteCode ( the invite code of the group )
   Params: None
   Returns: Success or Error
@@ -51,7 +58,7 @@ exports.requestGroup = async (req, res) => {
 
   try {
     // add user to requests array
-    if (!inviteCode) { return res.status(400).json({ message: 'No Invite Code Provided' }) }
+    // if (!inviteCode) { return res.status(400).json({ message: 'No Invite Code Provided' }) }
     const group = await Groups.findOne({ inviteCode })
     if (!group) { return res.status(400).json({ message: 'Group does not exist' }) }
     const user = req.user
@@ -74,6 +81,7 @@ exports.requestGroup = async (req, res) => {
 /*
   Type: GET
   Desc: Get Groups of a User
+  Auth: Bearer Token
   Query: id (if specified, the id of the user)
   Params: None
   Returns: Array of Groups
@@ -102,6 +110,7 @@ exports.getUserGroups = async (req, res) => {
 /*
   Type: POST
   Desc: Create Group
+  Auth: Bearer Token
   Query: None
   Params: None
   Body: subjectID (the id of the subject), name (the name of the group), description (the description of the group)
@@ -111,15 +120,15 @@ exports.createGroup = async (req, res) => {
   const { name, description, subject, modules } = req.body
   try {
 
-    if (!name && !description && !subject && !modules) { return res.status(400).json({ message: 'Invalid Data Provided' }) }
+    // if (!name && !description && !subject && !modules) { return res.status(400).json({ message: 'Invalid Data Provided' }) }
     // const subject = await Subject.findById(subjectID)
     // if (!subject) {
     //   return res.status(400).json({
     //     message: 'Subject does not exist'
     //   })
     // }
-  
-    // ! using JOI to validate data
+
+    // using JOI to validate data
 
     // // check modules schema
     // for (let i = 0; i < modules.length; i++) {
@@ -129,8 +138,8 @@ exports.createGroup = async (req, res) => {
     // }
     // invite code in the format: xxx-xxx-xxx
     // create random code from 3-3-3
-    const inviteCode = new RandExp(/^[a-zA-Z0-9]{3}-[a-zA-Z0-9]{3}-[a-zA-Z0-9]{3}$/).gen()
 
+    const inviteCode = new RandExp(/^[a-zA-Z0-9]{3}-[a-zA-Z0-9]{3}-[a-zA-Z0-9]{3}$/).gen()
 
     const group = new Groups({
       name,
@@ -157,7 +166,8 @@ exports.createGroup = async (req, res) => {
 /*
   Type: GET
   Desc: Get Group
-  Query:
+  Auth: Bearer Token
+  Query: None
   Params: id (the id of the group)
   Returns: Group
 */
@@ -187,6 +197,7 @@ exports.getGroup = async (req, res) => {
 /*
   Type: GET
   Desc: Accept Request of User that Requested to Join Group
+  Auth: Bearer Token
   Query: None
   Params: group (the id of the group), user (the id of the user)
   Body: None
@@ -226,6 +237,7 @@ exports.acceptRequest = async (req, res) => {
 /*
   Type: DELETE
   Desc: Delete a Request of a User that requested to join a Group
+  Auth: Bearer Token
   Query: None
   Params: group (the id of the group), user (the id of the user)
   Body: None

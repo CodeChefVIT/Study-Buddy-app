@@ -20,9 +20,18 @@ const createToken = (id, email, name) => {
     }
   )
 }
-
+/*
+  Type: POST
+  Desc: To Create a User
+  Auth: None
+  Query: None
+  Params: None
+  Body [Required]: name, email, password, confirm
+  Body [Optional]: avatar, graduatingYear, major, bio
+  Returns: Success Message
+*/
 exports.signup = async (req, res) => {
-  const { name, email, password, avatar, regno, graduatingYear, major, bio, confirm } = req.body
+  const { name, email, password, confirm, avatar, regno, graduatingYear, major, bio } = req.body
   try {
     const user = await User.findOne({ email })
     if (user) {
@@ -54,17 +63,25 @@ exports.signup = async (req, res) => {
     const link = 'http://' + req.get('host') + '/api/v1/user/verify?id=' + hash
     await sendEmail(email, 'Verify Your Email', `Verify your email at + ${link}`)
     await newUser.save()
-    // link to send to user
     return res.status(200).json({
       message: 'User created, Check email for verification'
     })
   } catch (error) {
+    console.log(error)
     return res.status(500).json({
       message: 'Server error'
     })
   }
 }
-
+/*
+  Type: POST
+  Desc: To Login a User
+  Auth: None
+  Query: None
+  Params: None
+  Body: email, password
+  Returns: Token (in Header "Authorisation"), Success Message
+*/
 exports.login = async (req, res) => {
   const { email, password } = req.body
   try {
@@ -86,9 +103,8 @@ exports.login = async (req, res) => {
       })
     }
     const token = createToken(user.id, user.email, user.name)
-    return res.header('auth-token', token).status(200).json({
-      message: 'User logged in',
-      token
+    return res.header('Authorization', token).json({
+      message: 'Login successful',
     })
   } catch (error) {
     return res.status(500).json({
@@ -97,7 +113,19 @@ exports.login = async (req, res) => {
   }
 }
 
+/*
+  Type: GET
+  Desc: To Verify a User
+  Auth: None
+  Query: None
+  Params: id, hash
+  Body: None
+  Returns: Redirects to login Page
+*/
+
 exports.verify = async (req, res) => {
+  // ! BROKEN 
+  // ! Need to verify using id and HASH
   const { id } = req.params
   try {
     const user = await User.findOne({ id })
@@ -122,6 +150,15 @@ exports.verify = async (req, res) => {
     })
   }
 }
+/*
+  Type: POST
+  Desc: To Resend the verification email
+  Auth: None
+  Query: None
+  Params: None
+  Body: email
+  Returns: Success Message
+*/
 
 exports.resend = async (req, res) => {
   const { email } = req.body
@@ -143,6 +180,7 @@ exports.resend = async (req, res) => {
 
     const link = 'http://' + req.get('host') + '/api/v1/user/verify?id=' + hash
     await sendEmail(email, 'Verify Your Email', `Verify your email at + ${link}`)
+    console.log(link)
     return res.json({
       message: 'Verification Email Sent'
     })
@@ -152,6 +190,11 @@ exports.resend = async (req, res) => {
     })
   }
 }
+
+/*
+  Type: PATCH
+  ! TO DO
+*/
 
 exports.edit = async (req, res) => {
   const { name, email, avatar, currentPassword, password, regno, confirmPassword, graduatingYear, major, bio } = req.body
@@ -213,6 +256,16 @@ exports.edit = async (req, res) => {
     })
   }
 }
+
+/*
+  Type:GET
+  Desc: Send Information related to user (except password and hash)
+  Auth: Bearer Token
+  Params: None
+  Query: None
+  Body: None
+  Return: Array Containing all the data
+*/
 
 exports.get = async (req, res) => {
   try {

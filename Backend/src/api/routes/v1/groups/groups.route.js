@@ -21,7 +21,7 @@ const schema = {
     description: Joi.string().required(),
     modules: Joi.array().items({
       name: Joi.string().required(),
-      daysToComplete: Joi.number().integer().min(1).required(),
+      daysToComplete: Joi.number().integer().min(1).required()
     })
   }),
   getGroup: Joi.object({
@@ -53,18 +53,18 @@ const schema = {
     })
   }),
   getQuizScore: Joi.object({
-    quizID: Joi.string().required(),
+    quizID: Joi.string().required()
   }),
   deleteQuiz: Joi.object({
-    quizID: Joi.string().required(),
-  }),
+    quizID: Joi.string().required()
+  })
 
 }
 
-router.get('/', authorise, validate(schema.getAllGroups, 'query'), groups.getAllGroups)
-router.get('/request/:inviteCode', authorise, validate(schema.requestGroup, 'params'), groups.requestGroup)
-router.get('/user', authorise, groups.getUserGroups) // tested
-router.post('/new', authorise, validate(schema.createGroup, 'body'), groups.createGroup)
+router.post('/new', authorise, validate(schema.createGroup, 'body'), groups.createGroup) 
+router.get('/', authorise, validate(schema.getAllGroups, 'query'), groups.getAllGroups)   
+router.get('/request/:inviteCode', authorise, validate(schema.requestGroup, 'params'), groups.requestGroup) //tested
+router.get('/user', authorise, groups.getUserGroups) 
 router.get('/:id', authorise, validate(schema.getGroup, 'params'), groups.getGroup)
 router.get('/request/accept/:group/:user', authorise, validate(schema.Request, 'params'), groups.acceptRequest)
 router.get('/request/reject/:group/:user', authorise, validate(schema.Request, 'params'), groups.rejectRequest)
