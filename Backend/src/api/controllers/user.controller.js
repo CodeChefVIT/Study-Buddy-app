@@ -60,8 +60,8 @@ exports.signup = async (req, res) => {
       })
     }
     newUser.password = await bcrypt.hash(newUser.password, salt)
-    const link = 'http://' + req.get('host') + '/api/v1/user/verify/' + user.id + '/' + hash
-    await sendEmail(email, 'Verify Your Email', `Verify your email at + ${link}`)
+    const link = 'http://' + req.get('host') + '/api/v1/user/verify/' + newUser.id + '/' + hash
+    await sendEmail(email, 'Verify Your Email', `Verify your email at ${link}`)
     await newUser.save()
     return res.status(200).json({
       message: 'User created, Check email for verification'
@@ -178,7 +178,7 @@ exports.resend = async (req, res) => {
     await user.save()
 
     const link = 'http://' + req.get('host') + '/api/v1/user/verify/' + user.id + '/' + hash
-    await sendEmail(email, 'Verify Your Email', `Verify your email at + ${link}`)
+    await sendEmail(email, 'Verify Your Email', `Verify your email at ${link}`)
     console.log(link)
     return res.json({
       message: 'Verification Email Sent'
