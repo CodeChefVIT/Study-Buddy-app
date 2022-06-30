@@ -1,0 +1,62 @@
+/*******************/
+/* Login */
+/*******************/
+
+.form-signup {
+  height: 840px;
+  width: 400px;
+  background-color: rgba(255, 255, 255, 0.13);
+  transform: translateX(140%);
+  top: 50%;
+  left: 50%;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  border: 2px solid #cf894b;
+  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+  padding: 50px 35px;
+}
+
+form * {
+  font-family: IBM Plex Sans, sans-serif;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  outline: none;
+  border: none;
+}
+label {
+  display: block;
+  margin-top: 30px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+input {
+  display: block;
+  height: 50px;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.07);
+  border-radius: 3px;
+  padding: 0 10px;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 300;
+}
+::placeholder {
+  color: #e5e5e5;
+}
+
+.log-nav-link:link,
+.log-nav-link:visited {
+  display: inline-block;
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+  font-size: 1.4rem;
+  transition: all 1s;
+  color: #e67e22;
+}
+
+.log-nav-link:hover,
+.log-nav-link:active {
+  color: #ff5b7e;
+}
