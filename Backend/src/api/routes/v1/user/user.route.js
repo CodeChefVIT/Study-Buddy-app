@@ -46,7 +46,7 @@ router.patch('/edit', authorise, validate(schema.edit, 'body'), user.edit)
 
 router.post('/resend', validate(schema.resend, 'body'), user.resend)
 
-router.get('/verify', user.verify)
+router.get('/verify/:id/:hash', user.verify)
 
 router.get('/', authorise, user.get)
 

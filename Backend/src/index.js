@@ -5,7 +5,7 @@ const http = require('http')
 const helmet = require('helmet')
 const bodyParser = require('body-parser')
 const errorhandler = require('errorhandler')
-const cors = require('cors');
+const cors = require('cors')
 const morgan = require('morgan')
 const mongoose = require('mongoose')
 const routes = require(join(__dirname, 'api', 'routes', 'v1'))
@@ -14,10 +14,10 @@ const isProduction = true
 // Prevent common security vulnerabilities
 app.use(helmet())
 app.use(morgan('dev'))
-const corsOptions ={
-  origin:'*', 
-  credentials:true,            //access-control-allow-credentials:true
-  optionSuccessStatus:200,
+const corsOptions = {
+  origin: '*',
+  credentials: true, // access-control-allow-credentials:true
+  optionSuccessStatus: 200
 }
 
 app.use(cors(corsOptions))

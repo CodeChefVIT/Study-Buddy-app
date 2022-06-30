@@ -60,7 +60,7 @@ exports.signup = async (req, res) => {
       })
     }
     newUser.password = await bcrypt.hash(newUser.password, salt)
-    const link = 'http://' + req.get('host') + '/api/v1/user/verify?id=' + hash
+    const link = 'http://' + req.get('host') + '/api/v1/user/verify/' + user.id + '/' + hash
     await sendEmail(email, 'Verify Your Email', `Verify your email at + ${link}`)
     await newUser.save()
     return res.status(200).json({
@@ -85,7 +85,7 @@ exports.signup = async (req, res) => {
 exports.login = async (req, res) => {
   const { email, password } = req.body
   try {
-    const user = await User.findOne({ email })
+    const user = await User.findOne({ email: email })
     if (!user) {
       return res.status(400).json({
         message: 'User does not exist'
@@ -104,7 +104,7 @@ exports.login = async (req, res) => {
     }
     const token = createToken(user.id, user.email, user.name)
     return res.header('Authorization', token).json({
-      message: 'Login successful',
+      message: 'Login successful'
     })
   } catch (error) {
     return res.status(500).json({
@@ -124,11 +124,9 @@ exports.login = async (req, res) => {
 */
 
 exports.verify = async (req, res) => {
-  // ! BROKEN 
-  // ! Need to verify using id and HASH
-  const { id } = req.params
+  const { id, hash } = req.params
   try {
-    const user = await User.findOne({ id })
+    const user = await User.findById(id)
     if (!user) {
       return res.status(400).json({
         message: 'User does not exist'
@@ -140,7 +138,8 @@ exports.verify = async (req, res) => {
       })
     }
     user.isVerified = true
-    user.hash = ''
+    if (user.hash !== hash) { return res.status(400).json({ message: "Hash doesn't match" }) }
+
     await user.save()
     // redirect
     return res.redirect('https://studybuddy.com/')
@@ -163,7 +162,7 @@ exports.verify = async (req, res) => {
 exports.resend = async (req, res) => {
   const { email } = req.body
   try {
-    const user = await User.findOne({ email })
+    const user = await User.findOne({ email: email })
     if (!user) {
       return res.status(400).json({
         message: 'User does not exist'
@@ -178,7 +177,7 @@ exports.resend = async (req, res) => {
     user.hash = hash
     await user.save()
 
-    const link = 'http://' + req.get('host') + '/api/v1/user/verify?id=' + hash
+    const link = 'http://' + req.get('host') + '/api/v1/user/verify/' + user.id + '/' + hash
     await sendEmail(email, 'Verify Your Email', `Verify your email at + ${link}`)
     console.log(link)
     return res.json({

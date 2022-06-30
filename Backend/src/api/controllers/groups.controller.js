@@ -1,5 +1,5 @@
 const { join } = require('path')
-const {Groups} = require(join(__dirname, '..', 'models', 'Groups.model'))
+const { Groups } = require(join(__dirname, '..', 'models', 'Groups.model'))
 // const Subject = require(join(__dirname, '..', 'models', 'Subjects.model'))
 const User = require(join(__dirname, '..', 'models', 'User.model'))
 const RandExp = require('randexp')
@@ -13,7 +13,7 @@ const sendEmail = require(join(__dirname, '..', 'workers', 'sendEmail.worker'))
   Params: None
   Returns: Array of Groups
 */
-exports.getAllGroups = async (req, res) => { 
+exports.getAllGroups = async (req, res) => {
   const { subject } = req.query
   const limit = parseInt(req.query.limit) || 10
   const page = parseInt(req.query.page) || 1
@@ -37,11 +37,11 @@ exports.getAllGroups = async (req, res) => {
         groups[i].members = undefined
       }
     }
-    
+
     return res.status(200).json({ groups })
   } catch (err) {
     console.log(err)
-    return res.status(500).json({ message: "Server Error" })
+    return res.status(500).json({ message: 'Server Error' })
   }
 }
 
@@ -59,19 +59,18 @@ exports.requestGroup = async (req, res) => {
   try {
     // add user to requests array
     // if (!inviteCode) { return res.status(400).json({ message: 'No Invite Code Provided' }) }
-    const group = await Groups.findOne({ inviteCode })
+    const group = await Groups.findOne({ inviteCode: inviteCode })
     if (!group) { return res.status(400).json({ message: 'Group does not exist' }) }
     const user = req.user
+    if (group.members.toString().includes(user.id)) { return res.status(400).json({ message: 'User already in group' }) }
 
-    if (group.members.includes(user._id)) { return res.status(400).json({ message: 'User already in group' }) }
+    if (group.requests.toString().includes(user.id)) { return res.status(400).json({ message: 'User already requested to join group' }) }
 
-    if (group.requests.includes(user._id)) { return res.status(400).json({ message: 'User already requested to join group' }) }
-
-    group.requests.push(user._id)
+    group.requests.push(user.id)
     await group.save()
 
     const admin = await User.findById(group.admin)
-    await sendEmail.sendEmail(admin.email, 'Group Request', `${user.name} has requested to join the group ${group.name}`)
+    await sendEmail(admin.email, 'Group Request', `${user.name} has requested to join the group ${group.name}`)
     return res.status(200).json({ message: 'Request sent' })
   } catch (err) {
     return res.status(500).json({ message: err.message })
@@ -119,7 +118,6 @@ exports.getUserGroups = async (req, res) => {
 exports.createGroup = async (req, res) => {
   const { name, description, subject, modules } = req.body
   try {
-
     // if (!name && !description && !subject && !modules) { return res.status(400).json({ message: 'Invalid Data Provided' }) }
     // const subject = await Subject.findById(subjectID)
     // if (!subject) {
@@ -173,18 +171,24 @@ exports.createGroup = async (req, res) => {
 */
 exports.getGroup = async (req, res) => {
   try {
-    const group = await Groups.findById(req.params.id)
+    let group = await Groups.findById(req.params.id)
     if (!group) {
       return res.status(400).json({
         message: 'Group does not exist'
       })
     }
-    // check for admin
+    group = Object.assign({}, group.toObject(), { isAdmin: false })
     if (group.admin.toString() === req.user.id) {
       group.isAdmin = true
     } else {
-      group.isAdmin = false
       group.requests = undefined
+    }
+
+    // check if user is a part of group
+    if (!group.members.toString().includes(req.user.id)) {
+      group.members = undefined
+      group.quizes = undefined
+      group.modules = undefined
     }
     return res.status(200).json({
       group
@@ -216,16 +220,16 @@ exports.acceptRequest = async (req, res) => {
     const userObj = await User.findById(user)
     if (!userObj) { return res.status(400).json({ message: 'User does not exist' }) }
 
-    if (groupObj.members.includes(userObj._id)) { return res.status(400).json({ message: 'User is already in group' }) }
+    if (groupObj.members.toString().includes(userObj._id)) { return res.status(400).json({ message: 'User is already in group' }) }
 
     if (groupObj.admin.toString() !== req.user.id) { return res.status(400).json({ message: 'User is not admin' }) }
 
-    if (!groupObj.requests.includes(userObj._id)) { return res.status(400).json({ message: 'User has not requested to join group' }) }
+    if (!groupObj.requests.toString().includes(userObj._id)) { return res.status(400).json({ message: 'User has not requested to join group' }) }
 
     groupObj.members.push(userObj._id)
     groupObj.requests = groupObj.requests.filter(id => id.toString() !== userObj._id.toString())
     await groupObj.save()
-    await sendEmail.sendEmail(userObj.email, 'Group Request Accepted', `Your request to join the group ${groupObj.name} has been accepted`)
+    await sendEmail(userObj.email, 'Group Request Accepted', `Your request to join the group ${groupObj.name} has been accepted`)
     return res.status(200).json({
       message: 'User added to group'
     })
@@ -235,7 +239,7 @@ exports.acceptRequest = async (req, res) => {
 }
 
 /*
-  Type: DELETE
+  Type: GET
   Desc: Delete a Request of a User that requested to join a Group
   Auth: Bearer Token
   Query: None
@@ -270,9 +274,50 @@ exports.rejectRequest = async (req, res) => {
     }
     groupObj.requests = groupObj.requests.filter(request => request.toString() !== userObj._id.toString())
     await groupObj.save()
-    await sendEmail.sendEmail(userObj.email, 'Group Request Deleted', `Your request to join the group ${groupObj.name} has been deleted`)
+    await sendEmail(userObj.email, 'Group Request Deleted', `Your request to join the group ${groupObj.name} has been rejected`)
     return res.status(200).json({
       message: 'User request deleted'
+    })
+  } catch (err) {
+    return res.status(500).json({ message: err.message })
+  }
+}
+/*
+  TYPE: GET
+  Desc: Get all groups
+  Auth: Bearer Token
+  Query: None
+  Params: group (the id of the group)
+  Body: None
+  Returns: Array of {id, name, regno}
+*/
+exports.getRequests = async (req, res) => {
+  const { group } = req.params
+  try {
+    const groupObj = await Groups.findById(group)
+    if (!groupObj) {
+      return res.status(400).json({
+        message: 'Group does not exist'
+      })
+    }
+    if (groupObj.admin.toString() !== req.user.id) {
+      return res.status(400).json({
+        message: 'User is not admin'
+      })
+    }
+    const arr = []
+    let user
+    for (let i = 0; i < groupObj.requests.length; i++) {
+      user = await User.findById(groupObj.requests[i])
+      // id, user
+      arr.push({
+        id: user.id,
+        user: user.name,
+        regno: user.regno
+      })
+    }
+    return res.status(200).json({
+      requests: arr
     })
   } catch (err) {
     return res.status(500).json({ message: err.message })

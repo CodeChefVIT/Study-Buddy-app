@@ -23,7 +23,7 @@ const GroupsSchema = new mongoose.Schema({
 
 const QuizSchema = new mongoose.Schema({
   group: { type: mongoose.Schema.Types.ObjectId, ref: 'Groups' },
-  time: { type: Number, required: true, default: 0 },
+  time: { type: String, required: true, default: '00:00:00' },
   creator: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   attempted: [{
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
