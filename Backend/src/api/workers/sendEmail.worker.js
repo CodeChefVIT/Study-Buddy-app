@@ -1,20 +1,20 @@
+require('dotenv').config()
 const nodemailer = require('nodemailer')
 
 const sendEmail = async (email, subject, text) => {
   try {
     const transporter = nodemailer.createTransport({
-      host: process.env.HOST,
-      service: process.env.SERVICE,
-      port: 587,
+      host: 'smtp.gmail.com',
+      port: 465,
       secure: true,
       auth: {
-        user: process.env.USER,
-        pass: process.env.PASS
+        user: process.env.GMAIL_ID,
+        pass: process.env.GMAIL_PASSWORD
       }
     })
 
     await transporter.sendMail({
-      from: process.env.USER,
+      from: 'StudyBuddy CodeChef VIT <no-reply@studybuddy.cc>',
       to: email,
       subject: subject,
       text: text
