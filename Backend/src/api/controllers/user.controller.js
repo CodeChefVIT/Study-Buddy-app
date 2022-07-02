@@ -1,11 +1,25 @@
 const { join } = require('path')
 const User = require(join(__dirname, '..', 'models', 'User.model'))
 const jwt = require('jsonwebtoken')
+const nodemailer = require('nodemailer')
 const bcrypt = require('bcryptjs')
-const sendEmail = require(join(__dirname, '..', 'workers', 'sendEmail.worker'))
 
 const jwtsecret = process.env.SECRET_JWT || 'secret123'
 const expiresIn = process.env.JWT_EXPIRES_IN || '7d'
+
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTPHOST,
+  port: process.env.SMTPPORT,
+  secure: false, // true for 465, false for other ports
+  auth: {
+    user: process.env.SMTPUSER,
+    pass: process.env.SMTPPASS
+  },
+  tls: {
+    rejectUnauthorized: false // Important for sending mail from localhost
+  }
+
+})
 
 const createToken = (id, email, name) => {
   return jwt.sign(
@@ -20,18 +34,9 @@ const createToken = (id, email, name) => {
     }
   )
 }
-/*
-  Type: POST
-  Desc: To Create a User
-  Auth: None
-  Query: None
-  Params: None
-  Body [Required]: name, email, password, confirm
-  Body [Optional]: avatar, graduatingYear, major, bio
-  Returns: Success Message
-*/
+
 exports.signup = async (req, res) => {
-  const { name, email, password, confirm, avatar, regno, graduatingYear, major, bio } = req.body
+  const { name, email, password, avatar, regno, graduatingYear, major, bio, confirm } = req.body
   try {
     const user = await User.findOne({ email })
     if (user) {
@@ -60,32 +65,30 @@ exports.signup = async (req, res) => {
       })
     }
     newUser.password = await bcrypt.hash(newUser.password, salt)
-    const link = 'http://' + req.get('host') + '/api/v1/user/verify/' + newUser.id + '/' + hash
-    await sendEmail(email, 'Verify Your Email', `Verify your email at ${link}`)
     await newUser.save()
+    // link to send to user
+    const link = 'http://' + req.get('host') + '/api/v1/user/verify?id=' + hash
+    // send mail with defined transport object
+    await transporter.sendMail({
+      from: 'no-reply@studybuddy.com', // sender address
+      to: email, // list of receivers
+      subject: 'Verify Your Email', // Subject line
+      text: `Verify your email at + ${link}`
+    })
     return res.status(200).json({
       message: 'User created, Check email for verification'
     })
   } catch (error) {
-    console.log(error)
     return res.status(500).json({
       message: 'Server error'
     })
   }
 }
-/*
-  Type: POST
-  Desc: To Login a User
-  Auth: None
-  Query: None
-  Params: None
-  Body: email, password
-  Returns: Token (in Header "Authorisation"), Success Message
-*/
+
 exports.login = async (req, res) => {
   const { email, password } = req.body
   try {
-    const user = await User.findOne({ email: email })
+    const user = await User.findOne({ email })
     if (!user) {
       return res.status(400).json({
         message: 'User does not exist'
@@ -103,8 +106,9 @@ exports.login = async (req, res) => {
       })
     }
     const token = createToken(user.id, user.email, user.name)
-    return res.header('Authorization', token).json({
-      message: 'Login successful'
+    return res.header('auth-token', token).status(200).json({
+      message: 'User logged in',
+      token
     })
   } catch (error) {
     return res.status(500).json({
@@ -113,20 +117,10 @@ exports.login = async (req, res) => {
   }
 }
 
-/*
-  Type: GET
-  Desc: To Verify a User
-  Auth: None
-  Query: None
-  Params: id, hash
-  Body: None
-  Returns: Redirects to login Page
-*/
-
 exports.verify = async (req, res) => {
-  const { id, hash } = req.params
+  const { id } = req.params
   try {
-    const user = await User.findById(id)
+    const user = await User.findOne({ id })
     if (!user) {
       return res.status(400).json({
         message: 'User does not exist'
@@ -138,8 +132,7 @@ exports.verify = async (req, res) => {
       })
     }
     user.isVerified = true
-    if (user.hash !== hash) { return res.status(400).json({ message: "Hash doesn't match" }) }
-
+    user.hash = ''
     await user.save()
     // redirect
     return res.redirect('https://studybuddy.com/')
@@ -149,20 +142,11 @@ exports.verify = async (req, res) => {
     })
   }
 }
-/*
-  Type: POST
-  Desc: To Resend the verification email
-  Auth: None
-  Query: None
-  Params: None
-  Body: email
-  Returns: Success Message
-*/
 
 exports.resend = async (req, res) => {
   const { email } = req.body
   try {
-    const user = await User.findOne({ email: email })
+    const user = await User.findOne({ email })
     if (!user) {
       return res.status(400).json({
         message: 'User does not exist'
@@ -177,9 +161,15 @@ exports.resend = async (req, res) => {
     user.hash = hash
     await user.save()
 
-    const link = 'http://' + req.get('host') + '/api/v1/user/verify/' + user.id + '/' + hash
-    await sendEmail(email, 'Verify Your Email', `Verify your email at ${link}`)
-    console.log(link)
+    const link = 'http://' + req.get('host') + '/api/v1/user/verify?id=' + hash
+
+    // send mail with defined transport object
+    await transporter.sendMail({
+      from: 'no-reply@studybuddy.com', // sender address
+      to: email, // list of receivers
+      subject: 'Verify Your Email', // Subject line
+      text: `Verify your email at + ${link}`// plain text body
+    })
     return res.json({
       message: 'Verification Email Sent'
     })
@@ -190,13 +180,8 @@ exports.resend = async (req, res) => {
   }
 }
 
-/*
-  Type: PATCH
-  ! TO DO
-*/
-
 exports.edit = async (req, res) => {
-  const { name, email, avatar, currentPassword, password, regno, confirmPassword, graduatingYear, major, bio } = req.body
+  const { name, email, avatar, currentPassword, password, confirmPassword, graduatingYear, major, bio } = req.body
   try {
     const user = await User.findById(req.user.id)
     if (name || bio || regno || avatar || graduatingYear || major) {
@@ -255,16 +240,6 @@ exports.edit = async (req, res) => {
     })
   }
 }
-
-/*
-  Type:GET
-  Desc: Send Information related to user (except password and hash)
-  Auth: Bearer Token
-  Params: None
-  Query: None
-  Body: None
-  Return: Array Containing all the data
-*/
 
 exports.get = async (req, res) => {
   try {
