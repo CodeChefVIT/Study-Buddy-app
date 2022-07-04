@@ -30,18 +30,17 @@ exports.getAllGroups = async (req, res) => {
 
       if (groups[i].admin.toString() === req.user.id) {
         groups[i].isAdmin = true
-      } else {
-        groups[i].admin = undefined
+      } else {ndefined
         groups[i].modules = undefined
         groups[i].requests = undefined
         groups[i].members = undefined
       }
     }
 
-    return res.status(200).json({ groups })
+    return res.status(200).json({success: true, groups })
   } catch (err) {
     console.log(err)
-    return res.status(500).json({ message: 'Server Error' })
+    return res.status(500).json({ success: false, message: 'Server Error' })
   }
 }
 
@@ -60,20 +59,21 @@ exports.requestGroup = async (req, res) => {
     // add user to requests array
     // if (!inviteCode) { return res.status(400).json({ message: 'No Invite Code Provided' }) }
     const group = await Groups.findOne({ inviteCode: inviteCode })
-    if (!group) { return res.status(400).json({ message: 'Group does not exist' }) }
+    if (!group) { return res.status(400).json({ success: false, message: 'Group does not exist' }) }
     const user = req.user
-    if (group.members.toString().includes(user.id)) { return res.status(400).json({ message: 'User already in group' }) }
+    if (group.members.toString().includes(user.id)) { return res.status(400).json({ success: false, message: 'User already in group' }) }
 
-    if (group.requests.toString().includes(user.id)) { return res.status(400).json({ message: 'User already requested to join group' }) }
+    if (group.requests.toString().includes(user.id)) { return res.status(400).json({ success: false, message: 'User already requested to join group' }) }
 
     group.requests.push(user.id)
     await group.save()
 
     const admin = await User.findById(group.admin)
     await sendEmail(admin.email, 'Group Request', `${user.name} has requested to join the group ${group.name}`)
-    return res.status(200).json({ message: 'Request sent' })
+    return res.status(200).json({ success: true, message: 'Request sent' })
   } catch (err) {
-    return res.status(500).json({ message: err.message })
+    console.log(err);
+    return res.status(500).json({ success: false, message: err.message })
   }
 }
 
@@ -99,10 +99,12 @@ exports.getUserGroups = async (req, res) => {
       }
     }
     return res.status(200).json({
+      success: true, 
       groups
     })
   } catch (err) {
-    return res.status(500).json({ message: err.message })
+    console.log(err)
+    return res.status(500).json({ success: false, message: err.message })
   }
 }
 
@@ -154,10 +156,12 @@ exports.createGroup = async (req, res) => {
     // subject.groups.push(group._id)
     // await subject.save()
     return res.status(200).json({
+      success: true,
       group
     })
   } catch (err) {
-    return res.status(500).json({ message: err.message })
+    console.log(err);
+    return res.status(500).json({ success: false, message: err.message })
   }
 }
 
@@ -174,6 +178,7 @@ exports.getGroup = async (req, res) => {
     let group = await Groups.findById(req.params.id)
     if (!group) {
       return res.status(400).json({
+        success: false,
         message: 'Group does not exist'
       })
     }
@@ -191,10 +196,12 @@ exports.getGroup = async (req, res) => {
       group.modules = undefined
     }
     return res.status(200).json({
+      success: true,
       group
     })
   } catch (err) {
-    return res.status(500).json({ message: err.message })
+    console.log(err);
+    return res.status(500).json({ success: false, message: err.message })
   }
 }
 
@@ -218,23 +225,25 @@ exports.acceptRequest = async (req, res) => {
       })
     }
     const userObj = await User.findById(user)
-    if (!userObj) { return res.status(400).json({ message: 'User does not exist' }) }
+    if (!userObj) { return res.status(400).json({ success: false, message: 'User does not exist' }) }
 
-    if (groupObj.members.toString().includes(userObj._id)) { return res.status(400).json({ message: 'User is already in group' }) }
+    if (groupObj.members.toString().includes(userObj._id)) { return res.status(400).json({ success: false, message: 'User is already in group' }) }
 
-    if (groupObj.admin.toString() !== req.user.id) { return res.status(400).json({ message: 'User is not admin' }) }
+    if (groupObj.admin.toString() !== req.user.id) { return res.status(400).json({ success: false, message: 'User is not admin' }) }
 
-    if (!groupObj.requests.toString().includes(userObj._id)) { return res.status(400).json({ message: 'User has not requested to join group' }) }
+    if (!groupObj.requests.toString().includes(userObj._id)) { return res.status(400).json({ success: false, message: 'User has not requested to join group' }) }
 
     groupObj.members.push(userObj._id)
     groupObj.requests = groupObj.requests.filter(id => id.toString() !== userObj._id.toString())
     await groupObj.save()
     await sendEmail(userObj.email, 'Group Request Accepted', `Your request to join the group ${groupObj.name} has been accepted`)
     return res.status(200).json({
+      success: true, 
       message: 'User added to group'
     })
   } catch (err) {
-    return res.status(500).json({ message: err.message })
+    console.log(err);
+    return res.status(500).json({ success: false, message: 'Some Internal Error Occurred' })
   }
 }
 
@@ -253,22 +262,26 @@ exports.rejectRequest = async (req, res) => {
     const groupObj = await Groups.findById(group)
     if (!groupObj) {
       return res.status(400).json({
+        success: false, 
         message: 'Group does not exist'
       })
     }
     const userObj = await User.findById(user)
     if (!userObj) {
       return res.status(400).json({
+        success: false, 
         message: 'User does not exist'
       })
     }
     if (groupObj.admin.toString() !== req.user.id) {
       return res.status(400).json({
+        success: false, 
         message: 'User is not admin'
       })
     }
     if (!groupObj.requests.includes(userObj._id)) {
       return res.status(400).json({
+        success: false, 
         message: 'User has not requested to join group'
       })
     }
@@ -276,10 +289,12 @@ exports.rejectRequest = async (req, res) => {
     await groupObj.save()
     await sendEmail(userObj.email, 'Group Request Deleted', `Your request to join the group ${groupObj.name} has been rejected`)
     return res.status(200).json({
+      success: true,
       message: 'User request deleted'
     })
   } catch (err) {
-    return res.status(500).json({ message: err.message })
+    console.log(err)
+    return res.status(500).json({ success: false, message: 'Some Internal Error Occurred' })
   }
 }
 /*
@@ -297,11 +312,13 @@ exports.getRequests = async (req, res) => {
     const groupObj = await Groups.findById(group)
     if (!groupObj) {
       return res.status(400).json({
-        message: 'Group does not exist'
+        success: false,
+        message: 'Group does not exist',
       })
     }
     if (groupObj.admin.toString() !== req.user.id) {
       return res.status(400).json({
+        success: false,
         message: 'User is not admin'
       })
     }
@@ -317,9 +334,11 @@ exports.getRequests = async (req, res) => {
       })
     }
     return res.status(200).json({
+      success: true,
       requests: arr
     })
   } catch (err) {
-    return res.status(500).json({ message: err.message })
+    console.log(err)
+    return res.status(500).json({ success: false, message: 'Some internal error occurred' })
   }
 }
