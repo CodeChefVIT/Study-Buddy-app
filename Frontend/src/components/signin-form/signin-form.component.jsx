@@ -27,16 +27,12 @@ const SigninForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    var dataLength = JSON.stringify(formFields).length;
     console.log(formFields);
 
     const response = await fetch(`${process.env.REACT_APP_URL}/user/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Content-Length": dataLength,
-        // "Host": "https://study-buddy-app-production.up.railway.app/",
       },
       body: JSON.stringify({
         formFields,

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ReactComponent as Logo } from "./../../assets/Logo-Main.svg";
-
+import Footer from "./../footer/footer.component";
 import "./dashboard.styles.css";
 
 const Dashboard = () => {
@@ -34,8 +34,9 @@ const Dashboard = () => {
         </nav>
       </header>
       <section className="dashboard">
-        <h2 className="heading-primary-sm">Welcome John Doe </h2>
+        <h1 class="heading-primary-sm">Groups</h1>
       </section>
+      <Footer />
     </div>
   );
 };
