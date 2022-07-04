@@ -17,10 +17,10 @@ function App() {
         <Route path="signup" element={<Signup />} />
         <Route path="login" element={<Signin />} />
       </Route>
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/create-study-grp" element={<CreateStudyGrp />} />
-      <Route path="/join-study-grp" element={<JoinStudyGrp />} />
-      <Route path="/profile" element={<Profile />} />
+      <Route path="dashboard" element={<Dashboard />} />
+      <Route path="create-study-grp" element={<CreateStudyGrp />} />
+      <Route path="join-study-grp" element={<JoinStudyGrp />} />
+      <Route path="profile" element={<Profile />} />
     </Routes>
   );
 }

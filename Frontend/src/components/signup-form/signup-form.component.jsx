@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import Button from "./../button/button.component";
 import "./sigunup-form.styles.css";
@@ -17,10 +18,26 @@ const SignUpForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, email, regno, major, password, confirmPassword } =
     formFields;
+  const navigate = useNavigate();
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
   };
+
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+
+  //   if (password !== confirmPassword) {
+  //     alert("passwords do not match");
+  //     return;
+  //   }
+
+  //   try {
+  //     resetFormFields();
+  //   } catch (error) {
+  //     console.log("user creation error", error);
+  //   }
+  // };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -29,6 +46,24 @@ const SignUpForm = () => {
       alert("passwords do not match");
       return;
     }
+
+    const response = await fetch(`${process.env.REACT_APP_URL}/user/signup`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // "Content-Length": ,
+        "Host":3000,
+      },
+      body: JSON.stringify({
+        formFields,
+      }),
+    });
+
+    const json = await response.json();
+    console.log(json);
+
+    localStorage.setItem("token", json.authtoken);
+    navigate.push("/");
 
     try {
       resetFormFields();
@@ -55,7 +90,7 @@ const SignUpForm = () => {
           <div className="heading-primary">Signup</div>
           <div className="heading-tertiary">Create an account. It's free!</div>
 
-          <label for="username">Name</label>
+          <label htmlFor="username">Name</label>
           <input
             type="text"
             placeholder="Name"
@@ -65,7 +100,7 @@ const SignUpForm = () => {
             value={displayName}
           />
 
-          <label for="regno">Regisration Number</label>
+          <label htmlFor="regno">Regisration Number</label>
           <input
             type="text"
             placeholder="21BCE0021"
@@ -75,7 +110,7 @@ const SignUpForm = () => {
             value={regno}
           />
 
-          <label for="email">Email</label>
+          <label htmlFor="email">Email</label>
           <input
             type="email"
             placeholder="Email"
@@ -85,9 +120,9 @@ const SignUpForm = () => {
             value={email}
           />
 
-          <label for="major">Major</label>
+          <label htmlFor="major">Major</label>
           <input
-            type="email"
+            type="text"
             placeholder="Major"
             required
             onChange={handleChange}
@@ -96,7 +131,7 @@ const SignUpForm = () => {
             id="major"
           />
 
-          <label for="password">Password</label>
+          <label htmlFor="password">Password</label>
           <input
             type="password"
             placeholder="Password"
@@ -106,7 +141,7 @@ const SignUpForm = () => {
             value={password}
             id="password"
           />
-          <label for="con-password">Confirm Password</label>
+          <label htmlFor="con-password">Confirm Password</label>
           <input
             type="password"
             placeholder="Confirm Password"
@@ -114,10 +149,10 @@ const SignUpForm = () => {
             onChange={handleChange}
             name="confirmPassword"
             value={confirmPassword}
-            id="password"
+            id="confirmpassword"
           />
 
-          <div class="mar-t">
+          <div className="mar-t">
             <Button>Create Account</Button>
           </div>
 

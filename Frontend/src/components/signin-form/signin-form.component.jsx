@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import Button from "./../button/button.component";
 import "./signin-form.styles.css";
@@ -12,6 +13,7 @@ const defaultFormFields = {
 const SigninForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
+  const navigate = useNavigate();
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
@@ -25,19 +27,30 @@ const SigninForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    var dataLength = JSON.stringify(formFields).length;
     console.log(formFields);
 
     const response = await fetch(`${process.env.REACT_APP_URL}/user/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Content-Length": dataLength,
+        // "Host": "https://study-buddy-app-production.up.railway.app/",
       },
       body: JSON.stringify({
         formFields,
       }),
     });
+
     const json = await response.json();
     console.log(json);
+    if (json.success) {
+      localStorage.setItem("token", json.authtoken);
+      navigate.push("/");
+    } else {
+      alert("Invalid credentials");
+    }
 
     try {
       resetFormFields();
@@ -59,7 +72,7 @@ const SigninForm = () => {
             Welcome back! See what you have missed
           </div>
 
-          <label for="email">Enter your Mail</label>
+          <label htmlFor="email">Enter your Mail</label>
           <input
             name="email"
             type="email"
@@ -69,7 +82,7 @@ const SigninForm = () => {
             placeholder="Email"
           />
 
-          <label for="password">Password</label>
+          <label htmlFor="password">Password</label>
           <input
             name="password"
             type="password"

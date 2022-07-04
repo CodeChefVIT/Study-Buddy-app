@@ -1,43 +1,19 @@
 import { Link } from "react-router-dom";
-import { ReactComponent as Logo } from "./../../assets/Logo-Main.svg";
+import NavigationAuth from "./../navigation-auth/navigation-auth.component";
 
 import "./joinstudygrp.styles.css";
 
 const JoinStudyGrp = () => {
   return (
     <div>
-      <header class="header">
-        <Logo className="logo" />
-        <nav class="main-nav">
-          <ul class="main-nav-list">
-            <li>
-              <Link to="/create-study-grp" className="main-nav-link">
-                Create Study Group
-              </Link>
-            </li>
-            <li>
-              <Link to="/join-study-grp" className="main-nav-link">
-                Join Study Group
-              </Link>
-            </li>
-            <li>
-              <Link to="/profile" className="main-nav-link">
-                Profile
-              </Link>
-            </li>
-            <li>
-              <Link to="#" className="main-nav-link">
-                Signout
-              </Link>
-            </li>
-          </ul>
-        </nav>
-      </header>
+      <NavigationAuth />
 
       <section className="groups">
         <div className="grps-title">
           <h1 className="heading-primary-sm">Find Study Groups</h1>
-          <input type="text" placeholder="Search by study group code" />
+          <form className="join-stud-grp">
+            <input type="text" placeholder="Search by study group code" />
+          </form>
         </div>
         <div className="grp-container">
           <div className="box">

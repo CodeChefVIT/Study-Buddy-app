@@ -38,7 +38,7 @@
   justify-content: space-between;
 }
 
-/* input[type="text"] {
+.join-stud-grp{
   float: right;
   padding: 6px;
   border: none;
@@ -48,7 +48,7 @@
   width: 30%;
   color: #fff;
   caret-color: #e67e22;
-} */
+}
 
 .grp-container {
   margin-top: 3.2rem;
