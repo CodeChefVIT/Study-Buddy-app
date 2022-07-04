@@ -17,9 +17,9 @@ exports.getQuiz = async (req, res) => {
   try {
     const quiz = await Quiz.findById(id)
     // check if user is a part of the group
-    if (!quiz) { return res.status(400).json({ message: 'Quiz does not exist' }) }
+    if (!quiz) { return res.status(400).json({ success: false, message: 'Quiz does not exist' }) }
     const UserInGroup = await Groups.findById(quiz.group)
-    if (!UserInGroup.members.toString().includes(req.user.id)) { return res.status(400).json({ message: 'You are not a member of this group' }) }
+    if (!UserInGroup.members.toString().includes(req.user.id)) { return res.status(400).json({ success: false, message: 'You are not a member of this group' }) }
     const { group, time, creator, attempted, questions } = quiz
     // filter questions to not send the answer
     const filteredQuestions = questions.map(questions => {
@@ -27,9 +27,9 @@ exports.getQuiz = async (req, res) => {
       return { question, options }
     })
     const attemptedData = attempted.filter(attempt => attempt.user.toString() === req.user.id)
-    return res.status(200).json({ group, time, creator, questions: filteredQuestions, attempted: attemptedData })
+    return res.status(200).json({ success: true, group, time, creator, questions: filteredQuestions, attempted: attemptedData })
   } catch (err) {
-    return res.status(500).json({ message: 'Some Internal Error Occured' })
+    return res.status(500).json({ success: false, message: 'Some Internal Error Occured' })
   }
 }
 
@@ -46,16 +46,16 @@ exports.createQuiz = async (req, res) => {
   const { group } = req.params
   const { time, questions } = req.body
   try {
-    if (!(group && time && questions)) { return res.status(400).json({ message: 'Missing required fields' }) }
+    if (!(group && time && questions)) { return res.status(400).json({ success: false, message: 'Missing required fields' }) }
     const parsedTime = moment(time, 'HH:mm:ss').format('HH:mm:ss')
-    if (parsedTime === 'Invalid date') { return res.status(400).json({ message: 'Invalid time format' }) }
+    if (parsedTime === 'Invalid date') { return res.status(400).json({ success: false, message: 'Invalid time format' }) }
     const foundGroup = await Groups.findById(group)
-    if (!foundGroup) { return res.status(400).json({ message: 'Group does not exist' }) }
+    if (!foundGroup) { return res.status(400).json({ success: false, message: 'Group does not exist' }) }
     // check if the questions schema is valid
     for (let i = 0; i < questions.length; i++) {
-      if (!questions[i].question || !questions[i].options || !questions[i].answer) { return res.status(400).json({ message: 'Invalid questions schema' }) }
+      if (!questions[i].question || !questions[i].options || !questions[i].answer) { return res.status(400).json({ success: false, message: 'Invalid questions schema' }) }
       // check if options include answer
-      if (questions[i].options.indexOf(questions[i].answer) === -1) { return res.status(400).json({ message: 'Answer is not included in options' }) }
+      if (questions[i].options.indexOf(questions[i].answer) === -1) { return res.status(400).json({ success: false, message: 'Answer is not included in options' }) }
     }
     const quiz = new Quiz({
       group,
@@ -65,10 +65,10 @@ exports.createQuiz = async (req, res) => {
       questions
     })
     await quiz.save()
-    return res.status(200).json({ message: 'Quiz created' })
+    return res.status(200).json({ success: true, message: 'Quiz created' })
   } catch (err) {
     console.log(err)
-    return res.status(500).json({ message: 'Some Internal Error Occured' })
+    return res.status(500).json({ success: false, message: 'Some Internal Error Occured' })
   }
 }
 
@@ -86,13 +86,13 @@ exports.attemptQuiz = async (req, res) => {
   const { QuestionData } = req.body
   try {
     const user = await User.findById(req.user.id)
-    if (!user) { return res.status(400).json({ message: 'User does not exist' }) }
+    if (!user) { return res.status(400).json({ success: false, message: 'User does not exist' }) }
 
     const quiz = await Quiz.findById(id)
-    if (!quiz) { return res.status(400).json({ message: 'Quiz does not exist' }) }
+    if (!quiz) { return res.status(400).json({ success: false, message: 'Quiz does not exist' }) }
 
     const UserInGroup = await Groups.findById(quiz.group)
-    if (!UserInGroup.members.toString().includes(req.user.id)) { return res.status(400).json({ message: 'You are not a member of this group' }) }
+    if (!UserInGroup.members.toString().includes(req.user.id)) { return res.status(400).json({ success: false, message: 'You are not a member of this group' }) }
 
     let correct = true
     let score = 0
@@ -100,10 +100,10 @@ exports.attemptQuiz = async (req, res) => {
     const arr2 = []
     for (let i = 0; i < QuestionData.length; i++) {
       const question = quiz.questions.find(question => question.question === QuestionData[i].question)
-      if (!question) { return res.status(400).json({ message: 'Question does not exist' }) }
+      if (!question) { return res.status(400).json({ success: false, message: 'Question does not exist' }) }
       correct = false
       const answer = question.options.find(option => option === QuestionData[i].answer)
-      if (!answer) { return res.status(400).json({ message: 'Answer does not exist' }) }
+      if (!answer) { return res.status(400).json({ success: false, message: 'Answer does not exist' }) }
       if (question.answer === QuestionData[i].answer) {
         correct = true
         score++
@@ -138,10 +138,10 @@ exports.attemptQuiz = async (req, res) => {
     }
 
     await quiz.save()
-    return res.status(200).json({ arr, score })
+    return res.status(200).json({ success: true, data: arr, score })
   } catch (err) {
     console.log(err)
-    return res.status(500).json({ message: 'Some Internal Error Occured' })
+    return res.status(500).json({ success: false, message: 'Some Internal Error Occured' })
   }
 }/*
     Type: GET
@@ -155,10 +155,10 @@ exports.getQuizScore = async (req, res) => {
   const { id } = req.params
   try {
     const quiz = await Quiz.findById(id)
-    if (!quiz) { return res.status(400).json({ message: 'Quiz does not exist' }) }
+    if (!quiz) { return res.status(400).json({ success: false, message: 'Quiz does not exist' }) }
 
     const UserInGroup = await Groups.findById(quiz.group)
-    if (!UserInGroup.members.toString().includes(req.user.id)) { return res.status(400).json({ message: 'You are not a member of this group' }) }
+    if (!UserInGroup.members.toString().includes(req.user.id)) { return res.status(400).json({ success: false, message: 'You are not a member of this group' }) }
 
     const attempts = quiz.attempted
     const arr = []
@@ -178,10 +178,11 @@ exports.getQuizScore = async (req, res) => {
         found = false
       }
     }
-    if (!found) { return res.status(400).json({ message: 'User has not attempted this quiz' }) }
-    return res.status(200).json({ arr })
+    if (!found) { return res.status(400).json({ success: false, message: 'User has not attempted this quiz' }) }
+    return res.status(200).json({ success: true, data: arr})
   } catch (err) {
-    return res.status(500).json({ message: 'Some Internal Error Occured' })
+    console.log(err)
+    return res.status(500).json({ success: false, message: 'Some Internal Error Occured' })
   }
 }
 
@@ -199,15 +200,16 @@ exports.deleteQuiz = async (req, res) => {
   const { id } = req.params
   try {
     const quiz = await Quiz.findById(id)
-    if (!quiz) { return res.status(400).json({ message: 'Quiz does not exist' }) }
+    if (!quiz) { return res.status(400).json({ success: false, message: 'Quiz does not exist' }) }
 
     const Group = await Groups.findById(quiz.group)
     // check if user is admin
-    if (Group.admin.toString() !== req.user.id) { return res.status(400).json({ message: 'You are not an admin of this group' }) }
+    if (Group.admin.toString() !== req.user.id) { return res.status(400).json({ success: false, message: 'You are not an admin of this group' }) }
     await quiz.remove()
-    return res.status(200).json({ message: 'Quiz Deleted' })
+    return res.status(200).json({ success: true, message: 'Quiz Deleted' })
   } catch (err) {
-    return res.status(500).json({ message: 'Some Internal Error Occured' })
+    console.log(err);
+    return res.status(500).json({ success: false, message: 'Some Internal Error Occured' })
   }
 }
 
@@ -215,9 +217,9 @@ exports.getQuizzes = async (req, res) => {
   const { group } = req.params
   try {
     const groupQuizzes = await Quiz.find({ group })
-    if (!groupQuizzes) { return res.status(400).json({ message: 'No quizzes in this group' }) }
+    if (!groupQuizzes) { return res.status(400).json({ success: false, message: 'No quizzes in this group' }) }
     const UserInGroup = await Groups.findById(group)
-    if (!UserInGroup.members.toString().includes(req.user.id)) { return res.status(400).json({ message: 'You are not a member of this group' }) }
+    if (!UserInGroup.members.toString().includes(req.user.id)) { return res.status(400).json({ success: false, message: 'You are not a member of this group' }) }
     const arr = []
     for (let i = 0; i < groupQuizzes.length; i++) {
       const { _id, creator, time, questions } = groupQuizzes[i]
@@ -228,10 +230,10 @@ exports.getQuizzes = async (req, res) => {
       })
       arr.push({ _id, creator, time, questions: questions2 })
     }
-    return res.status(200).json({ arr })
+    return res.status(200).json({ success: true, data: arr  })
   } catch (err) {
     console.log(err)
-    return res.status(500).json({ message: 'Some Internal Error Occured' })
+    return res.status(500).json({ success: false, message: 'Some Internal Error Occured' })
   }
 }
 
