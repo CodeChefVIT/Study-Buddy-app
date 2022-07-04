@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 import Button from "./../button/button.component";
 import "./signin-form.styles.css";
@@ -13,7 +13,7 @@ const defaultFormFields = {
 const SigninForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
@@ -27,23 +27,20 @@ const SigninForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     console.log(formFields);
 
-    const response = await fetch(`${process.env.REACT_APP_URL}/user/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        formFields,
-      }),
-    });
+    const response = await fetch(
+      `https://study-buddy-app-production.up.railway.app/api/v1/user/login`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formFields),
+      }
+    ).then((res) => res.json());
+    console.log(response);
 
-    const json = await response.json();
-    console.log(json);
-    if (json.success) {
-      localStorage.setItem("token", json.authtoken);
-      navigate.push("/");
+    if (response.status === 200) {
     } else {
       alert("Invalid credentials");
     }
@@ -51,7 +48,7 @@ const SigninForm = () => {
     try {
       resetFormFields();
     } catch (error) {
-      console.log("user creation error", error);
+      console.log("user login error", error);
     }
   };
 

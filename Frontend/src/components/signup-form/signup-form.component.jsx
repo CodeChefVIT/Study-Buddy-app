@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 import Button from "./../button/button.component";
 import "./sigunup-form.styles.css";
@@ -8,62 +8,43 @@ import "./sigunup-form.styles.css";
 const defaultFormFields = {
   email: "",
   password: "",
-  confirmPassword: "",
-  displayName: "",
+  confirm: "",
+  name: "",
   regno: "",
   major: "",
 };
 
 const SignUpForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
-  const { displayName, email, regno, major, password, confirmPassword } =
-    formFields;
-  const navigate = useNavigate();
+  const { name, email, regno, major, password, confirm } = formFields;
+  // const navigate = useNavigate();
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
   };
 
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-
-  //   if (password !== confirmPassword) {
-  //     alert("passwords do not match");
-  //     return;
-  //   }
-
-  //   try {
-  //     resetFormFields();
-  //   } catch (error) {
-  //     console.log("user creation error", error);
-  //   }
-  // };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (password !== confirmPassword) {
+    if (password !== confirm) {
       alert("passwords do not match");
       return;
     }
 
-    const response = await fetch(`${process.env.REACT_APP_URL}/user/signup`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        // "Content-Length": ,
-        "Host":3000,
-      },
-      body: JSON.stringify({
-        formFields,
-      }),
-    });
+    console.log(formFields);
 
-    const json = await response.json();
-    console.log(json);
+    const response = await fetch(
+      `https://study-buddy-app-production.up.railway.app/api/v1/user/signup`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formFields),
+      }
+    ).then((res) => res.json());
+    console.log(response);
 
-    localStorage.setItem("token", json.authtoken);
-    navigate.push("/");
+    const { message } = response;
+    alert(message);
 
     try {
       resetFormFields();
@@ -96,8 +77,8 @@ const SignUpForm = () => {
             placeholder="Name"
             required
             onChange={handleChange}
-            name="displayName"
-            value={displayName}
+            name="name"
+            value={name}
           />
 
           <label htmlFor="regno">Regisration Number</label>
@@ -147,9 +128,9 @@ const SignUpForm = () => {
             placeholder="Confirm Password"
             required
             onChange={handleChange}
-            name="confirmPassword"
-            value={confirmPassword}
-            id="confirmpassword"
+            name="confirm"
+            value={confirm}
+            id="confirm"
           />
 
           <div className="mar-t">
