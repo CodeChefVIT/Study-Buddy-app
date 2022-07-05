@@ -1,13 +1,24 @@
 // import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import Navigation from "../navigation/navigation.component";
 import NavigationAuth from "./../navigation-auth/navigation-auth.component";
 import Footer from "./../footer/footer.component";
 
 import "./grpsdashboard.styles.css";
 
 const GrpDash = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/");
+    }
+  });
+
   return (
     <div>
-      <NavigationAuth />
+      {localStorage.getItem("token") ? <NavigationAuth /> : <Navigation />}
       <div className="groups-in">
         <div className="group-hero">
           <h1 className="heading-primary-sm-2">qwe-asd-zxc</h1>
