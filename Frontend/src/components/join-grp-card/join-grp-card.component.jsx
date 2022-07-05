@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const JoinGrpCard = () => {
+const JoinGrpCard = ({ grps }) => {
   return (
     <div className="box">
       <div className="grp-con">

@@ -1,14 +1,17 @@
 // import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import Navigation from "../navigation/navigation.component";
 import NavigationAuth from "./../navigation-auth/navigation-auth.component";
 import Footer from "./../footer/footer.component";
+import { GrpsContext } from "./../../context/grps/grps.context";
 
 import "./grpsdashboard.styles.css";
 
 const GrpDash = () => {
   const navigate = useNavigate();
+  const { grps } = useContext(GrpsContext);
+  console.log(grps);
 
   useEffect(() => {
     if (!localStorage.getItem("token")) {

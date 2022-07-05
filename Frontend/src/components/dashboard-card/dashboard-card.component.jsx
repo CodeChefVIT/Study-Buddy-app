@@ -10,7 +10,7 @@ const DashCard = ({ groups }) => {
   const navigateGrpsDash = () => {
     navigate("/grp-dash");
   };
-  console.log(groups);
+  // console.log(groups);
 
   return (
     <div className="grpsv-card">
