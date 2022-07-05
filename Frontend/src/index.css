@@ -109,6 +109,14 @@ body {
   letter-spacing: -0.5px;
 }
 
+.heading-primary-sm-3 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1.05;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+
 .heading-secondary {
   font-size: 2rem;
   line-height: 1.6;
@@ -117,7 +125,7 @@ body {
 }
 
 .heading-secondary-sm {
-  font-size: 2rem;
+  font-size: 1rem;
   line-height: 1.6;
   margin-bottom: 2.4rem;
   color: #fff;
@@ -128,6 +136,11 @@ body {
   line-height: 1.6;
   margin-bottom: 2.4rem;
   color: #fff;
+}
+
+.heading-tertiary-sm {
+  font-size: 1.6rem;
+  color: rgb(173, 173, 173);
 }
 
 .para-primary {
@@ -156,6 +169,16 @@ body {
   padding-top: 2rem;
 }
 
+.pad-b {
+  padding-bottom: 2rem;
+}
+
+.mar {
+  margin: 2rem;
+  margin-left: 0rem;
+  margin-bottom: 0rem;
+}
+
 .mar-l {
   margin-left: 6rem;
 }
@@ -163,6 +186,7 @@ body {
 .mar-t {
   margin-top: 2rem;
 }
+
 .mar-t-2 {
   margin-top: 3rem;
 }
@@ -173,6 +197,24 @@ body {
 
 .mar-b {
   margin-bottom: 2rem;
+}
+
+.button {
+  background-color: #e67e22;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-weight: 500;
+  font-size: 1.4rem;
+  border-radius: 10px;
+  transition: all 1s;
+}
+
+.button:hover {
+  background-color: #ff5b7e;
 }
 
 .btn:link,
@@ -193,6 +235,29 @@ body {
 .btn:active {
   background-color: #ff5b7e;
   color: #fff;
+}
+
+label {
+  display: block;
+  margin-top: 30px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+input {
+  display: block;
+  height: 50px;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.07);
+  border-radius: 3px;
+  padding: 0 10px;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+::placeholder {
+  color: #737373;
 }
 
 /****************************/

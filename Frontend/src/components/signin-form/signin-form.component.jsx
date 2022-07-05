@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import Button from "./../button/button.component";
 import "./signin-form.styles.css";
@@ -13,7 +13,7 @@ const defaultFormFields = {
 const SigninForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
@@ -40,7 +40,9 @@ const SigninForm = () => {
     ).then((res) => res.json());
     console.log(response);
 
-    if (response.status === 200) {
+    if (response.success) {
+      localStorage.setItem("token", response.token);
+      navigate("/dashboard");
     } else {
       alert("Invalid credentials");
     }
@@ -48,7 +50,7 @@ const SigninForm = () => {
     try {
       resetFormFields();
     } catch (error) {
-      console.log("user login error", error);
+      console.log("user creation error", error);
     }
   };
 

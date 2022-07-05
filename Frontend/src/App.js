@@ -6,8 +6,10 @@ import Navigation from "./routes/navigation/navigation.component";
 import Home from "./routes/home/home.component";
 import Dashboard from "./routes/dashboard/dashboard.component";
 import CreateStudyGrp from "./routes/createstudygrp/createstudyprp.component";
+import AddModules from "./routes/addmodule/addmodule.component";
 import JoinStudyGrp from "./routes/joinstudygrp/joinstudygrp.component";
 import Profile from "./routes/profile/profile.component";
+import GrpDash from "./routes/grpsdashboard/grpsdashboard.component";
 
 function App() {
   return (
@@ -19,8 +21,10 @@ function App() {
       </Route>
       <Route path="dashboard" element={<Dashboard />} />
       <Route path="create-study-grp" element={<CreateStudyGrp />} />
+      <Route path="addmodule" element={<AddModules />} />
       <Route path="join-study-grp" element={<JoinStudyGrp />} />
       <Route path="profile" element={<Profile />} />
+      <Route path="grp-dash" element={<GrpDash />} />
     </Routes>
   );
 }

@@ -1,40 +1,145 @@
-import { Link } from "react-router-dom";
-import { ReactComponent as Logo } from "./../../assets/Logo-Main.svg";
+import { useNavigate } from "react-router-dom";
+import NavigationAuth from "../navigation-auth/navigation-auth.component";
 import Footer from "./../footer/footer.component";
+import { ReactComponent as ProfPic } from "./../../assets/img.svg";
+
 import "./dashboard.styles.css";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+
+  const navigateGrpsDash = () => {
+    navigate("/grp-dash");
+  };
+
   return (
     <div>
-      <header class="header">
-        <Logo className="logo" />
-        <nav class="main-nav">
-          <ul class="main-nav-list">
-            <li>
-              <Link to="/create-study-grp" className="main-nav-link">
-                Create Study Group
-              </Link>
-            </li>
-            <li>
-              <Link to="/join-study-grp" className="main-nav-link">
-                Join Study Group
-              </Link>
-            </li>
-            <li>
-              <Link to="/profile" className="main-nav-link">
-                Profile
-              </Link>
-            </li>
-            <li>
-              <Link to="#" className="main-nav-link">
-                Signout
-              </Link>
-            </li>
-          </ul>
-        </nav>
-      </header>
+      <NavigationAuth />
       <section className="dashboard">
-        <h1 class="heading-primary-sm">Groups</h1>
+        <h1 className="heading-primary">My Groups</h1>
+        <div className="grpsv-container">
+          <div className="grpsv-card">
+            <div>
+              <ProfPic
+                className="prof-pic"
+                src="img/img.svg"
+                alt="group image"
+              />
+              <h2 className="heading-primary-sm-3 pad-t">qwe-asd-zxc</h2>
+            </div>
+            <div>
+              <h2 className="heading-primary-sm-3 ">Topic: BMAT101L</h2>
+              <h2 className="heading-primary-sm-3 pad-t pad-b">
+                Members Present: 69
+              </h2>
+              <button onClick={navigateGrpsDash} className="button">
+                Click to Enter Group
+              </button>
+            </div>
+          </div>
+          <div className="grpsv-card">
+            <div>
+              <ProfPic
+                className="prof-pic"
+                src="img/img.svg"
+                alt="group image"
+              />
+              <h2 className="heading-primary-sm-3 pad-t">qwe-asd-zxc</h2>
+            </div>
+            <div>
+              <h2 className="heading-primary-sm-3 ">Topic: BMAT101L</h2>
+              <h2 className="heading-primary-sm-3 pad-t pad-b">
+                Members Present: 69
+              </h2>
+              <button className="button">Click to Enter Group</button>
+            </div>
+          </div>
+          <div className="grpsv-card">
+            <div>
+              <ProfPic
+                className="prof-pic"
+                src="img/img.svg"
+                alt="group image"
+              />
+              <h2 className="heading-primary-sm-3 pad-t">qwe-asd-zxc</h2>
+            </div>
+            <div>
+              <h2 className="heading-primary-sm-3 ">Topic: BMAT101L</h2>
+              <h2 className="heading-primary-sm-3 pad-t pad-b">
+                Members Present: 69
+              </h2>
+              <button className="button">Click to Enter Group</button>
+            </div>
+          </div>
+          <div className="grpsv-card">
+            <div>
+              <ProfPic
+                className="prof-pic"
+                src="img/img.svg"
+                alt="group image"
+              />
+              <h2 className="heading-primary-sm-3 pad-t">qwe-asd-zxc</h2>
+            </div>
+            <div>
+              <h2 className="heading-primary-sm-3 ">Topic: BMAT101L</h2>
+              <h2 className="heading-primary-sm-3 pad-t pad-b">
+                Members Present: 69
+              </h2>
+              <button className="button">Click to Enter Group</button>
+            </div>
+          </div>
+          <div className="grpsv-card">
+            <div>
+              <ProfPic
+                className="prof-pic"
+                src="img/img.svg"
+                alt="group image"
+              />
+              <h2 className="heading-primary-sm-3 pad-t">qwe-asd-zxc</h2>
+            </div>
+            <div>
+              <h2 className="heading-primary-sm-3 ">Topic: BMAT101L</h2>
+              <h2 className="heading-primary-sm-3 pad-t pad-b">
+                Members Present: 69
+              </h2>
+              <button className="button">Click to Enter Group</button>
+            </div>
+          </div>
+          <div className="grpsv-card">
+            <div>
+              <ProfPic
+                className="prof-pic"
+                src="img/img.svg"
+                alt="group image"
+              />
+              <h2 className="heading-primary-sm-3 pad-t">qwe-asd-zxc</h2>
+            </div>
+            <div>
+              <h2 className="heading-primary-sm-3 ">Topic: BMAT101L</h2>
+              <h2 className="heading-primary-sm-3 pad-t pad-b">
+                Members Present: 69
+              </h2>
+              <button className="button">Click to Enter Group</button>
+            </div>
+          </div>
+          <div className="grpsv-card">
+            <div>
+              <ProfPic
+                className="prof-pic"
+                src="img/img.svg"
+                alt="group image"
+              />
+              <h2 className="heading-primary-sm-3 pad-t">qwe-asd-zxc</h2>
+            </div>
+            <div>
+              <h2 className="heading-primary-sm-3 ">Topic: BMAT101L</h2>
+              <h2 className="heading-primary-sm-3 pad-t pad-b">
+                Members Present: 69
+              </h2>
+              <button className="button">Click to Enter Group</button>
+            </div>
+          </div>
+        </div>
       </section>
       <Footer />
     </div>

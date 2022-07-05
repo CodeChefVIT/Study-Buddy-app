@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import Button from "./../button/button.component";
 import "./sigunup-form.styles.css";
@@ -17,7 +17,7 @@ const defaultFormFields = {
 const SignUpForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { name, email, regno, major, password, confirm } = formFields;
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
@@ -45,6 +45,13 @@ const SignUpForm = () => {
 
     const { message } = response;
     alert(message);
+
+    if (response.success) {
+      localStorage.setItem("token", response.token);
+      navigate("/dashboard");
+    } else {
+      alert("User Creation Failed");
+    }
 
     try {
       resetFormFields();
