@@ -27,7 +27,8 @@ exports.getAllGroups = async (req, res) => {
     // hide requests
     for (let i = 0; i < groups.length; i++) {
       groups[i] = Object.assign({}, groups[i].toObject(), { isAdmin: false })
-
+      // add member length
+      groups[i].membersLength = groups[i].members.length
       if (groups[i].admin.toString() === req.user.id) {
         groups[i].isAdmin = true
       } else {
