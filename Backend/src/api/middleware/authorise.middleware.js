@@ -6,6 +6,7 @@ const authorise = async (req, res, next) => {
   let token = req.headers['x-access-token'] || req.headers.authorization
   if (!token) {
     return res.status(401).json({
+      success: false,
       message: 'No token provided.'
     })
   }
@@ -17,6 +18,7 @@ const authorise = async (req, res, next) => {
     jwt.verify(token, jwtsecret, (err, decoded) => {
       if (err) {
         return res.status(401).json({
+          success: false,
           message: 'Token is not valid.'
         })
       }
@@ -25,6 +27,7 @@ const authorise = async (req, res, next) => {
     })
   } else {
     return res.status(401).json({
+      success: false,
       message: 'Token is not valid.'
     })
   }
