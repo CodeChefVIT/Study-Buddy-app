@@ -30,7 +30,8 @@ exports.getAllGroups = async (req, res) => {
 
       if (groups[i].admin.toString() === req.user.id) {
         groups[i].isAdmin = true
-      } else {ndefined
+      } else {
+        groups[i].admin = undefined
         groups[i].modules = undefined
         groups[i].requests = undefined
         groups[i].members = undefined
