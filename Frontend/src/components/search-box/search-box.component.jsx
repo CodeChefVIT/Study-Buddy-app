@@ -1,15 +1,10 @@
 import "./search-box.styles.css";
 
 const SearchBox = (props) => {
-  const { placeholder, onChange, className } = props;
+  const { onChange } = props;
   return (
     <div className="search-box">
-      <input
-        className={`search-box ${className}`}
-        type="search"
-        placeholder={placeholder}
-        onChange={onChange}
-      />
+      <input className="search-box" type="search" onChange={onChange} />
     </div>
   );
 };

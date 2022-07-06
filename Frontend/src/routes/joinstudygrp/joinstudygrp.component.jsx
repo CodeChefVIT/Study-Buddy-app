@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
@@ -12,27 +14,40 @@ import "./joinstudygrp.styles.css";
 const JoinStudyGrp = () => {
   const navigate = useNavigate();
   const [searchField, setSearchField] = useState("");
-  const [grps /*setGrps*/] = useState([]);
-  const [filteredGrps, setFilteredGrps] = useState(grps);
+  const [groups, setGroups] = useState([]);
+  const [filteredGroups, setFilteredGroups] = useState(groups);
 
   useEffect(() => {
     if (!localStorage.getItem("token")) {
       navigate("/");
     }
-  });
+  }, []);
 
   useEffect(() => {
-    const newFilteredGrps = grps.filter((monster) => {
-      return grps.name.toLowerCase().includes(searchField);
-    });
+    fetch(`https://study-buddy-app-production.up.railway.app/api/v1/groups`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((response) => response.json())
+      .then(({ groups }) => setGroups(groups));
+  }, []);
 
-    setFilteredGrps(newFilteredGrps);
-  }, [grps, searchField]);
+  useEffect(() => {
+    const newFilteredGroups = groups.filter((group) => {
+      return group.inviteCode.includes(searchField);
+    });
+    setFilteredGroups(newFilteredGroups);
+  }, [groups, searchField]);
 
   const onSearchChange = (event) => {
-    const searchFieldString = event.target.value.toLocaleLowerCase();
+    const searchFieldString = event.target.value;
     setSearchField(searchFieldString);
   };
+
+  console.log(filteredGroups);
 
   return (
     <div>
@@ -46,7 +61,9 @@ const JoinStudyGrp = () => {
           />
         </div>
         <div className="grp-container">
-          <JoinGrpCard grps={filteredGrps} />
+          {filteredGroups.map((group) => {
+            return <JoinGrpCard key={group.id} group={group} />;
+          })}
         </div>
       </section>
       <Footer />

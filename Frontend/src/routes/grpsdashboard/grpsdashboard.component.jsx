@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // import { Link } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -34,7 +35,7 @@ const GrpDash = () => {
     })
       .then((response) => response.json())
       .then(({ group }) => setGroup(group));
-  });
+  }, []);
 
   const { name, subject, modules } = group;
   console.log(modules);
@@ -70,7 +71,10 @@ const GrpDash = () => {
         <h1 className="heading-primary-sm-2 mar-t-3">Modules</h1>
 
         <div className="grp-container">
-          <ModCard />
+          {modules &&
+            modules.map((module) => (
+              <ModCard key={module.id} module={module} />
+            ))}
         </div>
       </div>
       <Footer />
