@@ -36,6 +36,7 @@ exports.signup = async (req, res) => {
     const user = await User.findOne({ email })
     if (user) {
       return res.status(400).json({
+        success: false,
         message: 'User already exists'
       })
     }
@@ -56,6 +57,7 @@ exports.signup = async (req, res) => {
     const salt = await bcrypt.genSalt(10)
     if (!(password === confirm)) {
       return res.status(400).json({
+        success: false,
         message: 'Passwords do not match'
       })
     }
@@ -64,11 +66,13 @@ exports.signup = async (req, res) => {
     await sendEmail(email, 'Verify Your Email', `Verify your email at ${link}`)
     await newUser.save()
     return res.status(200).json({
+      success: true,
       message: 'User created, Check email for verification'
     })
   } catch (error) {
     console.log(error)
     return res.status(500).json({
+      success: false,
       message: 'Server error'
     })
   }
@@ -88,26 +92,33 @@ exports.login = async (req, res) => {
     const user = await User.findOne({ email: email })
     if (!user) {
       return res.status(400).json({
+        success: false,
         message: 'User does not exist'
       })
     }
     if (!user.isVerified) {
       return res.status(400).json({
+      success: false,
         message: 'User is not verified, Please check email'
       })
     }
     const isMatch = await bcrypt.compare(password, user.password)
     if (!isMatch) {
       return res.status(400).json({
-        message: 'Incorrect password'
+      success: false,
+      message: 'Incorrect password'
       })
     }
     const token = createToken(user.id, user.email, user.name)
-    return res.header('Authorization', token).json({
-      message: 'Login successful'
+    return res.status(200).json({
+      success: true,
+      message: 'Login successful',
+      token
     })
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
+      success: false,
       message: 'Server error'
     })
   }
@@ -129,12 +140,14 @@ exports.verify = async (req, res) => {
     const user = await User.findById(id)
     if (!user) {
       return res.status(400).json({
-        message: 'User does not exist'
+      success: false,
+      message: 'User does not exist'
       })
     }
     if (user.isVerified) {
       return res.status(400).json({
-        message: 'User is already verified'
+      success: false,
+      message: 'User is already verified'
       })
     }
     user.isVerified = true
@@ -144,6 +157,7 @@ exports.verify = async (req, res) => {
     // redirect
     return res.redirect('https://studybuddy.com/')
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       message: 'Server error'
     })
@@ -165,12 +179,14 @@ exports.resend = async (req, res) => {
     const user = await User.findOne({ email: email })
     if (!user) {
       return res.status(400).json({
-        message: 'User does not exist'
+      success: false,
+      message: 'User does not exist'
       })
     }
     if (user.isVerified) {
       return res.status(400).json({
-        message: 'User is already verified'
+      success: false,
+      message: 'User is already verified'
       })
     }
     const hash = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
@@ -181,10 +197,13 @@ exports.resend = async (req, res) => {
     await sendEmail(email, 'Verify Your Email', `Verify your email at ${link}`)
     console.log(link)
     return res.json({
+      success: true,
       message: 'Verification Email Sent'
     })
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
+      success: false,
       message: 'Server error'
     })
   }
@@ -226,12 +245,14 @@ exports.edit = async (req, res) => {
     const isMatch = await bcrypt.compare(currentPassword, user.password)
     if (!isMatch) {
       return res.status(400).json({
-        message: 'Incorrect password'
+      success: false,
+      message: 'Incorrect password'
       })
     }
     if (!user) {
       return res.status(400).json({
-        message: 'User does not exist'
+      success: false,
+      message: 'User does not exist'
       })
     }
     if (email) user.email = email
@@ -239,7 +260,8 @@ exports.edit = async (req, res) => {
     if (password) {
       if (password !== confirmPassword) {
         return res.status(400).json({
-          message: 'Passwords do not match'
+      success: false,
+      message: 'Passwords do not match'
         })
       }
       const salt = await bcrypt.genSalt(10)
@@ -247,10 +269,13 @@ exports.edit = async (req, res) => {
     }
     await user.save()
     return res.json({
+      success: true,
       message: 'User updated'
     })
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
+      success: false,
       message: 'Server error'
     })
   }
@@ -271,15 +296,19 @@ exports.get = async (req, res) => {
     const user = await User.findById(req.user.id)
     if (!user) {
       return res.status(400).json({
-        message: 'User does not exist'
+      success: false,
+      message: 'User does not exist'
       })
     }
     const { password, hash, __v, ...data } = user._doc
     return res.status(200).json({
+      success: true,
       data
     })
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
+      success: false,
       message: 'Server error'
     })
   }
