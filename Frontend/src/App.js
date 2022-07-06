@@ -24,7 +24,7 @@ function App() {
       <Route path="addmodule" element={<AddModules />} />
       <Route path="join-study-grp" element={<JoinStudyGrp />} />
       <Route path="profile" element={<Profile />} />
-      <Route path="grp-dash" element={<GrpDash />} />
+      <Route path="groups/:id" element={<GrpDash />} />
     </Routes>
   );
 }

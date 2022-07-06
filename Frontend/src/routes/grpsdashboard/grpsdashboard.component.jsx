@@ -1,17 +1,16 @@
 // import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
 import Navigation from "../navigation/navigation.component";
 import NavigationAuth from "./../navigation-auth/navigation-auth.component";
 import Footer from "./../footer/footer.component";
-import { GrpsContext } from "./../../context/grps/grps.context";
+import ModCard from "./../../components/module-card/module-card.component";
 
 import "./grpsdashboard.styles.css";
 
 const GrpDash = () => {
+  const [group, setGroup] = useState([{}]);
   const navigate = useNavigate();
-  const { grps } = useContext(GrpsContext);
-  console.log(grps);
 
   useEffect(() => {
     if (!localStorage.getItem("token")) {
@@ -19,13 +18,34 @@ const GrpDash = () => {
     }
   });
 
+  const usePathname = () => {
+    const location = useLocation();
+    return location.pathname;
+  };
+  const path = usePathname();
+
+  useEffect(() => {
+    fetch(`https://study-buddy-app-production.up.railway.app/api/v1${path}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((response) => response.json())
+      .then(({ group }) => setGroup(group));
+  });
+
+  const { name, subject, modules } = group;
+  console.log(modules);
+
   return (
     <div>
       {localStorage.getItem("token") ? <NavigationAuth /> : <Navigation />}
       <div className="groups-in">
         <div className="group-hero">
-          <h1 className="heading-primary-sm-2">qwe-asd-zxc</h1>
-          <h1 className="heading-secondary">BMAT101L</h1>
+          <h1 className="heading-primary-sm-2">{name}</h1>
+          <h1 className="heading-primary-sm-2">{subject}</h1>
         </div>
         <button className="button-grps long" type="text">
           See All Members
@@ -50,18 +70,7 @@ const GrpDash = () => {
         <h1 className="heading-primary-sm-2 mar-t-3">Modules</h1>
 
         <div className="grp-container">
-          <div className="grp-con box">
-            <h2 className="heading-primary-sm-2 align-l">PDE</h2>
-            <h2 className="heading-tertiary-sm align-l">
-              Members Completed: 29
-            </h2>
-          </div>
-          <div className="grp-con box">
-            <h2 className="heading-primary-sm-2 align-l">ODE</h2>
-            <h2 className="heading-tertiary-sm align-l">
-              Members Completed: 14
-            </h2>
-          </div>
+          <ModCard />
         </div>
       </div>
       <Footer />

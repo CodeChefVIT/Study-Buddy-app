@@ -2,15 +2,13 @@ import { useNavigate } from "react-router-dom";
 import { ReactComponent as ProfPic } from "./../../assets/img.svg";
 import "./dashboard-card.styles.css";
 
-const DashCard = ({ groups }) => {
+const DashCard = ({ group }) => {
+  const { name, subject } = group;
   const navigate = useNavigate();
-  const { name, subject, members } = groups;
-  // const numberMembers = members.length;
 
   const navigateGrpsDash = () => {
-    navigate("/grp-dash");
+    navigate(`/groups/${group._id}`);
   };
-  // console.log(groups);
 
   return (
     <div className="grpsv-card">
@@ -20,7 +18,9 @@ const DashCard = ({ groups }) => {
       </div>
       <div>
         <h2 className="heading-primary-sm-3 ">Topic: {subject}</h2>
-        <h2 className="heading-primary-sm-3 pad-t pad-b">Members Present:69</h2>
+        <h2 className="heading-primary-sm-3 pad-t pad-b">
+          Members Present: 23
+        </h2>
         <button onClick={navigateGrpsDash} className="button">
           Click to Enter Group
         </button>

@@ -5,12 +5,12 @@ import { ReactComponent as Logo } from "./../../assets/Logo-Main.svg";
 const NavigationAuth = () => {
   return (
     <Fragment>
-      <header class="header">
+      <header className="header">
         <Link className="logo-container" to="/dashboard">
           <Logo className="logo" />
         </Link>
-        <nav class="main-nav">
-          <ul class="main-nav-list">
+        <nav className="main-nav">
+          <ul className="main-nav-list">
             <li>
               <Link to="/create-study-grp" className="main-nav-link">
                 Create Study Group
