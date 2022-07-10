@@ -16,24 +16,28 @@
   filter: blur(50px);
 }
 .shape-c:first-child {
-  left: -8rem;
-  top: -6rem;
+  right: -10rem;
+  bottom: 10rem;
 }
 
 .shape-c:last-child {
   background: linear-gradient(#ff5b7e, #9b0022);
 
   right: -10rem;
-  bottom: -5rem;
+  bottom: -55rem;
+}
+
+.pad-t2 {
+  padding-top: 4rem;
+}
+
+.mar-r {
+  margin-right: 2rem;
 }
 
 .form-create {
-  height: 550px;
-  width: 700px;
+  margin: 30px 60px;
   background-color: rgba(255, 255, 255, 0.13);
-  transform: translateX(60%);
-  top: 50%;
-  left: 50%;
   border-radius: 10px;
   backdrop-filter: blur(10px);
   border: 2px solid #cf894b;
