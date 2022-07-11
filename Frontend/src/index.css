@@ -92,10 +92,42 @@ body {
   margin-bottom: 3.2rem;
 }
 
+.heading-primary-sm {
+  font-size: 4.8rem;
+  font-weight: 700;
+  line-height: 1.05;
+  color: #fff;
+  letter-spacing: -0.5px;
+  margin-bottom: 3.2rem;
+}
+
+.heading-primary-sm-2 {
+  font-size: 4.8rem;
+  font-weight: 700;
+  line-height: 1.05;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+
+.heading-primary-sm-3 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1.05;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+
 .heading-secondary {
   font-size: 2rem;
   line-height: 1.6;
   margin-bottom: 4.8rem;
+  color: #fff;
+}
+
+.heading-secondary-sm {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 2.4rem;
   color: #fff;
 }
 
@@ -106,10 +138,19 @@ body {
   color: #fff;
 }
 
+.heading-tertiary-sm {
+  font-size: 1.6rem;
+  color: rgb(173, 173, 173);
+}
+
 .para-primary {
   font-size: 1.4rem;
   margin: 2.4rem 0;
   color: #fff;
+}
+
+.align-l {
+  text-align: left;
 }
 
 .align-r {
@@ -124,12 +165,56 @@ body {
   padding-right: 2rem;
 }
 
+.pad-t {
+  padding-top: 2rem;
+}
+
+.pad-b {
+  padding-bottom: 2rem;
+}
+
+.mar {
+  margin: 2rem;
+  margin-left: 0rem;
+  margin-bottom: 0rem;
+}
+
+.mar-l {
+  margin-left: 6rem;
+}
+
 .mar-t {
   margin-top: 2rem;
 }
 
+.mar-t-2 {
+  margin-top: 3rem;
+}
+
+.mar-t-3 {
+  margin-top: 5rem;
+}
+
 .mar-b {
   margin-bottom: 2rem;
+}
+
+.button {
+  background-color: #e67e22;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-weight: 500;
+  font-size: 1.4rem;
+  border-radius: 10px;
+  transition: all 1s;
+}
+
+.button:hover {
+  background-color: #ff5b7e;
 }
 
 .btn:link,
@@ -150,6 +235,29 @@ body {
 .btn:active {
   background-color: #ff5b7e;
   color: #fff;
+}
+
+label {
+  display: block;
+  margin-top: 30px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+input {
+  display: block;
+  height: 50px;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.07);
+  border-radius: 3px;
+  padding: 0 10px;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+::placeholder {
+  color: #737373;
 }
 
 /****************************/

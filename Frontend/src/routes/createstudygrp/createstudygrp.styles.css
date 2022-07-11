@@ -1,4 +1,4 @@
-.login-background {
+.create-background {
   width: 500px;
   height: 520px;
   position: absolute;
@@ -7,7 +7,7 @@
   top: 50%;
 }
 
-.login-background .shape {
+.create-background .shape-c {
   background: linear-gradient(to right, #80fff6, #02ccc0);
   height: 200px;
   width: 200px;
@@ -15,24 +15,23 @@
   border-radius: 50%;
   filter: blur(50px);
 }
-
-.shape:first-child {
+.shape-c:first-child {
   left: -8rem;
-  top: 8rem;
+  top: -6rem;
 }
 
-.shape:last-child {
+.shape-c:last-child {
   background: linear-gradient(#ff5b7e, #9b0022);
 
-  right: -4rem;
-  bottom: -9rem;
+  right: -10rem;
+  bottom: -5rem;
 }
 
-.form-signin {
-  height: 640px;
-  width: 400px;
+.form-create {
+  height: 550px;
+  width: 700px;
   background-color: rgba(255, 255, 255, 0.13);
-  transform: translateX(140%);
+  transform: translateX(60%);
   top: 50%;
   left: 50%;
   border-radius: 10px;
@@ -40,6 +39,36 @@
   border: 2px solid #cf894b;
   box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
   padding: 50px 35px;
+}
+
+form * {
+  font-family: IBM Plex Sans, sans-serif;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  outline: none;
+  border: none;
+}
+
+label {
+  display: block;
+  margin-top: 30px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+input {
+  display: block;
+  height: 50px;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.07);
+  border-radius: 3px;
+  padding: 0 10px;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 300;
+}
+::placeholder {
+  color: #e5e5e5;
 }
 
 .log-nav-link:link,
