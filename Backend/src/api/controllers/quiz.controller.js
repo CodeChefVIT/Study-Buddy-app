@@ -179,7 +179,7 @@ exports.getQuizScore = async (req, res) => {
       }
     }
     if (!found) { return res.status(400).json({ success: false, message: 'User has not attempted this quiz' }) }
-    return res.status(200).json({ success: true, data: arr})
+    return res.status(200).json({ success: true, data: arr })
   } catch (err) {
     console.log(err)
     return res.status(500).json({ success: false, message: 'Some Internal Error Occured' })
@@ -208,7 +208,7 @@ exports.deleteQuiz = async (req, res) => {
     await quiz.remove()
     return res.status(200).json({ success: true, message: 'Quiz Deleted' })
   } catch (err) {
-    console.log(err);
+    console.log(err)
     return res.status(500).json({ success: false, message: 'Some Internal Error Occured' })
   }
 }
@@ -230,7 +230,7 @@ exports.getQuizzes = async (req, res) => {
       })
       arr.push({ _id, creator, time, questions: questions2 })
     }
-    return res.status(200).json({ success: true, data: arr  })
+    return res.status(200).json({ success: true, data: arr })
   } catch (err) {
     console.log(err)
     return res.status(500).json({ success: false, message: 'Some Internal Error Occured' })

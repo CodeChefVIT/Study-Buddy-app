@@ -98,15 +98,15 @@ exports.login = async (req, res) => {
     }
     if (!user.isVerified) {
       return res.status(400).json({
-      success: false,
+        success: false,
         message: 'User is not verified, Please check email'
       })
     }
     const isMatch = await bcrypt.compare(password, user.password)
     if (!isMatch) {
       return res.status(400).json({
-      success: false,
-      message: 'Incorrect password'
+        success: false,
+        message: 'Incorrect password'
       })
     }
     const token = createToken(user.id, user.email, user.name)
@@ -116,7 +116,7 @@ exports.login = async (req, res) => {
       token
     })
   } catch (error) {
-    console.log(error);
+    console.log(error)
     return res.status(500).json({
       success: false,
       message: 'Server error'
@@ -140,14 +140,14 @@ exports.verify = async (req, res) => {
     const user = await User.findById(id)
     if (!user) {
       return res.status(400).json({
-      success: false,
-      message: 'User does not exist'
+        success: false,
+        message: 'User does not exist'
       })
     }
     if (user.isVerified) {
       return res.status(400).json({
-      success: false,
-      message: 'User is already verified'
+        success: false,
+        message: 'User is already verified'
       })
     }
     user.isVerified = true
@@ -157,7 +157,7 @@ exports.verify = async (req, res) => {
     // redirect
     return res.redirect('https://studybuddy.com/')
   } catch (error) {
-    console.log(error);
+    console.log(error)
     return res.status(500).json({
       message: 'Server error'
     })
@@ -179,14 +179,14 @@ exports.resend = async (req, res) => {
     const user = await User.findOne({ email: email })
     if (!user) {
       return res.status(400).json({
-      success: false,
-      message: 'User does not exist'
+        success: false,
+        message: 'User does not exist'
       })
     }
     if (user.isVerified) {
       return res.status(400).json({
-      success: false,
-      message: 'User is already verified'
+        success: false,
+        message: 'User is already verified'
       })
     }
     const hash = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
@@ -201,7 +201,7 @@ exports.resend = async (req, res) => {
       message: 'Verification Email Sent'
     })
   } catch (error) {
-    console.log(error);
+    console.log(error)
     return res.status(500).json({
       success: false,
       message: 'Server error'
@@ -245,14 +245,14 @@ exports.edit = async (req, res) => {
     const isMatch = await bcrypt.compare(currentPassword, user.password)
     if (!isMatch) {
       return res.status(400).json({
-      success: false,
-      message: 'Incorrect password'
+        success: false,
+        message: 'Incorrect password'
       })
     }
     if (!user) {
       return res.status(400).json({
-      success: false,
-      message: 'User does not exist'
+        success: false,
+        message: 'User does not exist'
       })
     }
     if (email) user.email = email
@@ -260,8 +260,8 @@ exports.edit = async (req, res) => {
     if (password) {
       if (password !== confirmPassword) {
         return res.status(400).json({
-      success: false,
-      message: 'Passwords do not match'
+          success: false,
+          message: 'Passwords do not match'
         })
       }
       const salt = await bcrypt.genSalt(10)
@@ -273,7 +273,7 @@ exports.edit = async (req, res) => {
       message: 'User updated'
     })
   } catch (error) {
-    console.log(error);
+    console.log(error)
     return res.status(500).json({
       success: false,
       message: 'Server error'
@@ -296,8 +296,8 @@ exports.get = async (req, res) => {
     const user = await User.findById(req.user.id)
     if (!user) {
       return res.status(400).json({
-      success: false,
-      message: 'User does not exist'
+        success: false,
+        message: 'User does not exist'
       })
     }
     const { password, hash, __v, ...data } = user._doc
@@ -306,7 +306,7 @@ exports.get = async (req, res) => {
       data
     })
   } catch (error) {
-    console.log(error);
+    console.log(error)
     return res.status(500).json({
       success: false,
       message: 'Server error'
