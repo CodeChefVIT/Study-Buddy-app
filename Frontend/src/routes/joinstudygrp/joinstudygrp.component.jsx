@@ -47,7 +47,7 @@ const JoinStudyGrp = () => {
     setSearchField(searchFieldString);
   };
 
-  console.log(filteredGroups);
+  // console.log(filteredGroups);
 
   return (
     <div>

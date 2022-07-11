@@ -14,10 +14,10 @@ const DashCard = ({ group }) => {
     <div className="grpsv-card">
       <div>
         <ProfPic className="prof-pic" src="img/img.svg" alt="group image" />
-        <h2 className="heading-primary-sm-3 pad-t">{name}</h2>
+        <h2 className="heading-primary-sm-3 pad-t">{subject}</h2>
       </div>
       <div>
-        <h2 className="heading-primary-sm-3 ">Topic: {subject}</h2>
+        <h2 className="heading-primary-sm-3 ">Topic: {name}</h2>
         <h2 className="heading-primary-sm-3 pad-t pad-b">
           Members Present: 23
         </h2>

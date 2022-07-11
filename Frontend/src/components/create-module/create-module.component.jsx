@@ -20,10 +20,10 @@ const AddModule = (props) => {
       daysToComplete: modulesDatesToComp,
     };
 
+    props.onSaveModule(modules);
+
     setModulesName("");
     setModulesDatesToComp("");
-
-    props.onSaveModule(modules);
   };
 
   return (

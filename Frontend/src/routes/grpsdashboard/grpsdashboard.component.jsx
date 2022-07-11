@@ -7,6 +7,9 @@ import NavigationAuth from "./../navigation-auth/navigation-auth.component";
 import Footer from "./../footer/footer.component";
 import ModCard from "./../../components/module-card/module-card.component";
 
+import Image1 from "./../../assets/add.png";
+import Image2 from "./../../assets/send.png";
+
 import "./grpsdashboard.styles.css";
 
 const GrpDash = () => {
@@ -55,12 +58,12 @@ const GrpDash = () => {
             onClick={() => navigate(`${path}/quiz/new`)}
             className="button-grps"
           >
-            {/*<img className='grp-btn-img' src="img/add.png" alt="search icon">*/}
+            <img className="grp-btn-img" src={Image1} alt="search icon" />
             <p>Create Quiz</p>
           </button>
 
           <button className="button-grps">
-            {/* <img className='grp-btn-img' src="img/send.png" alt="search icon">*/}
+            <img className="grp-btn-img" src={Image2} alt="search icon" />
             <p>Grp Invite Code: {inviteCode}</p>
           </button>
         </div>

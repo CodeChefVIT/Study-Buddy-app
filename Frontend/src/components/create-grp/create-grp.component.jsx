@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
-import { Link } from "react-router-dom";
 
 import "./create-grp.styles.css";
 
@@ -31,17 +30,20 @@ const CreateGrp = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log(formFields);
 
-    // const response = await fetch(
-    //   `https://study-buddy-app-production.up.railway.app/api/v1/groups/new`,
-    //   {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     Authorization: `Bearer ${localStorage.getItem("token")}`,
-    //     body: JSON.stringify(formFields),
-    //   }
-    // ).then((res) => res.json());
-    // console.log(response);
+    const response = await fetch(
+      `https://study-buddy-app-production.up.railway.app/api/v1/groups/new`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(formFields),
+      }
+    ).then((res) => res.json());
+    console.log(response);
 
     try {
       resetFormFields();
@@ -51,9 +53,7 @@ const CreateGrp = (props) => {
   };
 
   const addModule = (module) => {
-    setModules((prevModules) => {
-      return [module, ...prevModules];
-    });
+    setModules(modules.concat(module));
     console.log(modules);
     setFormFields({ ...formFields, modules: [...modules] });
   };
@@ -98,11 +98,19 @@ const CreateGrp = (props) => {
           id="description"
         />
         <div className="heading-primary pad-t">Your Modules</div>
-        {modules.map((module) => (
-          <h3 className="heading-tertiary">
-            {module.name} : {module.daysToComplete}
-          </h3>
-        ))}
+        {modules.length > 0 ? (
+          modules.map((module) => {
+            return (
+              <div>
+                <h1>
+                  {module.name} : {module.daysToComplete}
+                </h1>
+              </div>
+            );
+          })
+        ) : (
+          <h1>No modules added</h1>
+        )}
 
         <button className="button mar-t-2">Create Group</button>
       </form>

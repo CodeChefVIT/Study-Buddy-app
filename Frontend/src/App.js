@@ -9,7 +9,7 @@ import CreateStudyGrp from "./routes/createstudygrp/createstudygrp.component";
 import JoinStudyGrp from "./routes/joinstudygrp/joinstudygrp.component";
 import Profile from "./routes/profile/profile.component";
 import GrpDash from "./routes/grpsdashboard/grpsdashboard.component";
-import CreateQuiz from "./routes/create-quiz/create-quiz.component";
+import CreateQuiz from "./routes/createquiz/createquiz.component";
 import ViewQuizes from "./routes/view-quizes/view-quizes.component";
 import AttemptQuiz from "./routes/attempt-quiz/attempt-quiz.component";
 
