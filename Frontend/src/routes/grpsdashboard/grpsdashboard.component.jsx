@@ -37,8 +37,7 @@ const GrpDash = () => {
       .then(({ group }) => setGroup(group));
   }, []);
 
-  const { name, subject, modules } = group;
-  console.log(modules);
+  const { name, subject, modules, inviteCode } = group;
 
   return (
     <div>
@@ -52,18 +51,24 @@ const GrpDash = () => {
           See All Members
         </button>
         <div className="btn-sp">
-          <button className="button-grps">
+          <button
+            onClick={() => navigate(`${path}/quiz/new`)}
+            className="button-grps"
+          >
             {/*<img className='grp-btn-img' src="img/add.png" alt="search icon">*/}
             <p>Create Quiz</p>
           </button>
 
           <button className="button-grps">
             {/* <img className='grp-btn-img' src="img/send.png" alt="search icon">*/}
-            <p>Send Invite</p>
+            <p>Grp Invite Code: {inviteCode}</p>
           </button>
         </div>
 
-        <button className="button-grps long">
+        <button
+          className="button-grps long "
+          onClick={() => navigate(`${path}/quiz`)}
+        >
           {/*<img className='grp-btn-img' src="img/send.png" alt="search icon">*/}
           <p>Attempt Quiz</p>
         </button>
