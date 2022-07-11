@@ -27,17 +27,19 @@ exports.getAllGroups = async (req, res) => {
     // hide requests
     for (let i = 0; i < groups.length; i++) {
       groups[i] = Object.assign({}, groups[i].toObject(), { isAdmin: false })
-
+      // add member length
+      groups[i].membersLength = groups[i].members.length
       if (groups[i].admin.toString() === req.user.id) {
         groups[i].isAdmin = true
-      } else {ndefined
+      } else {
+        groups[i].admin = undefined
         groups[i].modules = undefined
         groups[i].requests = undefined
         groups[i].members = undefined
       }
     }
 
-    return res.status(200).json({success: true, groups })
+    return res.status(200).json({ success: true, groups })
   } catch (err) {
     console.log(err)
     return res.status(500).json({ success: false, message: 'Server Error' })
@@ -72,7 +74,7 @@ exports.requestGroup = async (req, res) => {
     await sendEmail(admin.email, 'Group Request', `${user.name} has requested to join the group ${group.name}`)
     return res.status(200).json({ success: true, message: 'Request sent' })
   } catch (err) {
-    console.log(err);
+    console.log(err)
     return res.status(500).json({ success: false, message: err.message })
   }
 }
@@ -99,7 +101,7 @@ exports.getUserGroups = async (req, res) => {
       }
     }
     return res.status(200).json({
-      success: true, 
+      success: true,
       groups
     })
   } catch (err) {
@@ -160,7 +162,7 @@ exports.createGroup = async (req, res) => {
       group
     })
   } catch (err) {
-    console.log(err);
+    console.log(err)
     return res.status(500).json({ success: false, message: err.message })
   }
 }
@@ -200,7 +202,7 @@ exports.getGroup = async (req, res) => {
       group
     })
   } catch (err) {
-    console.log(err);
+    console.log(err)
     return res.status(500).json({ success: false, message: err.message })
   }
 }
@@ -238,11 +240,11 @@ exports.acceptRequest = async (req, res) => {
     await groupObj.save()
     await sendEmail(userObj.email, 'Group Request Accepted', `Your request to join the group ${groupObj.name} has been accepted`)
     return res.status(200).json({
-      success: true, 
+      success: true,
       message: 'User added to group'
     })
   } catch (err) {
-    console.log(err);
+    console.log(err)
     return res.status(500).json({ success: false, message: 'Some Internal Error Occurred' })
   }
 }
@@ -262,26 +264,26 @@ exports.rejectRequest = async (req, res) => {
     const groupObj = await Groups.findById(group)
     if (!groupObj) {
       return res.status(400).json({
-        success: false, 
+        success: false,
         message: 'Group does not exist'
       })
     }
     const userObj = await User.findById(user)
     if (!userObj) {
       return res.status(400).json({
-        success: false, 
+        success: false,
         message: 'User does not exist'
       })
     }
     if (groupObj.admin.toString() !== req.user.id) {
       return res.status(400).json({
-        success: false, 
+        success: false,
         message: 'User is not admin'
       })
     }
     if (!groupObj.requests.includes(userObj._id)) {
       return res.status(400).json({
-        success: false, 
+        success: false,
         message: 'User has not requested to join group'
       })
     }
@@ -313,7 +315,7 @@ exports.getRequests = async (req, res) => {
     if (!groupObj) {
       return res.status(400).json({
         success: false,
-        message: 'Group does not exist',
+        message: 'Group does not exist'
       })
     }
     if (groupObj.admin.toString() !== req.user.id) {
