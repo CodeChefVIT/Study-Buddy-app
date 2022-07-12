@@ -33,11 +33,17 @@ const createToken = (id, email, name) => {
 exports.signup = async (req, res) => {
   const { name, email, password, confirm, avatar, regno, graduatingYear, major, bio } = req.body
   try {
+    if (!(password === confirm)) {
+      return res.status(422).json({
+        success: false,
+        error: 'Passwords do not match'
+      })
+    }
     const user = await User.findOne({ email })
     if (user) {
-      return res.status(400).json({
+      return res.status(409).json({
         success: false,
-        message: 'User already exists'
+        error: 'Email already exists'
       })
     }
     // email verification hash
@@ -55,12 +61,6 @@ exports.signup = async (req, res) => {
       hash
     })
     const salt = await bcrypt.genSalt(10)
-    if (!(password === confirm)) {
-      return res.status(400).json({
-        success: false,
-        message: 'Passwords do not match'
-      })
-    }
     newUser.password = await bcrypt.hash(newUser.password, salt)
     const link = 'http://' + req.get('host') + '/api/v1/user/verify/' + newUser.id + '/' + hash
     await sendEmail(email, 'Verify Your Email', `Verify your email at ${link}`)
@@ -73,7 +73,7 @@ exports.signup = async (req, res) => {
     console.log(error)
     return res.status(500).json({
       success: false,
-      message: 'Server error'
+      error: 'Server error'
     })
   }
 }
@@ -91,22 +91,22 @@ exports.login = async (req, res) => {
   try {
     const user = await User.findOne({ email: email })
     if (!user) {
-      return res.status(400).json({
+      return res.status(404).json({
         success: false,
-        message: 'User does not exist'
+        error: 'User does not exist'
       })
     }
     if (!user.isVerified) {
-      return res.status(400).json({
+      return res.status(401).json({
         success: false,
-        message: 'User is not verified, Please check email'
+        error: 'User is not verified, Please check email'
       })
     }
     const isMatch = await bcrypt.compare(password, user.password)
     if (!isMatch) {
-      return res.status(400).json({
+      return res.status(401).json({
         success: false,
-        message: 'Incorrect password'
+        error: 'Incorrect password'
       })
     }
     const token = createToken(user.id, user.email, user.name)
@@ -119,7 +119,7 @@ exports.login = async (req, res) => {
     console.log(error)
     return res.status(500).json({
       success: false,
-      message: 'Server error'
+      error: 'Server error'
     })
   }
 }
@@ -139,19 +139,19 @@ exports.verify = async (req, res) => {
   try {
     const user = await User.findById(id)
     if (!user) {
-      return res.status(400).json({
+      return res.status(409).json({
         success: false,
-        message: 'User does not exist'
+        error: 'User not found'
       })
     }
     if (user.isVerified) {
-      return res.status(400).json({
+      return res.status(409).json({
         success: false,
-        message: 'User is already verified'
+        error: 'User is already verified'
       })
     }
     user.isVerified = true
-    if (user.hash !== hash) { return res.status(400).json({ message: "Hash doesn't match" }) }
+    if (user.hash !== hash) { return res.status(401).json({ success: false, error: "Hash doesn't match" }) }
 
     await user.save()
     // redirect
@@ -159,7 +159,8 @@ exports.verify = async (req, res) => {
   } catch (error) {
     console.log(error)
     return res.status(500).json({
-      message: 'Server error'
+      success: false,
+      error: 'Server error'
     })
   }
 }
@@ -178,15 +179,15 @@ exports.resend = async (req, res) => {
   try {
     const user = await User.findOne({ email: email })
     if (!user) {
-      return res.status(400).json({
+      return res.status(404).json({
         success: false,
-        message: 'User does not exist'
+        error: 'User does not exist'
       })
     }
     if (user.isVerified) {
-      return res.status(400).json({
+      return res.status(409).json({
         success: false,
-        message: 'User is already verified'
+        error: 'User is already verified'
       })
     }
     const hash = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
@@ -195,7 +196,6 @@ exports.resend = async (req, res) => {
 
     const link = 'http://' + req.get('host') + '/api/v1/user/verify/' + user.id + '/' + hash
     await sendEmail(email, 'Verify Your Email', `Verify your email at ${link}`)
-    console.log(link)
     return res.json({
       success: true,
       message: 'Verification Email Sent'
@@ -204,7 +204,7 @@ exports.resend = async (req, res) => {
     console.log(error)
     return res.status(500).json({
       success: false,
-      message: 'Server error'
+      error: 'Server error'
     })
   }
 }
@@ -313,3 +313,5 @@ exports.get = async (req, res) => {
     })
   }
 }
+
+// ! TO DO reset password

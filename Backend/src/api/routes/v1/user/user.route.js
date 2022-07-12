@@ -34,7 +34,11 @@ const schema = {
     bio: Joi.string()
   }),
   resend: Joi.object({
-    email: Joi.string().regex(/^([A-Za-z]+\.[A-za-z]+[0-9]{4,4}@vitstudent.ac.in)/).required()
+    email: Joi.string().required().email()
+  }),
+  verify: Joi.object({
+    id: Joi.string().required().regex(/^[0-9a-fA-F]{24}$/),
+    hash: Joi.string().required()
   })
 }
 
@@ -46,7 +50,7 @@ router.patch('/edit', authorise, validate(schema.edit, 'body'), user.edit)
 
 router.post('/resend', validate(schema.resend, 'body'), user.resend)
 
-router.get('/verify/:id/:hash', user.verify)
+router.get('/verify/:id/:hash', validate(schema.verify, 'params', 'Invalid verification link'), user.verify)
 
 router.get('/', authorise, user.get)
 
