@@ -22,12 +22,12 @@ exports.getQuiz = async (req, res) => {
     if (!UserInGroup.members.toString().includes(req.user.id)) { return res.status(400).json({ success: false, message: 'You are not a member of this group' }) }
     const { group, time, creator, attempted, questions } = quiz
     // filter questions to not send the answer
-    const filteredQuestions = questions.map(questions => {
-      const { question, options } = questions
-      return { question, options }
-    })
+    // const filteredQuestions = questions.map(questions => {
+    //   const { question, options } = questions
+    //   return { question, options }
+    // })
     const attemptedData = attempted.filter(attempt => attempt.user.toString() === req.user.id)
-    return res.status(200).json({ success: true, group, time, creator, questions: filteredQuestions, attempted: attemptedData })
+    return res.status(200).json({ success: true, group, time, creator, questions, attempted: attemptedData })
   } catch (err) {
     return res.status(500).json({ success: false, message: 'Some Internal Error Occured' })
   }

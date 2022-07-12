@@ -89,7 +89,7 @@ exports.signup = async (req, res) => {
 exports.login = async (req, res) => {
   const { email, password } = req.body
   try {
-    const user = await User.findOne({ email: email })
+    const user = await User.findOne({ email })
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -177,7 +177,7 @@ exports.verify = async (req, res) => {
 exports.resend = async (req, res) => {
   const { email } = req.body
   try {
-    const user = await User.findOne({ email: email })
+    const user = await User.findOne({ email })
     if (!user) {
       return res.status(404).json({
         success: false,

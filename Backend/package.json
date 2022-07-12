@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "mocha --timeout 10000  --recursive ./tests/*.test.js --exit",
+    "test": "mocha --timeout 15000  --recursive ./tests/*.test.js --exit",
     "start": "node src/index.js",
     "lint": "standard --fix"
   },

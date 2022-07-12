@@ -17,8 +17,8 @@ const sendEmail = async (email, subject, text) => {
       await transporter.sendMail({
         from: 'StudyBuddy CodeChef VIT <no-reply@studybuddy.cc>',
         to: email,
-        subject: subject,
-        text: text
+        subject,
+        text
       })
     }
   } catch (error) {

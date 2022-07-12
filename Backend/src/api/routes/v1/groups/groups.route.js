@@ -5,7 +5,7 @@ const groups = require(join(__dirname, '..', '..', '..', 'controllers', 'groups.
 const quiz = require(join(__dirname, '..', '..', '..', 'controllers', 'quiz.controller'))
 const validate = require(join(__dirname, '..', '..', '..', 'middleware', 'validate.middleware'))
 const { authorise } = require(join(__dirname, '..', '..', '..', 'middleware', 'authorise.middleware'))
-
+// ! TO DO add picture to group; use pfp of group as picture
 const schema = {
   getAllGroups: Joi.object({
     subject: Joi.string(),
@@ -13,7 +13,7 @@ const schema = {
     page: Joi.number().integer().min(1)
   }),
   requestGroup: Joi.object({
-    inviteCode: Joi.string().required()
+    inviteCode: Joi.string().required().regex(/^[a-zA-Z0-9]{3}-[a-zA-Z0-9]{3}-[a-zA-Z0-9]{3}$/)
   }),
   createGroup: Joi.object({
     name: Joi.string().required(),
