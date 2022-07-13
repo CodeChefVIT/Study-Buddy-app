@@ -275,7 +275,7 @@ exports.edit = async (req, res) => {
       await user.save()
       return res.json({
         success: true,
-        message: 'User updated',
+        message: 'Password updated',
         data: [{
           name: user.name,
           avatar: user.avatar,
