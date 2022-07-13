@@ -28,7 +28,7 @@ const schema = {
     avatar: Joi.object(),
     oldPass: Joi.string(),
     newPass: Joi.string(),
-    confirmPass: Joi.number(),
+    confirmPass: Joi.string(),
     bio: Joi.string()
   }),
   resend: Joi.object({
