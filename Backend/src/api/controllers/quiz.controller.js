@@ -224,11 +224,16 @@ exports.getQuizzes = async (req, res) => {
     for (let i = 0; i < groupQuizzes.length; i++) {
       const { _id, creator, time, questions } = groupQuizzes[i]
       // filter question to not show answer
+      const creatorUserObject = await User.findById(creator)
+      const creatorUser = {
+        id: creatorUserObject._id,
+        name: creatorUserObject.name
+      }
       const questions2 = questions.map(questions => {
         const { question, options } = questions
         return { question, options }
       })
-      arr.push({ _id, creator, time, questions: questions2 })
+      arr.push({ _id, creator: creatorUser, time, questions: questions2 })
     }
     return res.status(200).json({ success: true, data: arr })
   } catch (err) {

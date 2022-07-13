@@ -206,7 +206,9 @@ exports.getGroup = async (req, res) => {
         const user = await User.findById(group.members[i])
         group.members[i] = {
           name: user.name,
-          id: user.id
+          id: user.id,
+          major: user.major,
+          avatar: user.avatar
         }
       }
     }

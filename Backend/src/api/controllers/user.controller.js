@@ -1,9 +1,10 @@
 const { join } = require('path')
 const User = require(join(__dirname, '..', 'models', 'User.model'))
 const jwt = require('jsonwebtoken')
+const multer = require('multer')
 const bcrypt = require('bcryptjs')
 const sendEmail = require(join(__dirname, '..', 'workers', 'sendEmail.worker'))
-
+const s3Upload = require(join(__dirname, '..', 'workers', 's3BucketUpload.worker'))
 const jwtsecret = process.env.SECRET_JWT || 'secret123'
 const expiresIn = process.env.JWT_EXPIRES_IN || '7d'
 
@@ -27,11 +28,11 @@ const createToken = (id, email, name) => {
   Query: None
   Params: None
   Body [Required]: name, email, password, confirm
-  Body [Optional]: avatar, graduatingYear, major, bio
+  Body [Optional]: graduatingYear, major, bio
   Returns: Success Message
 */
 exports.signup = async (req, res) => {
-  const { name, email, password, confirm, avatar, regno, graduatingYear, major, bio } = req.body
+  const { name, email, password, confirm, regno, graduatingYear, major, bio } = req.body
   try {
     if (!(password === confirm)) {
       return res.status(422).json({
@@ -54,7 +55,6 @@ exports.signup = async (req, res) => {
       regno,
       password,
       confirm,
-      avatar,
       graduatingYear,
       major,
       bio,
@@ -215,70 +215,71 @@ exports.resend = async (req, res) => {
 */
 
 exports.edit = async (req, res) => {
-  const { name, email, avatar, currentPassword, password, regno, confirmPassword, graduatingYear, major, bio } = req.body
-  try {
-    const user = await User.findById(req.user.id)
-    if (name || bio || regno || avatar || graduatingYear || major) {
-      if (name) {
-        user.name = name
-      }
-      if (bio) {
-        user.bio = bio
-      }
-      if (avatar) {
-        user.avatar = avatar
-      }
-      if (graduatingYear) {
-        user.graduatingYear = graduatingYear
-      }
-      if (major) {
-        user.major = major
-      }
-      if (regno) {
-        user.regno = regno
-      }
-      await user.save()
-      return res.status(200).json({
-        message: 'User updated'
-      })
-    }
-    const isMatch = await bcrypt.compare(currentPassword, user.password)
-    if (!isMatch) {
-      return res.status(400).json({
-        success: false,
-        message: 'Incorrect password'
-      })
-    }
-    if (!user) {
-      return res.status(400).json({
-        success: false,
-        message: 'User does not exist'
-      })
-    }
-    if (email) user.email = email
-
-    if (password) {
-      if (password !== confirmPassword) {
+  multer({
+    storage: multer.memoryStorage()
+  }).single('avatar')(req, res, async (err) => {
+    const { name, bio } = req.body
+    const { oldPass, newPass, confirmPass } = req.body
+    try {
+      if (err) return res.status(400).json({ error: err.message })
+      const user = await User.findById(req.user.id)
+      if (!user) {
         return res.status(400).json({
           success: false,
-          message: 'Passwords do not match'
+          message: 'User does not exist'
         })
       }
-      const salt = await bcrypt.genSalt(10)
-      user.password = await bcrypt.hash(req.body.password, salt)
+      if (name || bio || req.file) {
+        if (name) {
+          user.name = name
+        }
+        if (bio) {
+          user.bio = bio
+        }
+        if (req.file) {
+          const { originalname, buffer } = req.file
+          const data = await s3Upload(req.user.id, buffer, originalname)
+          if (!data) {
+            console.log('Some Error occurred here')
+          }
+          user.avatar = data.Location
+        }
+        await user.save()
+        return res.status(200).json({
+          success: true,
+          message: 'User updated'
+        })
+      }
+      const isMatch = await bcrypt.compare(oldPass, user.password)
+      if (!isMatch) {
+        return res.status(400).json({
+          success: false,
+          message: 'Incorrect password'
+        })
+      }
+      if (newPass) {
+        if (newPass !== confirmPass) {
+          return res.status(400).json({
+            success: false,
+            message: 'Passwords do not match'
+          })
+        }
+        const salt = await bcrypt.genSalt(10)
+        user.password = await bcrypt.hash(newPass, salt)
+      }
+      await user.save()
+      return res.json({
+        success: true,
+        message: 'User updated'
+      })
+    } catch (error) {
+      console.log(error)
+      return res.status(500).json({
+        success: false,
+        message: 'Server error'
+      })
     }
-    await user.save()
-    return res.json({
-      success: true,
-      message: 'User updated'
-    })
-  } catch (error) {
-    console.log(error)
-    return res.status(500).json({
-      success: false,
-      message: 'Server error'
-    })
-  }
+  })
 }
 
 /*
