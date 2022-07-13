@@ -247,7 +247,12 @@ exports.edit = async (req, res) => {
         await user.save()
         return res.status(200).json({
           success: true,
-          message: 'User updated'
+          message: 'User updated',
+          data: [{
+            name: user.name,
+            avatar: user.avatar,
+            bio: user.bio
+          }]
         })
       }
       const isMatch = await bcrypt.compare(oldPass, user.password)
@@ -270,7 +275,12 @@ exports.edit = async (req, res) => {
       await user.save()
       return res.json({
         success: true,
-        message: 'User updated'
+        message: 'User updated',
+        data: [{
+          name: user.name,
+          avatar: user.avatar,
+          bio: user.bio
+        }]
       })
     } catch (error) {
       console.log(error)
