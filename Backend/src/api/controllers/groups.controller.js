@@ -353,13 +353,11 @@ exports.getRequests = async (req, res) => {
     let regno
     for (let i = 0; i < groupObj.requests.length; i++) {
       user = await User.findById(groupObj.requests[i])
-      // id, user
-      if (user.regno) regno = user.regno
-      else regno = 'Not Available'
+      
       arr.push({
         id: user.id,
         user: user.name,
-        regno
+        regno: user.regno
       })
     }
     return res.status(200).json({
