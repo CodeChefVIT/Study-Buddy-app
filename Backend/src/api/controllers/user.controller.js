@@ -146,10 +146,11 @@ exports.verify = async (req, res) => {
       })
     }
     if (user.isVerified) {
-      return res.status(409).json({
-        success: false,
-        error: 'User is already verified'
-      })
+      // return res.status(409).json({
+      //   success: false,
+      //   error: 'User is already verified'
+      // })
+      return res.redirect(process.env.FRONTEND_URL + '/login')
     }
     user.isVerified = true
     if (user.hash !== hash) { return res.status(401).json({ success: false, error: "Hash doesn't match" }) }
