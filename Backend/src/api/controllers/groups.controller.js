@@ -355,7 +355,7 @@ exports.getRequests = async (req, res) => {
       user = await User.findById(groupObj.requests[i])
       
       arr.push({
-        id: user.id,
+        id: user._id,
         user: user.name,
         regno: user.regno
       })
