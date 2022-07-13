@@ -193,13 +193,19 @@ exports.getGroup = async (req, res) => {
     } else {
       group.requests = undefined
     }
-
+    for (let i = 0; i < group.modules; i++) {
+      // date: 2022-07-13T11:42:03.770Z
+      // daysToComplete: 7
+      let DaysLeft = group.modules[i].daysToComplete - (new Date().getTime() - new Date(group.modules[i].date).getTime()) / (1000 * 60 * 60 * 24)
+      group.modules[i].daysToComplete = DaysLeft
+    }
     // check if user is a part of group
     if (!group.members.toString().includes(req.user.id)) {
       group.members = undefined
       group.quizes = undefined
       group.modules = undefined
     }
+    
     // add member names to group
     if (group.members) {
       for (let i = 0; i < group.members.length; i++) {
@@ -219,7 +225,7 @@ exports.getGroup = async (req, res) => {
     })
   } catch (err) {
     console.log(err)
-    return res.status(500).json({ success: false, message: err.message })
+    return res.status(500).json({ success: false, err: err.message })
   }
 }
 
