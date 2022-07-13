@@ -92,6 +92,14 @@ body {
   margin-bottom: 3.2rem;
 }
 
+.heading-primary-z {
+  font-size: 6.2rem;
+  font-weight: 700;
+  line-height: 1.05;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+
 .heading-primary-sm {
   font-size: 4.8rem;
   font-weight: 700;
@@ -104,7 +112,6 @@ body {
 .heading-primary-sm-2 {
   font-size: 4.8rem;
   font-weight: 700;
-  line-height: 1.05;
   color: #fff;
   letter-spacing: -0.5px;
 }
@@ -135,6 +142,12 @@ body {
   font-size: 2rem;
   line-height: 1.6;
   margin-bottom: 2.4rem;
+  color: #fff;
+}
+
+.heading-tertiary-create {
+  font-size: 2.6rem;
+  line-height: 1.6;
   color: #fff;
 }
 
@@ -171,6 +184,10 @@ body {
 
 .pad-b {
   padding-bottom: 2rem;
+}
+
+.pad-b2 {
+  padding-bottom: 4rem;
 }
 
 .mar {

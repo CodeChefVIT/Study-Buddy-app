@@ -1,5 +1,4 @@
 import { Fragment } from "react";
-import { Link } from "react-router-dom";
 
 const Navigation = () => {
   return (
@@ -21,25 +20,25 @@ const Navigation = () => {
               </a>
             </li>
             <li>
-              <Link to="https://twitter.com/codechefvit/">
+              <a href="https://twitter.com/codechefvit/">
                 <ion-icon
                   name="logo-twitter"
                   className="social-icon"
                 ></ion-icon>
-              </Link>
+              </a>
             </li>
             <li>
-              <Link to="https://www.linkedin.com/company/codechef-vit-chapter/?original_referer=">
+              <a href="https://www.linkedin.com/company/codechef-vit-chapter/?original_referer=">
                 <ion-icon
                   name="logo-linkedin"
                   className="social-icon"
                 ></ion-icon>
-              </Link>
+              </a>
             </li>
             <li>
-              <Link to="https://medium.com/codechef-vit">
+              <a href="https://medium.com/codechef-vit">
                 <ion-icon name="logo-medium" className="social-icon"></ion-icon>
-              </Link>
+              </a>
             </li>
           </ul>
         </div>

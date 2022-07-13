@@ -1,23 +1,41 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const JoinGrpCard = ({ group }) => {
   const { inviteCode, name, subject, members } = group;
+  const [data, setData] = useState([]);
 
-  // This is rendering infinitely to be fixed later
-  // console.log(group);
+  const navigateSendReq = () => {
+    fetch(
+      `https://study-buddy-app-production.up.railway.app/api/v1/groups/request/${inviteCode}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => setData(data));
+  };
+
+  if (data.success) {
+    alert("Request sent successfully");
+  }
 
   return (
     <div className="box">
       <div className="grp-con">
         <h2 className="heading-primary-sm-2 align-l">{inviteCode}</h2>
-        <Link to="/" className="main-nav-link nav-cta align-c">
+        <button onClick={navigateSendReq} className="button">
           Join Group
-        </Link>
+        </button>
       </div>
       <div className="mar">
         <h2 className="heading-tertiary-sm align-l">
           {name} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {subject}
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Members: {members}
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Members:{" "}
+          {members ? members.length : 0}
         </h2>
       </div>
     </div>

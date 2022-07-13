@@ -48,7 +48,7 @@ const SignUpForm = () => {
 
     if (response.success) {
       localStorage.setItem("token", response.token);
-      navigate("/dashboard");
+      navigate("/");
     } else {
       alert("User Creation Failed");
     }
