@@ -1,3 +1,4 @@
+require('dotenv').config()
 const { join } = require('path')
 const User = require(join(__dirname, '..', 'models', 'User.model'))
 const jwt = require('jsonwebtoken')
@@ -155,7 +156,7 @@ exports.verify = async (req, res) => {
 
     await user.save()
     // redirect
-    return res.redirect('https://studybuddy.com/')
+    return res.redirect(process.env.FRONTEND_URL + '/login')
   } catch (error) {
     console.log(error)
     return res.status(500).json({
