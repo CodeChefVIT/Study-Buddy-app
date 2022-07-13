@@ -145,6 +145,12 @@ body {
   color: #fff;
 }
 
+.heading-tertiary-create {
+  font-size: 2.6rem;
+  line-height: 1.6;
+  color: #fff;
+}
+
 .heading-tertiary-sm {
   font-size: 1.6rem;
   color: rgb(173, 173, 173);
@@ -178,6 +184,10 @@ body {
 
 .pad-b {
   padding-bottom: 2rem;
+}
+
+.pad-b2 {
+  padding-bottom: 4rem;
 }
 
 .mar {

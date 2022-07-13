@@ -20,7 +20,7 @@ const ViewQuiz = () => {
     return location.pathname;
   };
   const path = usePathname();
-  console.log(path);
+  // console.log(path);
 
   useEffect(() => {
     if (!localStorage.getItem("token")) {
@@ -29,21 +29,16 @@ const ViewQuiz = () => {
   }, []);
 
   useEffect(() => {
-    fetch(
-      `https://study-buddy-app-production.up.railway.app/api/v1/groups/62cd81d2797670990068a150/quiz`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    )
+    fetch(`https://study-buddy-app-production.up.railway.app/api/v1${path}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
       .then((response) => response.json())
       .then(({ data }) => setQuizes(data));
   }, []);
-
-  console.log(quizes);
 
   return (
     <div>
@@ -53,9 +48,10 @@ const ViewQuiz = () => {
           <h1 className="heading-primary-sm">Find Quizes</h1>
         </div>
         <div className="quiz-container">
-          {quizes.map((quiz) => {
-            return <ViewQuizesCard key={quiz.id} quiz={quiz} />;
-          })}
+          {quizes &&
+            quizes.map((quiz) => {
+              return <ViewQuizesCard key={quiz.id} quiz={quiz} />;
+            })}
         </div>
       </section>
       <Footer />

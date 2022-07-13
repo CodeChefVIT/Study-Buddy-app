@@ -2,6 +2,8 @@
 // import { Link } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
+import ClipboardCopy from "../../components/clipboard/clipboard.component";
+
 import Navigation from "../navigation/navigation.component";
 import NavigationAuth from "./../navigation-auth/navigation-auth.component";
 import Footer from "./../footer/footer.component";
@@ -63,12 +65,12 @@ const GrpDash = () => {
             className="button-grps"
           >
             <img className="grp-btn-img" src={Image1} alt="search icon" />
-            <p>Create Quiz</p>
+            <h2 class="heading-tertiary-create">Create Quiz</h2>
           </button>
 
           <button className="button-grps">
             <img className="grp-btn-img" src={Image2} alt="search icon" />
-            <p>Grp Invite Code: {inviteCode}</p>
+            <ClipboardCopy copyText={inviteCode} />
           </button>
         </div>
 

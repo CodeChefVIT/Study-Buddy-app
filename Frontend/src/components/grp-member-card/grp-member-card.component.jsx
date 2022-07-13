@@ -6,9 +6,12 @@ const GrpMemberCard = ({ member }) => {
 
   return (
     <div className="mem-box">
-      <div className="grp-con">
+      <div className="mem-con">
         <img className="mem-img" src={Image1} alt="user icon" />
-        <h2 className="heading-primary-sm-2 align-l">{name}</h2>
+        <div>
+          <h2 className="heading-name align-l">{name}</h2>
+          <h2 className="heading-name-2 align-l pad-m">Major: CSE</h2>
+        </div>
       </div>
     </div>
   );

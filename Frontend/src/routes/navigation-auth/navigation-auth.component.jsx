@@ -28,7 +28,14 @@ const NavigationAuth = () => {
             </li>
             <li>
               <Link to="/" className="main-nav-link">
-                Signout
+                <span
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                    window.location.reload();
+                  }}
+                >
+                  Signout
+                </span>
               </Link>
             </li>
           </ul>

@@ -1,15 +1,13 @@
 import { Link } from "react-router-dom";
 
 const ViewQuizesCard = ({ quiz }) => {
-  console.log(quiz);
-
   const Grppath = `/groups/quiz/attempt/${quiz._id}`;
 
   return (
     <div className="quiz-box">
       <div className="quiz-con">
         <h2 className="heading-primary-sm-2 align-l">
-          Created by: {quiz.creator}
+          Created by: {quiz.creator.name}
         </h2>
         <Link to={Grppath} className="main-nav-link nav-cta align-c">
           Attempt Quiz

@@ -3,7 +3,7 @@ import { ReactComponent as ProfPic } from "./../../assets/img.svg";
 import "./dashboard-card.styles.css";
 
 const DashCard = ({ group }) => {
-  const { name, subject } = group;
+  const { name, subject, membersLength } = group;
   const navigate = useNavigate();
 
   const navigateGrpsDash = () => {
@@ -19,7 +19,7 @@ const DashCard = ({ group }) => {
       <div>
         <h2 className="heading-primary-sm-3 ">Topic: {name}</h2>
         <h2 className="heading-primary-sm-3 pad-t pad-b">
-          Members Present: 23
+          Members Present: {membersLength}
         </h2>
         <button onClick={navigateGrpsDash} className="button">
           Click to Enter Group

@@ -1,0 +1,11 @@
+.input[type="file"] {
+  display: block !important;
+  height: 0 !important;
+  width: 50% !important;
+  background-color: rgb(186, 179, 179);
+  border-radius: 3px !important;
+  padding: 0 !important;
+  margin-top: 0 !important;
+  font-size: 1.4rem !important;
+  font-weight: 300 !important;
+}

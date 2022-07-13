@@ -1,13 +1,27 @@
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const JoinGrpCard = ({ group }) => {
   const { inviteCode, name, subject, members } = group;
-
-  const navigate = useNavigate();
+  const [data, setData] = useState([]);
 
   const navigateSendReq = () => {
-    navigate(`groups/request/${inviteCode}`);
+    fetch(
+      `https://study-buddy-app-production.up.railway.app/api/v1/groups/request/${inviteCode}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => setData(data));
   };
+
+  if (data.success) {
+    alert("Request sent successfully");
+  }
 
   return (
     <div className="box">

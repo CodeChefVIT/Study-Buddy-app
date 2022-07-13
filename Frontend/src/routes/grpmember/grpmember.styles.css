@@ -25,8 +25,9 @@
 }
 
 .grp-mem-container {
-  margin-top: 3.2rem;
-  align-items: center;
+  margin: 0 auto;
+  margin-top: 4.8rem;
+  width: 60%;
 }
 
 .mem-box {
@@ -39,12 +40,30 @@
 }
 
 .mem-img {
-  width: 8%;
+  width: 12%;
   border-radius: 50%;
 }
 
-.grp-con {
+.mem-con {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
+}
+
+.heading-name {
+  font-size: 3.6rem;
+  font-weight: 500;
+  color: #fff;
+  margin-left: 5.6rem;
+}
+
+.heading-name-2 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #fff;
+  margin-left: 5.6rem;
+}
+
+.pad-m {
+  padding-top: 1.6rem;
 }

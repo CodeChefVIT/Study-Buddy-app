@@ -14,14 +14,13 @@ const defaultFormFields = {
 const CreateQuiz = (props) => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { time } = formFields;
-  const [questions, setQuestions] = useState(formFields.questions);
+  const [questions, setQuestions] = useState(defaultFormFields.questions);
 
   const usePathname = () => {
     const location = useLocation();
     return location.pathname;
   };
   const path = usePathname();
-  console.log(path);
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
@@ -59,6 +58,7 @@ const CreateQuiz = (props) => {
   };
 
   const addQuestion = (question) => {
+    console.log(question);
     setQuestions(questions.concat(question));
     console.log(questions);
     setFormFields({ ...formFields, questions: [...questions] });

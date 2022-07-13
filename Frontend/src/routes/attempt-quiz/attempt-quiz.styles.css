@@ -1,37 +1,33 @@
 .attempt-quiz {
-  background-color: rgba(255, 255, 255, 0.13);
-  width: 1000px;
-  margin: 200px auto;
-  min-height: 200px;
-  height: min-content;
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 10px -10px 42px 0px rgba(38, 38, 38, 0.75);
-  padding: 30px;
+  background-color: #101010;
+  padding-top: 4rem;
+  padding-bottom: 5.2rem;
+  padding-left: 5.2rem;
+  padding-right: 5.2rem;
+  margin: 0 15rem;
 }
 
 .answer {
   text-align: center;
   margin-bottom: 0;
+  margin-bottom: 36rem;
 }
 
 .score-section {
-  display: flex;
   font-size: 24px;
   align-items: center;
 }
 
 .answer-section {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
+  width: 50%;
 }
 
 .attempt-quiz-button {
   width: 100%;
-  font-size: 16px;
+  font-size: 2.6rem;
+  font-weight: 700;
   color: #ffffff;
-  background-color: #dd9e67;
+  background-color: #d9863e;
   border-radius: 5px;
   padding: 10px;
   align-items: center;
