@@ -265,7 +265,7 @@ exports.acceptRequest = async (req, res) => {
     await sendEmail(userObj.email, 'Group Request Accepted', `Your request to join the group ${groupObj.name} has been accepted`)
     return res.status(200).json({
       success: true,
-      error: 'User added to group'
+      message: 'User added to group'
     })
   } catch (err) {
     console.log(err)
@@ -350,7 +350,6 @@ exports.getRequests = async (req, res) => {
     }
     const arr = []
     let user
-    let regno
     for (let i = 0; i < groupObj.requests.length; i++) {
       user = await User.findById(groupObj.requests[i])
       

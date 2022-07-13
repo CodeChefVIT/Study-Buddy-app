@@ -126,6 +126,134 @@ exports.login = async (req, res) => {
 }
 
 /*
+  Type: POST
+  Desc: Forgot Password
+  Auth: None
+  Query: None
+  Params: None
+  Body: email
+  Returns: Success Message
+*/
+exports.forgotPassword = async (req, res) => {
+  const { email } = req.body
+  try {
+    const user = await User.findOne({ email })
+    if (!user) {
+      return res.status(409).json({
+        success: false,
+        error: 'User not found'
+      })
+    }
+    if (!user.isVerified) {
+      return res.status(401).json({
+        success: false,
+        error: 'User is not verified, Resend Verification email instead?'
+      })
+    }
+    const hash = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+    user.hash = hash
+    await user.save()
+    const link = 'http://' + req.get('host') + '/api/v1/user/reset/' + user.id + '/' + hash
+    await sendEmail(email, 'Reset Password', `Reset your password at ${link}`)
+    return res.status(200).json({
+      success: true,
+      message: 'Check your email for reset link'
+    })
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({
+      success: false,
+      error: 'Server error'
+    })
+  }
+}
+
+/*
+  Type: GET
+  Desc: to verify hash
+  Auth: None
+  Query: None
+  Params: id, hash
+  Body: None
+*/
+exports.verifyhash = async (req, res) => {
+  const { id, hash } = req.params
+  try {
+    const user = await User.findOne({ id })
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        error: 'User not found'
+      })
+    }
+    if (user.hash !== hash) {
+      return res.status(401).json({
+        success: false,
+        error: 'Invalid link'
+      })
+    }
+    return res.status(200).json({
+      success: true,
+      message: 'Reset link is valid',
+      email: user.email
+    })
+  } catch (err) {
+    console.log(err)
+    return res.status(500).json({
+      success: false,
+      error: 'Server error'
+    })
+  }
+}
+
+/*
+  Type: POST
+  Desc: to reset password
+  Auth: None
+  Query: None
+  Params: id, hash
+  Body: password, confirm
+*/
+exports.resetPassword = async (req, res) => {
+  const { password, confirm } = req.body
+  const { id, hash } = req.params
+  try {
+    const user = await User.findOne({ id })
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        error: 'User not found'
+      })
+    }
+    if (user.hash !== hash) {
+      return res.status(401).json({
+        success: false,
+        error: 'Invalid link'
+      })
+    }
+    if (!(password === confirm)) {
+      return res.status(422).json({
+        success: false,
+        error: 'Password do not match'
+      })
+    }
+    const salt = await bcrypt.genSalt(10)
+    user.password = await bcrypt.hash(password, salt)
+    await user.save()
+    return res.status(200).json({
+      success: true,
+      message: 'Password reset successful'
+    })
+  } catch (err) {
+    console.log(err)
+    return res.status(500).json({
+      success: false,
+      error: 'Server error'
+    })
+  }
+}
+
+/*
   Type: GET
   Desc: To Verify a User
   Auth: None

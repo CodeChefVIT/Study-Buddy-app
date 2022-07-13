@@ -32,6 +32,8 @@ describe('/POST /api/v1/user/signup', () => {
     const user = {
       email: 'test@test.com',
       password: 'test',
+      regno: '21BBS0162',
+      major: 'csbs',
       confirm: 'test'
     }
     chai.request(server)
@@ -56,6 +58,8 @@ describe('/POST /api/v1/user/signup', () => {
     const user = {
       name: 'test',
       password: 'test',
+      major: 'csbs',
+      regno: '21BBS0162',
       confirm: 'test'
     }
     chai.request(server)
@@ -80,6 +84,8 @@ describe('/POST /api/v1/user/signup', () => {
     const user = {
       name: 'test',
       email: 'test@test.com',
+      major: 'csbs',
+      regno: '21BBS0162',
       confirm: 'test'
     }
     chai.request(server)
@@ -104,6 +110,8 @@ describe('/POST /api/v1/user/signup', () => {
     const user = {
       name: 'test',
       email: 'test@test.com',
+      regno: '21BBS0162',
+      major: 'csbs',
       password: 'test'
     }
     chai.request(server)
@@ -128,6 +136,8 @@ describe('/POST /api/v1/user/signup', () => {
     const user = {
       name: 'test',
       email: 'test@test.com',
+      regno: '21BBS0162',
+      major: 'csbs',
       password: 'test',
       confirm: 'test2'
     }
@@ -153,6 +163,8 @@ describe('/POST /api/v1/user/signup', () => {
     const user = {
       name: 'test',
       email: 'test',
+      regno: '21BBS0162',
+      major: 'csbs',
       password: 'test',
       confirm: 'test'
     }
@@ -178,12 +190,16 @@ describe('/POST /api/v1/user/signup', () => {
     const user = {
       name: 'test',
       email: 'studybuddycc@gmail.com',
+      regno: '21BBS0162',
+      major: 'csbs',
       password: 'test',
       confirm: 'test'
     }
     const user2 = {
       name: 'test',
       email: 'studybuddycc2@gmail.com',
+      regno: '21BBS0156',
+      major: 'csbs',
       password: 'test',
       confirm: 'test'
     }
@@ -225,6 +241,8 @@ describe('/POST /api/v1/user/signup', () => {
     const user = {
       name: 'test2',
       email: 'studybuddycc@gmail.com',
+      regno: '21BBS0162',
+      major: 'csbs',
       password: 'test2',
       confirm: 'test2'
     }
@@ -311,14 +329,7 @@ describe('/GET /api/v1/user/verify/:id/:hash', () => {
     const user = await User.findOne({ email: 'studybuddycc@gmail.com' })
     const res = await chai.request(server)
       .get(`/api/v1/user/verify/${user._id.toString()}/${user.hash}`)
-    res.should.have.status(409)
-    res.body.should.be.a('object')
-    res.body.should.have.property('error')
-    res.body.should.have.property('success')
-    res.body.error.should.be.a('string')
-    res.body.success.should.be.a('boolean')
-    res.body.success.should.equal(false)
-    res.body.error.should.equal('User is already verified')
+    res.should.have.status(200)
   })
 })
 
@@ -661,6 +672,243 @@ describe('/GET /api/v1/user/', () => {
             res.body.success.should.equal(true)
             done()
           })
+      })
+  })
+})
+
+/*
+    * Test for forgot Password route
+*/
+describe('/POST /api/v1/user/forgotPassword', () => {
+  it('no email provided', (done) => {
+    chai.request(server)
+      .post('/api/v1/user/forgotPassword')
+      .end((err, res) => {
+        if (err) {
+          console.log(err.stack)
+        }
+        res.should.have.status(422)
+        res.body.should.be.a('object')
+        res.body.should.have.property('error')
+        res.body.should.have.property('success')
+        res.body.error.should.be.a('string')
+        res.body.success.should.be.a('boolean')
+        res.body.success.should.equal(false)
+        res.body.error.should.equal('"email" is required')
+        done()
+      })
+  })
+  it('email is invalid', (done) => {
+    chai.request(server)
+      .post('/api/v1/user/forgotPassword')
+      .send({ email: 'invalidemail@email.com' })
+      .end((err, res) => {
+        if (err) {
+          console.log(err.stack)
+        }
+        res.should.have.status(409)
+        res.body.should.be.a('object')
+        res.body.should.have.property('error')
+        res.body.should.have.property('success')
+        res.body.error.should.be.a('string')
+        res.body.success.should.be.a('boolean')
+        res.body.success.should.equal(false)
+        res.body.error.should.equal('User not found')
+        done()
+      })
+  })
+  it('if user is not verified', (done) => {
+    chai.request(server)
+      .post('/api/v1/user/forgotPassword')
+      .send({ email: 'studybuddycc2@gmail.com' })
+      .end((err, res) => {
+        if (err) {
+          console.log(err.stack)
+        }
+        res.should.have.status(401)
+        res.body.should.be.a('object')
+        res.body.should.have.property('error')
+        res.body.should.have.property('success')
+        res.body.error.should.be.a('string')
+        res.body.success.should.be.a('boolean')
+        res.body.success.should.equal(false)
+        res.body.error.should.equal('User is not verified, Resend Verification email instead?')
+        done()
+      })
+  })
+  it('Verify the other email', async () => {
+    const user = await User.findOne({ email: 'studybuddycc2@gmail.com' })
+    const res = await chai.request(server)
+      .get(`/api/v1/user/verify/${user._id.toString()}/${user.hash}`)
+    res.should.have.status(200)
+  })
+  it('Success', (done) => {
+    chai.request(server)
+      .post('/api/v1/user/forgotPassword')
+      .send({ email: 'studybuddycc2@gmail.com' })
+      .end((err, res) => {
+        if (err) {
+          console.log(err.stack)
+        }
+        res.should.have.status(200)
+        res.body.should.be.a('object')
+        res.body.should.have.property('success')
+        res.body.success.should.be.a('boolean')
+        res.body.success.should.equal(true)
+        res.body.should.have.property('message')
+        res.body.message.should.be.a('string')
+        res.body.message.should.equal('Check your email for reset link')
+        done()
+      })
+  })
+})
+
+/*
+    * Test for verify the link that is sent to the user for reset pass
+*/
+let id
+let hash
+describe('/GET /api/v1/user/reset/:id/:hash', () => {
+
+  before(async () => {
+    const user = await User.findOne({ email: 'studybuddycc2@gmail.com' })
+    id = user._id.toString()
+    hash = user.hash
+  })
+  it('invalid id', (done) => {
+    chai.request(server)
+      .get('/api/v1/user/reset/123/123')
+      .end((err, res) => {
+        if (err) {
+          console.log(err.stack)
+        }
+        console.log(res.body)
+        res.should.have.status(422)
+        res.body.should.be.a('object')
+        res.body.should.have.property('error')
+        res.body.should.have.property('success')
+        res.body.error.should.be.a('string')
+        res.body.success.should.be.a('boolean')
+        res.body.success.should.equal(false)
+        res.body.error.should.equal('Invalid Reset Link')
+        done()
+      })
+  })
+  it('invalid hash', (done) => {
+    chai.request(server)
+      .get(`/api/v1/user/reset/${id}/123`)
+      .end((err, res) => {
+        if (err) {
+          console.log(err.stack)
+        }
+        res.should.have.status(401)
+        res.body.should.be.a('object')
+        res.body.should.have.property('error')
+        res.body.should.have.property('success')
+        res.body.error.should.be.a('string')
+        res.body.success.should.be.a('boolean')
+        res.body.success.should.equal(false)
+        res.body.error.should.equal('Invalid link')
+        done()
+      })
+  })
+  it('success', (done) => {
+    chai.request(server)
+      .get(`/api/v1/user/reset/${id}/${hash}`)
+      .end((err, res) => {
+        if (err) {
+          console.log(err.stack)
+        }
+        res.should.have.status(200)
+        res.body.should.be.a('object')
+        res.body.should.have.property('success')
+        res.body.success.should.be.a('boolean')
+        res.body.success.should.equal(true)
+        res.body.should.have.property('message')
+        res.body.message.should.be.a('string')
+        res.body.message.should.equal('Reset link is valid')
+        done()
+      })
+  })
+})
+
+/*
+    * Test for reset password
+*/
+describe('/POST /api/v1/user/reset/:id/:hash', () => {
+  it('invalid id', (done) => {
+    chai.request(server)
+      .post('/api/v1/user/reset/123/123')
+      .end((err, res) => {
+        if (err) {
+          console.log(err.stack)
+        }
+        res.should.have.status(422)
+        res.body.should.be.a('object')
+        res.body.should.have.property('error')
+        res.body.should.have.property('success')
+        res.body.error.should.be.a('string')
+        res.body.success.should.be.a('boolean')
+        res.body.success.should.equal(false)
+        res.body.error.should.equal('Invalid Reset Link')
+        done()
+      })
+  })
+  it('invalid hash', (done) => {
+    chai.request(server)
+      .post(`/api/v1/user/reset/${id}/123`)
+      .send({ password: '123', confirm: '1234' })
+      .end((err, res) => {
+        if (err) {
+          console.log(err.stack)
+        }
+        res.should.have.status(401)
+        res.body.should.be.a('object')
+        res.body.should.have.property('error')
+        res.body.should.have.property('success')
+        res.body.error.should.be.a('string')
+        res.body.success.should.be.a('boolean')
+        res.body.success.should.equal(false)
+        res.body.error.should.equal('Invalid link')
+        done()
+      })
+  })
+  it('password does not match', (done) => {
+    chai.request(server)
+      .post(`/api/v1/user/reset/${id}/${hash}`)
+      .send({ password: '123', confirm: '1234' })
+      .end((err, res) => {
+        if (err) {
+          console.log(err.stack)
+        }
+        res.should.have.status(422)
+        res.body.should.be.a('object')
+        res.body.should.have.property('error')
+        res.body.should.have.property('success')
+        res.body.error.should.be.a('string')
+        res.body.success.should.be.a('boolean')
+        res.body.success.should.equal(false)
+        res.body.error.should.equal('Password do not match')
+        done()
+      })
+  })
+  it('success', (done) => {
+    chai.request(server)
+      .post(`/api/v1/user/reset/${id}/${hash}`)
+      .send({ password: 'test', confirm: 'test' })
+      .end((err, res) => {
+        if (err) {
+          console.log(err.stack)
+        }
+        res.should.have.status(200)
+        res.body.should.be.a('object')
+        res.body.should.have.property('success')
+        res.body.success.should.be.a('boolean')
+        res.body.success.should.equal(true)
+        res.body.should.have.property('message')
+        res.body.message.should.be.a('string')
+        res.body.message.should.equal('Password reset successful')
+        done()
       })
   })
 })
