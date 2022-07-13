@@ -7,6 +7,7 @@ import DashCard from "./../../components/dashboard-card/dashboard-card.component
 
 const Dashboard = () => {
   const [groups, setGroups] = useState([{}]);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,6 +29,7 @@ const Dashboard = () => {
     )
       .then((response) => response.json())
       .then(({ groups }) => setGroups(groups));
+    setLoading(true);
   }, []);
 
   return (
@@ -36,9 +38,13 @@ const Dashboard = () => {
       <section className="dashboard">
         <h1 className="heading-primary">My Groups</h1>
         <div className="grpsv-container">
-          {groups.map((group) => {
-            return <DashCard key={group.id} group={group} />;
-          })}
+          {loading ? (
+            groups.map((group) => {
+              return <DashCard key={group.id} group={group} />;
+            })
+          ) : (
+            <p>Loading...</p>
+          )}
         </div>
       </section>
       <Footer />

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import Navigation from "../navigation/navigation.component";
@@ -15,6 +15,13 @@ const ViewQuiz = () => {
   const navigate = useNavigate();
   const [quizes, setQuizes] = useState([]);
 
+  const usePathname = () => {
+    const location = useLocation();
+    return location.pathname;
+  };
+  const path = usePathname();
+  console.log(path);
+
   useEffect(() => {
     if (!localStorage.getItem("token")) {
       navigate("/");
@@ -23,7 +30,7 @@ const ViewQuiz = () => {
 
   useEffect(() => {
     fetch(
-      `https://study-buddy-app-production.up.railway.app/api/v1/groups/62c42a40c2f1d4b6fe0ce32f/quiz/`,
+      `https://study-buddy-app-production.up.railway.app/api/v1/groups/62cd81d2797670990068a150/quiz`,
       {
         method: "GET",
         headers: {
@@ -35,6 +42,8 @@ const ViewQuiz = () => {
       .then((response) => response.json())
       .then(({ data }) => setQuizes(data));
   }, []);
+
+  console.log(quizes);
 
   return (
     <div>

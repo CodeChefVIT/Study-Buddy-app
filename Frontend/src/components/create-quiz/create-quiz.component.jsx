@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 import "./create-quiz.styles.css";
 
@@ -14,6 +15,13 @@ const CreateQuiz = (props) => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { time } = formFields;
   const [questions, setQuestions] = useState(formFields.questions);
+
+  const usePathname = () => {
+    const location = useLocation();
+    return location.pathname;
+  };
+  const path = usePathname();
+  console.log(path);
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
@@ -31,7 +39,7 @@ const CreateQuiz = (props) => {
     console.log(formFields);
 
     const response = await fetch(
-      `https://study-buddy-app-production.up.railway.app/api/v1/groups/new`,
+      `https://study-buddy-app-production.up.railway.app/api/v1${path}`,
       {
         method: "POST",
         headers: {

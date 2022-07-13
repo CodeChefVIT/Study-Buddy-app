@@ -61,9 +61,10 @@ const JoinStudyGrp = () => {
           />
         </div>
         <div className="grp-container">
-          {filteredGroups.map((group) => {
-            return <JoinGrpCard key={group.id} group={group} />;
-          })}
+          {filteredGroups &&
+            filteredGroups.map((group) => {
+              return <JoinGrpCard key={group.id} group={group} />;
+            })}
         </div>
       </section>
       <Footer />
