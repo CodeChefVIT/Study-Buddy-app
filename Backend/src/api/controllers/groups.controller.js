@@ -193,11 +193,12 @@ exports.getGroup = async (req, res) => {
     } else {
       group.requests = undefined
     }
+    let DaysLeft = 0
     for (let i = 0; i < group.modules; i++) {
       // date: 2022-07-13T11:42:03.770Z
       // daysToComplete: 7
-      let DaysLeft = group.modules[i].daysToComplete - (new Date().getTime() - new Date(group.modules[i].date).getTime()) / (1000 * 60 * 60 * 24)
-      group.modules[i].daysToComplete = DaysLeft
+      DaysLeft = group.modules[i].daysToComplete - (new Date().getTime() - new Date(group.modules[i].date).getTime()) / (1000 * 60 * 60 * 24)
+      group.modules[i].daysToComplete = Math.floor(DaysLeft)
     }
     // check if user is a part of group
     if (!group.members.toString().includes(req.user.id)) {
