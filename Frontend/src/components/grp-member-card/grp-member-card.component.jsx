@@ -1,7 +1,7 @@
 import Image1 from "./../../assets/img.svg";
 
 const GrpMemberCard = ({ member }) => {
-  const { name } = member;
+  const { name, major } = member;
   console.log(member);
 
   return (
@@ -10,7 +10,7 @@ const GrpMemberCard = ({ member }) => {
         <img className="mem-img" src={Image1} alt="user icon" />
         <div>
           <h2 className="heading-name align-l">{name}</h2>
-          <h2 className="heading-name-2 align-l pad-m">Major: CSE</h2>
+          <h2 className="heading-name-2 align-l pad-m">Major: {major}</h2>
         </div>
       </div>
     </div>

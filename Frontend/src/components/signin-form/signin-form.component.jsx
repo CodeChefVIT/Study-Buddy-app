@@ -87,16 +87,16 @@ const SigninForm = () => {
             placeholder="Password"
             id="password"
           />
-          <p className="para-primary align-r">
-            Forgot Password?
+          <p className="para-primary align-l">
+            Forgot Password? &nbsp;
             <Link to="/" className="log-nav-link">
               Reset Password
             </Link>
           </p>
           <Button to="/">Log In</Button>
 
-          <p className="para-primary align-c">
-            Don't have an account?
+          <p className="para-primary align-l">
+            Don't have an account? &nbsp;
             <Link to="/signup" className="log-nav-link">
               Signup
             </Link>

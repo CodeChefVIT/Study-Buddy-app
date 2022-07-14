@@ -69,9 +69,9 @@ const SignUpForm = () => {
   return (
     <div>
       <section className="signup">
-        <div className="login-background">
-          <div className="shape"></div>
-          <div className="shape"></div>
+        <div className="signup-background">
+          <div className="signup-shape"></div>
+          <div className="signup-shape"></div>
         </div>
 
         <form className="form-signup" onSubmit={handleSubmit}>
@@ -144,8 +144,8 @@ const SignUpForm = () => {
             <Button>Create Account</Button>
           </div>
 
-          <p className="para-primary align-c">
-            Already have an account?
+          <p className="para-primary align-l">
+            Already have an account? &nbsp;
             <Link to="/login" className="log-nav-link">
               Signin
             </Link>

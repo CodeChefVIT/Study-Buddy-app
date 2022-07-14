@@ -68,7 +68,7 @@ html {
 }
 
 body {
-  font-family: IBM Plex Sans, serif;
+  font-family: Montserrat, IBM Plex Sans, serif;
   line-height: 1;
   font-weight: 400;
   color: #555;
@@ -200,6 +200,10 @@ body {
   margin-left: 6rem;
 }
 
+.mar-l-3 {
+  margin-left: 15rem;
+}
+
 .mar-t {
   margin-top: 2rem;
 }
@@ -286,8 +290,6 @@ input {
   justify-content: space-between;
   align-items: center;
 
-  background-color: #101010;
-
   height: 9.6rem;
   padding: 0 4.8rem;
 }
@@ -324,7 +326,7 @@ input {
 
 .main-nav-link.nav-cta:link,
 .main-nav-link.nav-cta:visited {
-  padding: 1.2rem 2.4rem;
+  padding: 1.2rem 2.8rem;
   border-radius: 9px;
   color: #fff;
   background-color: #e67e22;
@@ -341,8 +343,6 @@ input {
 .footer {
   display: flex;
   justify-content: space-between;
-
-  background-color: #101010;
 
   max-width: 1250px;
   margin: auto;

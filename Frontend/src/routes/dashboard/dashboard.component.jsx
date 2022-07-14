@@ -36,7 +36,7 @@ const Dashboard = () => {
     <div>
       {localStorage.getItem("token") ? <NavigationAuth /> : <Navigation />}
       <section className="dashboard">
-        <h1 className="heading-primary">My Groups</h1>
+        <h1 className="heading-primary-sm-2 mar-b">My Groups</h1>
         <div className="grpsv-container">
           {loading ? (
             groups.map((group) => {

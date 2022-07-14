@@ -52,13 +52,22 @@ const GrpDash = () => {
           <h1 className="heading-primary-sm-2">{name}</h1>
           <h1 className="heading-primary-sm-2">{subject}</h1>
         </div>
-        <button
-          onClick={() => navigate(`${path}/members`)}
-          className="button-grps long"
-          type="text"
-        >
-          See All Members
-        </button>
+        <div className="btn-sp">
+          <button
+            onClick={() => navigate(`${path}/members`)}
+            className="button-grps"
+            type="text"
+          >
+            See All Members
+          </button>
+          <button
+            onClick={() => navigate(`${path}/request`)}
+            className="button-grps"
+            type="text"
+          >
+            View Requests
+          </button>
+        </div>
         <div className="btn-sp">
           <button
             onClick={() => navigate(`${path}/quiz/new`)}
