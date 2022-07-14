@@ -7,7 +7,7 @@ const authorise = async (req, res, next) => {
   if (!token) {
     return res.status(401).json({
       success: false,
-      message: 'No token provided.'
+      error: 'No token provided.'
     })
   }
   if (token.startsWith('Bearer ')) {
@@ -19,7 +19,7 @@ const authorise = async (req, res, next) => {
       if (err) {
         return res.status(401).json({
           success: false,
-          message: 'Token is not valid.'
+          error: 'Invalid Token'
         })
       }
       req.user = decoded
@@ -28,7 +28,7 @@ const authorise = async (req, res, next) => {
   } else {
     return res.status(401).json({
       success: false,
-      message: 'Token is not valid.'
+      error: 'Invalid Token'
     })
   }
 }

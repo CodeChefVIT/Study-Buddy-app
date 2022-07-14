@@ -1,6 +1,9 @@
 require('dotenv').config()
 const mongoose = require('mongoose')
-const url = process.env.MONGO_URL;
+let url = process.env.MONGO_URL
+
+if (process.env.NODE_ENV === 'test') { url = process.env.MONGO_TEST_URL }
+
 (async () => {
   try {
     await mongoose.connect(url, {
@@ -15,7 +18,9 @@ const url = process.env.MONGO_URL;
 const connection = mongoose.connection
 
 connection.once('open', () => {
-  console.log('Successfully connected to database')
+  if (process.env.NODE_ENV !== 'test') {
+    console.log('Connected to MongoDB')
+  }
 })
 
 connection.on('disconnected', () => {
