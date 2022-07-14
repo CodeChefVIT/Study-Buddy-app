@@ -196,6 +196,10 @@ body {
   margin-bottom: 0rem;
 }
 
+.mar-f {
+  margin-top: 0.71rem;
+}
+
 .mar-l {
   margin-left: 6rem;
 }
@@ -218,6 +222,10 @@ body {
 
 .mar-b {
   margin-bottom: 2rem;
+}
+
+.mar-b-2 {
+  margin-bottom: 3rem;
 }
 
 .button {

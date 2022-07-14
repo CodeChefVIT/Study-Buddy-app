@@ -40,8 +40,9 @@
 }
 
 .mem-img {
-  width: 12%;
-  border-radius: 50%;
+  width: 86px;
+  height: 86px;
+  border-radius: 100px;
 }
 
 .mem-con {

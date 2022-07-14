@@ -33,21 +33,14 @@ const AccSet = () => {
 
   const handleFileChange = (event) => {
     event.preventDefault();
-
-    console.log(event.target.files[0].name);
-
-    defaultForm.append("avatar", event.target.files[0].name);
+    defaultForm.append("avatar", event.target.files[0]);
   };
   const handleBioChange = (event) => {
     event.preventDefault();
-
-    console.log("bio", event.target.value);
     defaultForm.append("bio", event.target.value);
   };
   const handleNameChange = (event) => {
     event.preventDefault();
-
-    console.log("name", event.target.value);
     defaultForm.append("name", event.target.value);
   };
 
