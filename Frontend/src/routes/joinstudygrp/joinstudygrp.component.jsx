@@ -40,7 +40,7 @@ const JoinStudyGrp = () => {
 
   useEffect(() => {
     const newFilteredGroups = groups.filter((group) => {
-      return group.inviteCode.includes(searchField);
+      return group.name.toLowerCase().includes(searchField.toLowerCase());
     });
     setFilteredGroups(newFilteredGroups);
   }, [groups, searchField]);

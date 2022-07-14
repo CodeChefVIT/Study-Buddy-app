@@ -26,14 +26,14 @@ const JoinGrpCard = ({ group }) => {
   return (
     <div className="box">
       <div className="grp-con">
-        <h2 className="heading-primary-sm-2 align-l">{inviteCode}</h2>
+        <h2 className="heading-primary-sm-2 align-l">{name}</h2>
         <button onClick={navigateSendReq} className="button">
           Join Group
         </button>
       </div>
       <div className="mar">
         <h2 className="heading-tertiary-sm align-l">
-          {name} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {subject}
+          {inviteCode} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {subject}
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Members:{" "}
           {members ? members.length : 0}
         </h2>

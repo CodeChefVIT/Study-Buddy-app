@@ -12,7 +12,11 @@ const Navigation = () => {
             <li className="heading-secondary">Follow us on</li>
 
             <li className="mar-f">
-              <a href="https://www.instagram.com/codechefvit/">
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href="https://www.instagram.com/codechefvit/"
+              >
                 <ion-icon
                   name="logo-instagram"
                   className="social-icon"
@@ -20,7 +24,11 @@ const Navigation = () => {
               </a>
             </li>
             <li className="mar-f">
-              <a href="https://twitter.com/codechefvit/">
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href="https://twitter.com/codechefvit/"
+              >
                 <ion-icon
                   name="logo-twitter"
                   className="social-icon"
@@ -28,7 +36,11 @@ const Navigation = () => {
               </a>
             </li>
             <li className="mar-f">
-              <a href="https://www.linkedin.com/company/codechef-vit-chapter/?original_referer=">
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href="https://www.linkedin.com/company/codechef-vit-chapter/?original_referer="
+              >
                 <ion-icon
                   name="logo-linkedin"
                   className="social-icon"
@@ -36,7 +48,11 @@ const Navigation = () => {
               </a>
             </li>
             <li className="mar-f">
-              <a href="https://medium.com/codechef-vit">
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href="https://medium.com/codechef-vit"
+              >
                 <ion-icon name="logo-medium" className="social-icon"></ion-icon>
               </a>
             </li>
