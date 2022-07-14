@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="400dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10sp"
+        app:cardBackgroundColor="@color/dashBoardButtonColor"
+        app:cardCornerRadius="10sp"
+        app:cardElevation="1dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="10dp">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="70sp"
+                android:layout_height="70sp"
+                app:lottie_rawRes="@raw/loadingcircle"
+                app:lottie_autoPlay="true"
+                android:layout_gravity="center_horizontal"
+                app:lottie_loop="true"/>
+            <TextView
+                android:id="@+id/message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Loading, please wait!"
+                android:fontFamily="@font/ibmplexsansregular"
+                android:textColor="@color/textPrimary"
+                android:textSize="20sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginStart="10dp"
+                />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</LinearLayout>

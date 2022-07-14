@@ -1,3 +1,30 @@
 <resources>
     <string name="app_name">StudyBuddy</string>
+    <string name="welcome_text">Experience a whole new way of doing group study!</string>
+    <string name="sup">Sign Up</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="sign_in">Sign In</string>
+    <string name="login_txt">Welcome back you\'ve been missed!</string>
+    <string name="email">Email</string>
+    <string name="sample_email">jondoe@gmail.com</string>
+    <string name="password_hint">******************</string>
+    <string name="password">Password</string>
+    <string name="f_pass_pre_text">trouble getting in?</string>
+    <string name="f_pass">Forgot Password</string>
+    <string name="sup_pre_text">don\'t have an account?</string>
+    <string name="sup_screen_text">Hello there, create an account it\'s free!</string>
+    <string name="sample_name">Jon Doe</string>
+    <string name="sample_phn">7007004000</string>
+    <string name="name">Name</string>
+    <string name="phn">Phone Number</string>
+    <string name="RegistrationNumber">Registration Number</string>
+    <string name="sample_regno">21BEE0001</string>
+    <string name="major">Major</string>
+    <string name="sample_major">EEE</string>
+    <string name="batch">Batch</string>
+    <string name="sample_batch">2025</string>
+    <string name="bio">Bio</string>
+    <string name="sample_bio">Hello everyone I am Jon Doe i am currently a fresher in VIT Vellore.</string>
+    <string name="app_logo">App Logo</string>
+    <string name="sign_up">Sign Up</string>
 </resources>
