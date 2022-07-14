@@ -21,3 +21,9 @@ input[type="file"]::file-selector-button {
 input[type="file"]::file-selector-button:hover {
   background-color: #ff5b7e;
 }
+
+.prof-pic-up {
+  width: 12rem;
+  height: 9rem;
+  border-radius: 200%;
+}

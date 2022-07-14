@@ -1,12 +1,39 @@
-import Image1 from "./../../assets/img.svg";
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useState, useEffect } from "react";
 
 import "./account-settings.styles.css";
 
 const AccSet = () => {
+  const [name, setName] = useState("");
+  const [bio, setBio] = useState("");
   let defaultForm = new FormData();
+  const [url, setUrl] = useState();
+
+  useEffect(() => {
+    const getProfileDet = async () => {
+      const responseGet = await fetch(
+        `https://study-buddy-app-production.up.railway.app/api/v1/user/`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then(({ data }) => setUrl(data.avatar));
+    };
+    getProfileDet();
+  }, []);
+
+  console.log(url);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    defaultForm.append("name", name);
+    defaultForm.append("bio", bio);
 
     for (var key of defaultForm.entries()) {
       console.log(key[0] + ", " + key[1]);
@@ -37,11 +64,11 @@ const AccSet = () => {
   };
   const handleBioChange = (event) => {
     event.preventDefault();
-    defaultForm.append("bio", event.target.value);
+    setBio(event.target.value);
   };
   const handleNameChange = (event) => {
     event.preventDefault();
-    defaultForm.append("name", event.target.value);
+    setName(event.target.value);
   };
 
   return (
@@ -53,7 +80,7 @@ const AccSet = () => {
       <div className="heading-primary">Your Account Settings</div>
 
       <div className="pic-cha">
-        <img className="prof-pic mar-r" src={Image1} alt="profile pic" />
+        <img className="prof-pic-up mar-r" src={url} alt="profile pic" />
         <input
           type="file"
           accept="image/png"
@@ -67,7 +94,6 @@ const AccSet = () => {
         placeholder="Name"
         type="text"
         onChange={handleNameChange}
-        value={defaultForm.get("name")}
         id="username"
       />
 

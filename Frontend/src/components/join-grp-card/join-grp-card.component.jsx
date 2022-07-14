@@ -19,17 +19,14 @@ const JoinGrpCard = ({ group }) => {
       }
     )
       .then((response) => {
-        response.json();
-        if (!response.ok) {
-          alert(
-            "Sorry You are either a part of the group or not allowed to join the group"
-          );
-          navigate("/dashboard");
+        if (response.status === 200) {
+          navigate(`/dashboard`);
+        } else {
+          alert("Request already sent");
         }
       })
       .then((data) => {
         setData(data);
-        alert("Request sent successfully");
         navigate(`/dashboard`);
       });
   };

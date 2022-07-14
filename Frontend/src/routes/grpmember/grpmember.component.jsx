@@ -72,7 +72,7 @@ const GrpMembers = () => {
           <h1 className="heading-primary-sm">Find Members</h1>
           <SearchBox
             onChange={onSearchChange}
-            placeholder="Search by Invite Code"
+            placeholder="Search by Member Name"
           />
         </div>
         <div className="grp-mem-container">

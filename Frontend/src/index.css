@@ -228,6 +228,11 @@ body {
   margin-bottom: 3rem;
 }
 
+.mar-b-h {
+  margin-top: 5vh;
+  margin-bottom: 40vh;
+}
+
 .button {
   background-color: #e67e22;
   border: none;

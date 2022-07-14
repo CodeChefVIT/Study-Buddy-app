@@ -29,9 +29,10 @@ const ClipboardCopy = ({ copyText }) => {
   return (
     <div>
       <form class="clipboard">
-        <input type="text" value={copyText} readOnly />
         <button class="clip-button" onClick={handleCopyClick}>
-          <span>{isCopied ? "Copied!" : "Copy"}</span>
+          <span className="bol-clip">
+            {isCopied ? "Copied!" : `Click To Copy Invite Code: ${copyText}`}
+          </span>
         </button>
       </form>
     </div>

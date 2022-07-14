@@ -5,8 +5,12 @@ import NavigationAuth from "../navigation-auth/navigation-auth.component";
 import Footer from "./../footer/footer.component";
 import DashCard from "./../../components/dashboard-card/dashboard-card.component";
 
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
+// import { padding } from "@mui/system";
+
 const Dashboard = () => {
-  const [groups, setGroups] = useState([{}]);
+  const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -32,20 +36,31 @@ const Dashboard = () => {
     setLoading(false);
   }, []);
 
+  console.log(groups);
+
   return (
     <div>
       {localStorage.getItem("token") ? <NavigationAuth /> : <Navigation />}
       <section className="dashboard">
         <h1 className="heading-primary-sm-2 mar-b">My Groups</h1>
-        <div className="grpsv-container">
-          {loading ? (
-            <h1 className="heading-primary">Loading...</h1>
-          ) : (
-            groups.map((group) => {
+        {loading || groups.length === 0 ? (
+          <Box
+            sx={{
+              display: "flex",
+              paddingBottom: "40vh",
+              justifyContent: "center",
+              paddingTop: "20vh",
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        ) : (
+          <div className="grpsv-container">
+            {groups.map((group) => {
               return <DashCard key={group.id} group={group} />;
-            })
-          )}
-        </div>
+            })}
+          </div>
+        )}
       </section>
       <Footer />
     </div>

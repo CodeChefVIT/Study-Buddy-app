@@ -5,3 +5,8 @@
   border: none;
   color: white;
 }
+
+.search-box:focus {
+  border: none;
+  outline: none;
+}

@@ -16,7 +16,7 @@ const DashCard = ({ group }) => {
         <ProfPic className="prof-pic" src="img/img.svg" alt="group image" />
         <h2 className="heading-primary-sm-3 pad-t">{subject}</h2>
       </div>
-      <div>
+      <div className="mar-l">
         <h2 className="heading-primary-sm-3 ">Topic: {name}</h2>
         <h2 className="heading-primary-sm-3 pad-t pad-b">
           Members Present: {membersLength}
