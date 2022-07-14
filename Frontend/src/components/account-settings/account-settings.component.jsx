@@ -1,71 +1,69 @@
 import Image1 from "./../../assets/img.svg";
 
 import "./account-settings.styles.css";
-import axios from "axios";
 
-let defaultForm = new FormData();
 const AccSet = () => {
-  // const resetFormFields = () => {
-  //   setFormFields(defaultForm);
-  // };
+  let defaultForm = new FormData();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    console.log(defaultForm);
+    for (var key of defaultForm.entries()) {
+      console.log(key[0] + ", " + key[1]);
+    }
 
-    const response = await axios
-      .patch(
-        `https://study-buddy-app-production.up.railway.app/api/v1/user/edit`,
-        defaultForm,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      )
-      .then((res) => res.json());
+    const response = await fetch(
+      `https://study-buddy-app-production.up.railway.app/api/v1/user/edit`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: defaultForm,
+      }
+    );
     console.log(response);
 
-    if (response.success) {
-      localStorage.setItem("token", response.token);
+    if (response.status === 200) {
       alert("User Updated Sucessfully!");
-      // resetFormFields();
     } else {
       alert("User Updation Failed");
     }
   };
 
   const handleFileChange = (event) => {
-    console.log(event);
+    event.preventDefault();
 
-    const { value } = event.target;
+    console.log(event.target.files[0].name);
 
-    defaultForm.append("avatar", value);
+    defaultForm.append("avatar", event.target.files[0].name);
   };
   const handleBioChange = (event) => {
-    const { value } = event.target.files[0];
+    event.preventDefault();
 
-    defaultForm.append("bio", value);
-    console.log(defaultForm);
+    console.log("bio", event.target.value);
+    defaultForm.append("bio", event.target.value);
   };
   const handleNameChange = (event) => {
-    const { value } = event.target;
+    event.preventDefault();
 
-    defaultForm.append("name", value);
-    console.log(defaultForm);
+    console.log("name", event.target.value);
+    defaultForm.append("name", event.target.value);
   };
 
   return (
-    <form className="form-account" onSubmit={handleSubmit}>
+    <form
+      className="form-account"
+      encType="multipart/form-data"
+      onSubmit={handleSubmit}
+    >
       <div className="heading-primary">Your Account Settings</div>
 
       <div className="pic-cha">
-        <img className="prof-pic" src={Image1} alt="profile pic" />
+        <img className="prof-pic mar-r" src={Image1} alt="profile pic" />
         <input
-          // placeholder="Change Profile Picture"
           type="file"
+          accept="image/png"
           onChange={handleFileChange}
           id="avatar"
         />
@@ -76,6 +74,7 @@ const AccSet = () => {
         placeholder="Name"
         type="text"
         onChange={handleNameChange}
+        value={defaultForm.get("name")}
         id="username"
       />
 

@@ -343,12 +343,15 @@ input {
 .footer {
   display: flex;
   justify-content: space-between;
+  background-color: #101010;
 
   max-width: 1250px;
   margin: auto;
   font-size: 2rem;
 
-  height: 9.6rem;
+  bottom: 0;
+
+  height: 2.4rem;
   padding-top: 5.2rem;
 }
 

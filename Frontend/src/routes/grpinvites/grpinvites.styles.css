@@ -77,3 +77,9 @@
 .pad-m {
   padding-top: 1.6rem;
 }
+
+.button-l {
+  background-color: #e67d2200;
+  border: none;
+  cursor: pointer;
+}

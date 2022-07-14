@@ -102,14 +102,14 @@ const CreateGrp = (props) => {
           modules.map((module) => {
             return (
               <div>
-                <h1>
+                <h1 className="heading-primary-sm-mod">
                   {module.name} : {module.daysToComplete}
                 </h1>
               </div>
             );
           })
         ) : (
-          <h1>No modules added</h1>
+          <h1 className="heading-primary-sm-mod">No modules added</h1>
         )}
 
         <button className="button mar-t-2">Create Group</button>

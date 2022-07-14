@@ -52,10 +52,10 @@ const GrpInviteCard = ({ member }) => {
           <h2 className="heading-name align-l">{user}</h2>
           <h2 className="heading-name-2 align-l pad-m">RegNo: {regno}</h2>
         </div>
-        <button onClick={handleAccept}>
+        <button className="button-l" onClick={handleAccept}>
           <img className="act-img-1 mar-l-3" src={Image2} alt="accept icon" />
         </button>
-        <button onClick={handleReject}>
+        <button className="button-l" onClick={handleReject}>
           <img className="act-img-2 mar-l" src={Image3} alt="reject icon" />
         </button>
       </div>
