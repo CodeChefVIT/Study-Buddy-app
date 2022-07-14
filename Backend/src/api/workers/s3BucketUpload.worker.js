@@ -1,12 +1,8 @@
 require('dotenv').config()
 const AWS = require('aws-sdk')
-const s3 = new AWS.S3({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-})
 
 const upload = async (id, buffer, originalname) => {
-  if (process.NODE_ENV === 'test') {
+  if (process.env.NODE_ENV === 'test') {
     const data = {
       Location: 'this worked',
       name: originalname
@@ -14,6 +10,10 @@ const upload = async (id, buffer, originalname) => {
     return data
   }
   try {
+    const s3 = new AWS.S3({
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+    })
     // check if image
     const fileType = buffer.toString('hex', 0, 4).toLowerCase()
     if (fileType !== '89504e47') {

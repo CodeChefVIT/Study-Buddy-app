@@ -48,7 +48,7 @@ router.post('/signup', validate(schema.signup, 'body'), user.signup)
 
 router.post('/login', validate(schema.login, 'body'), user.login)
 
-router.patch('/edit', authorise, validate(schema.edit, 'body'), user.edit)
+router.patch('/edit', validate(schema.edit, 'body'), authorise, user.edit)
 
 router.post('/resend', validate(schema.resend, 'body'), user.resend)
 

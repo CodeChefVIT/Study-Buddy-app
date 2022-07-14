@@ -24,9 +24,6 @@ const schema = {
       daysToComplete: Joi.number().integer().min(1).required()
     })
   }),
-  getGroup: Joi.object({
-    id: Joi.string().required().regex(/^[0-9a-fA-F]{24}$/)
-  }),
   Request: Joi.object({
     group: Joi.string().required().regex(/^[0-9a-fA-F]{24}$/),
     user: Joi.string().required().regex(/^[0-9a-fA-F]{24}$/)
@@ -35,9 +32,12 @@ const schema = {
   getQuiz: Joi.object({
     id: Joi.string().required().regex(/^[0-9a-fA-F]{24}$/)
   }),
+  id: Joi.object({
+    group: Joi.string().required().regex(/^[0-9a-fA-F]{24}$/)
+  }),
   createQuiz: Joi.object({
     // group: Joi.string().required(),
-    time: Joi.string().required(),
+    time: Joi.string().required().regex(/^[0-9]{1,2}:[0-9]{2}$/),
     // creator: Joi.string().required(),
     questions: Joi.array().items({
       question: Joi.string().required(),
@@ -50,33 +50,26 @@ const schema = {
       question: Joi.string().required(),
       answer: Joi.string().required()
     })
-  }),
-  getQuizScore: Joi.object({
-    id: Joi.string().required().regex(/^[0-9a-fA-F]{24}$/)
-  }),
-  deleteQuiz: Joi.object({
-    id: Joi.string().required().regex(/^[0-9a-fA-F]{24}$/)
   })
-
 }
 
-router.post('/new', authorise, validate(schema.createGroup, 'body'), groups.createGroup)
-router.get('/', authorise, validate(schema.getAllGroups, 'query'), groups.getAllGroups)
-router.get('/request/:inviteCode', authorise, validate(schema.requestGroup, 'params'), groups.requestGroup)
+router.post('/new', validate(schema.createGroup, 'body'), authorise, groups.createGroup)
+router.get('/', validate(schema.getAllGroups, 'query'), authorise, groups.getAllGroups)
+router.get('/request/:inviteCode', validate(schema.requestGroup, 'params'), authorise, groups.requestGroup)
 
 router.get('/user', authorise, groups.getUserGroups)
-router.get('/:id', authorise, validate(schema.getGroup, 'params'), groups.getGroup)
+router.get('/:id', validate(schema.getQuiz, 'params'), authorise, groups.getGroup)
 
 router.get('/:group/request', authorise, groups.getRequests)
-router.get('/request/accept/:group/:user', authorise, validate(schema.Request, 'params'), groups.acceptRequest)
-router.get('/request/reject/:group/:user', authorise, validate(schema.Request, 'params'), groups.rejectRequest)
+router.get('/request/accept/:group/:user', validate(schema.Request, 'params'), authorise, groups.acceptRequest)
+router.get('/request/reject/:group/:user', validate(schema.Request, 'params'), authorise, groups.rejectRequest)
 // quiz stuff here
-router.post('/:group/quiz/new', authorise, validate(schema.createQuiz, 'body'), quiz.createQuiz)
-router.get('/:group/quiz', authorise, quiz.getQuizzes)
-router.get('/quiz/:id', authorise, validate(schema.getQuiz, 'params'), quiz.getQuiz)
-router.post('/quiz/attempt/:id', authorise, validate(schema.attemptQuiz, 'body'), quiz.attemptQuiz)
-router.get('/quiz/:id/score', authorise, validate(schema.getQuizScore, 'params'), quiz.getQuizScore)
+router.post('/:group/quiz/new', validate(schema.id, 'params', 'Invalid Group ID'), validate(schema.createQuiz, 'body'), authorise, quiz.createQuiz)
+router.get('/:group/quiz', validate(schema.id, 'params', 'Invalid Group ID'), authorise, quiz.getQuizzes)
+router.get('/quiz/:id', validate(schema.getQuiz, 'params', 'Invalid Quiz ID'), authorise, quiz.getQuiz)
+router.post('/quiz/attempt/:id', validate(schema.getQuiz, 'params', 'Invalid Quiz ID'), validate(schema.attemptQuiz, 'body'), authorise, quiz.attemptQuiz)
+router.get('/quiz/:id/score', validate(schema.getQuiz, 'params', 'Invalid Quiz ID'), authorise, quiz.getQuizScore)
 // to test s
-router.delete('/quiz/:id', authorise, validate(schema.deleteQuiz, 'params'), quiz.deleteQuiz)
+router.delete('/quiz/:id', validate(schema.getQuiz, 'params', 'Invalid Quiz ID'), authorise, quiz.deleteQuiz)
 
 module.exports = router

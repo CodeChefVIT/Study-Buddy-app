@@ -378,11 +378,11 @@ exports.edit = async (req, res) => {
         return res.status(200).json({
           success: true,
           message: 'User updated',
-          data: [{
+          data: {
             name: user.name,
             avatar: user.avatar,
             bio: user.bio
-          }]
+          }
         })
       }
       const isMatch = await bcrypt.compare(oldPass, user.password)
@@ -406,11 +406,11 @@ exports.edit = async (req, res) => {
       return res.json({
         success: true,
         message: 'Password updated',
-        data: [{
+        data: {
           name: user.name,
           avatar: user.avatar,
           bio: user.bio
-        }]
+        }
       })
     } catch (error) {
       console.log(error)

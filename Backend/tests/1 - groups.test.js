@@ -12,12 +12,7 @@ chai.should()
 
 chai.use(chaiHttp)
 
-let token
-let token2
-let groupID1
-let groupID2
-let userID1
-let userID2
+let token, token2, groupID1, groupID2, userID1, userID2
 // parent block
 before(done => {
   // Drop the Groups collection at the start of this
@@ -74,6 +69,7 @@ describe('/POST login', () => {
       })
   })
 })
+
 /*
   * Test the Create Group route
 */
@@ -313,6 +309,7 @@ describe('GET /api/v1/groups/request/:inviteCode', () => {
         res.body.success.should.be.a('boolean')
         res.body.success.should.equal(true)
         res.body.should.have.property('data')
+        res.body.data.should.be.a('object')
         userID1 = res.body.data._id
       })
     chai.request(server)
@@ -328,6 +325,7 @@ describe('GET /api/v1/groups/request/:inviteCode', () => {
         res.body.success.should.be.a('boolean')
         res.body.success.should.equal(true)
         res.body.should.have.property('data')
+        res.body.data.should.be.a('object')
         userID2 = res.body.data._id
         done()
       })
