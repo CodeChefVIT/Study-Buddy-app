@@ -1,0 +1,33 @@
+name: Run tests
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+        mongodb-version: ['5.0']
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Start MongoDB
+      uses: supercharge/mongodb-github-action@1.7.0
+      with:
+        mongodb-version: ${{ matrix.mongodb-version }}
+        mongodb-db: test-database
+    - name: Install dependencies
+      run: cd Backend && npm install
+    - name: Run Mocha Test
+      run: cd Backend && npm run test
+      env: 
+        MONGO_TEST_URL: mongodb://127.0.0.1:27017/test-database?directConnection=true
+        NODE_ENV: test
+        

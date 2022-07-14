@@ -1,33 +1,28 @@
 const { join } = require('path')
 const express = require('express')
 const app = express()
-const http = require('http')
 const helmet = require('helmet')
 const bodyParser = require('body-parser')
 const errorhandler = require('errorhandler')
-// const cors = require('cors');
+const cors = require('cors')
 const morgan = require('morgan')
 const mongoose = require('mongoose')
 const routes = require(join(__dirname, 'api', 'routes', 'v1'))
 require(join(__dirname, 'config', 'database'))
-const isProduction = true
+
 // Prevent common security vulnerabilities
 app.use(helmet())
-app.use(morgan('dev'))
-// log origin of request
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization')
 
-  if (req.method === 'OPTIONS') {
-    res.header('Access-Control-Allow-Methods', 'GET PATCH DELETE POST PUT')
-    return res.status(200).json({})
-  }
-  console.log(`${req.method} request from ${req.ip}`)
+// use morgan to log at command line
+if (process.env.NODE_ENV !== 'test') app.use(morgan('combined')) // 'combined' outputs the Apache style LOGs
 
-  next()
-})
+const corsOptions = {
+  origin: '*',
+  credentials: true, // access-control-allow-credentials:true
+  optionSuccessStatus: 200
+}
 
+app.use(cors(corsOptions))
 // Parse json body
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -35,24 +30,24 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 mongoose.Promise = global.Promise
 
-if (!isProduction) {
-  app.use(errorhandler())
-}
 // development error handler
 // will print stacktrace
-if (!isProduction) {
-  app.use(function (err, req, res) {
-    console.log(err.stack)
+if (!process.env.isProduction) {
+  if (process.env.NODE_ENV !== 'test') {
+    app.use(errorhandler())
+    app.use(function (err, req, res) {
+      console.log(err.stack)
 
-    res.status(err.status || 500)
+      res.status(err.status || 500)
 
-    res.json({
-      errors: {
-        message: err.message,
-        error: err
-      }
+      res.json({
+        errors: {
+          message: err.message,
+          error: err
+        }
+      })
     })
-  })
+  }
 }
 
 // no stacktraces leaked to users
@@ -68,8 +63,14 @@ app.use(function (err, req, res, next) {
 
 app.use('/api/v1/', routes)
 
-const httpServer = http.createServer(app)
+// // redirect if no other route is hit
+// app.use((req, res) => {
+//   res.redirect('https://www.google.com')
+// })
+
 const PORT = process.env.PORT || 3000
-httpServer.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`)
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`)
 })
+
+module.exports = app

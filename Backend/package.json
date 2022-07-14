@@ -1,16 +1,17 @@
 {
   "name": "study-buddy-app",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --timeout 15000  --recursive ./tests/*.test.js --exit",
     "start": "node src/index.js",
     "lint": "standard --fix"
   },
   "author": "BearTS <bear@tamako.tech>",
   "license": "MIT",
   "dependencies": {
+    "aws-sdk": "^2.1173.0",
     "axios": "^0.26.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.0",
@@ -22,13 +23,17 @@
     "helmet": "^5.0.2",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.3",
     "mongoose": "^6.3.0",
     "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.7.5",
     "randexp": "^0.5.3"
   },
   "devDependencies": {
-    "eslint": "^8.13.0",
+    "chai": "^4.3.6",
+    "chai-http": "^4.3.0",
+    "mocha": "^10.0.0",
     "standard": "^16.0.4"
   }
 }

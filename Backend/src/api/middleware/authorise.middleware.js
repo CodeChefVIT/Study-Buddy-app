@@ -6,7 +6,8 @@ const authorise = async (req, res, next) => {
   let token = req.headers['x-access-token'] || req.headers.authorization
   if (!token) {
     return res.status(401).json({
-      message: 'No token provided.'
+      success: false,
+      error: 'No token provided.'
     })
   }
   if (token.startsWith('Bearer ')) {
@@ -17,7 +18,8 @@ const authorise = async (req, res, next) => {
     jwt.verify(token, jwtsecret, (err, decoded) => {
       if (err) {
         return res.status(401).json({
-          message: 'Token is not valid.'
+          success: false,
+          error: 'Invalid Token'
         })
       }
       req.user = decoded
@@ -25,7 +27,8 @@ const authorise = async (req, res, next) => {
     })
   } else {
     return res.status(401).json({
-      message: 'Token is not valid.'
+      success: false,
+      error: 'Invalid Token'
     })
   }
 }
