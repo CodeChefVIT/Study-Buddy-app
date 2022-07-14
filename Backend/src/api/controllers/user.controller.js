@@ -179,7 +179,7 @@ exports.forgotPassword = async (req, res) => {
 exports.verifyhash = async (req, res) => {
   const { id, hash } = req.params
   try {
-    const user = await User.findOne({ id })
+    const user = await User.findById(id)
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -218,7 +218,7 @@ exports.resetPassword = async (req, res) => {
   const { password, confirm } = req.body
   const { id, hash } = req.params
   try {
-    const user = await User.findOne({ id })
+    const user = await User.findById(id)
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -239,6 +239,7 @@ exports.resetPassword = async (req, res) => {
     }
     const salt = await bcrypt.genSalt(10)
     user.password = await bcrypt.hash(password, salt)
+    user.hash = ''
     await user.save()
     return res.status(200).json({
       success: true,
@@ -348,7 +349,7 @@ exports.edit = async (req, res) => {
   multer({
     storage: multer.memoryStorage()
   }).single('avatar')(req, res, async (err) => {
-    const { name, bio } = req.body
+    let { name, bio } = req.body
     const { oldPass, newPass, confirmPass } = req.body
     try {
       if (err) return res.status(400).json({ error: err.message })
@@ -359,6 +360,7 @@ exports.edit = async (req, res) => {
           message: 'User does not exist'
         })
       }
+      // check for if file is uploaded
       if (name || bio || req.file) {
         if (name) {
           user.name = name
@@ -383,6 +385,12 @@ exports.edit = async (req, res) => {
             avatar: user.avatar,
             bio: user.bio
           }
+        })
+      }
+      if (!(oldPass && newPass && confirmPass)) {
+        return res.status(400).json({
+          success: false,
+          message: 'Please fill all the fields'
         })
       }
       const isMatch = await bcrypt.compare(oldPass, user.password)
