@@ -16,7 +16,10 @@ const Homepage = () => {
               Want to get increase productivity? Find buddies and join study
               groups to help each other meet your academic goals with StudyBuddy
             </p>
-            <Link to="/signup" className="btn">
+            <Link
+              to={localStorage.getItem("token") ? "/dashboard" : "/signup"}
+              className="btn"
+            >
               Get started now
             </Link>
           </div>

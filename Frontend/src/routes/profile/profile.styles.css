@@ -1,44 +1,11 @@
-
-.account-background {
-  width: 500px;
-  height: 520px;
-  position: absolute;
-  transform: translate(-50%, -50%);
-  left: 50%;
-  top: 50%;
-}
-
-.account-background .shape-a {
-  background: linear-gradient(to right, #80fff6, #02ccc0);
-  height: 300px;
-  width: 300px;
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(100px);
-}
-.shape-a:first-child {
-  left: -20rem;
-  top: 8rem;
-}
-.shape-a:last-child {
-  background: linear-gradient(#ff5b7e, #9b0022);
-
-  right: -20rem;
-  bottom: -40rem;
-}
-
 .form-account {
-  height: 1100px;
-  width: 1000px;
   background-color: rgba(255, 255, 255, 0.13);
-  transform: translateX(26%);
-  top: 50%;
-  left: 50%;
   border-radius: 10px;
   backdrop-filter: blur(10px);
   border: 2px solid #cf894b;
   box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
   padding: 50px 35px;
+  margin: 0 20rem;
   margin-top: 3rem;
 }
 
