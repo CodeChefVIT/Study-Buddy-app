@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import "./create-grp.styles.css";
 
@@ -13,6 +14,7 @@ const defaultFormFields = {
 };
 
 const CreateGrp = (props) => {
+  const navigate = useNavigate();
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { name, subject, description } = formFields;
   const [modules, setModules] = useState(formFields.modules);
@@ -47,8 +49,10 @@ const CreateGrp = (props) => {
 
     try {
       resetFormFields();
+      navigate("/dashboard");
+      alert("Group Created successfully!");
     } catch (error) {
-      console.log("group creation error", error);
+      alert("Group Creation Error", error);
     }
   };
 

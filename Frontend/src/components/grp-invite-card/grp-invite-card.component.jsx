@@ -26,7 +26,10 @@ const GrpInviteCard = ({ member }) => {
       }
     )
       .then((response) => response.json())
-      .then((data) => alert(data.message));
+      .then((data) => alert(data.message))
+      .then(() => {
+        window.location.reload();
+      });
   };
 
   const handleReject = () => {

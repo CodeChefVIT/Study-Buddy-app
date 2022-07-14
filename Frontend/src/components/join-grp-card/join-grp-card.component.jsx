@@ -1,8 +1,11 @@
+/* eslint-disable no-unused-vars */
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const JoinGrpCard = ({ group }) => {
   const { inviteCode, name, subject, members } = group;
   const [data, setData] = useState([]);
+  const navigate = useNavigate();
 
   const navigateSendReq = () => {
     fetch(
@@ -15,13 +18,21 @@ const JoinGrpCard = ({ group }) => {
         },
       }
     )
-      .then((response) => response.json())
-      .then((data) => setData(data));
+      .then((response) => {
+        response.json();
+        if (!response.ok) {
+          alert(
+            "Sorry You are either a part of the group or not allowed to join the group"
+          );
+          navigate("/dashboard");
+        }
+      })
+      .then((data) => {
+        setData(data);
+        alert("Request sent successfully");
+        navigate(`/dashboard`);
+      });
   };
-
-  if (data.success) {
-    alert("Request sent successfully");
-  }
 
   return (
     <div className="box">

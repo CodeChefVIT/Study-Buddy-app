@@ -23,7 +23,7 @@ const JoinStudyGrp = () => {
     }
   }, []);
 
-  useEffect(() => {
+  const response = useEffect(() => {
     fetch(
       `https://study-buddy-app-production.up.railway.app/api/v1/groups?limit=5000`,
       {
@@ -34,7 +34,7 @@ const JoinStudyGrp = () => {
         },
       }
     )
-      .then((response) => response.json())
+      .then((res) => res.json())
       .then(({ groups }) => setGroups(groups));
   }, []);
 
