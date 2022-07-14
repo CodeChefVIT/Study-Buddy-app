@@ -11,5 +11,4 @@ router.use('/user', userRoute)
 router.use('/feedback', feedbackRoute)
 router.use('/groups', groupsRoute)
 
-
 module.exports = router

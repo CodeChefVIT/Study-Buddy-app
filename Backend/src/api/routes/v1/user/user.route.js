@@ -40,7 +40,7 @@ const schema = {
   }),
   reset: Joi.object({
     password: Joi.string().required(),
-    confirm: Joi.string().required(),
+    confirm: Joi.string().required()
   })
 }
 

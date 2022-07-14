@@ -9,6 +9,7 @@ const User = require('../src/api/models/User.model')
 const chai = require('chai')
 const chaiHttp = require('chai-http')
 const server = require('../src/index')
+const path = require('path')
 
 chai.should()
 chai.use(chaiHttp)
@@ -332,7 +333,7 @@ describe('/GET /api/v1/user/verify/:id/:hash', () => {
     res.should.have.status(200)
   })
 })
-
+let token
 /*
     * Test for Login route
 */
@@ -472,6 +473,7 @@ describe('/POST /api/v1/user/login', () => {
         res.body.success.should.be.a('boolean')
         res.body.success.should.equal(true)
         res.body.message.should.equal('Login successful')
+        token = res.body.token
         done()
       })
   })
@@ -633,45 +635,32 @@ describe('/GET /api/v1/user/', () => {
       })
   })
   it('Success', (done) => {
-    const user = {
-      email: 'studybuddycc@gmail.com',
-      password: 'test'
-    }
     // save token to variable
     chai.request(server)
-      .post('/api/v1/user/login')
-      .send(user)
+      .get('/api/v1/user/')
+      .set('x-access-token', token)
       .end((err, res) => {
         if (err) {
           console.log(err.stack)
         }
-        const token = res.body.token
-        chai.request(server)
-          .get('/api/v1/user/')
-          .set('x-access-token', token)
-          .end((err, res) => {
-            if (err) {
-              console.log(err.stack)
-            }
-            res.should.have.status(200)
-            res.body.should.be.a('object')
-            res.body.should.have.property('success')
-            res.body.success.should.be.a('boolean')
-            res.body.should.have.property('data')
-            res.body.data.should.be.a('object')
-            res.body.data.should.have.property('email')
-            res.body.data.should.have.property('name')
-            res.body.data.should.have.property('_id')
-            res.body.data.should.have.property('isVerified')
-            res.body.data.should.have.property('regno')
-            res.body.data.should.have.property('avatar')
-            res.body.data.should.have.property('graduatingYear')
-            res.body.data.should.have.property('bio')
-            res.body.data.should.have.property('createdAt')
-            res.body.data.should.have.property('updatedAt')
-            res.body.success.should.equal(true)
-            done()
-          })
+        res.should.have.status(200)
+        res.body.should.be.a('object')
+        res.body.should.have.property('success')
+        res.body.success.should.be.a('boolean')
+        res.body.should.have.property('data')
+        res.body.data.should.be.a('object')
+        res.body.data.should.have.property('email')
+        res.body.data.should.have.property('name')
+        res.body.data.should.have.property('_id')
+        res.body.data.should.have.property('isVerified')
+        res.body.data.should.have.property('regno')
+        res.body.data.should.have.property('avatar')
+        res.body.data.should.have.property('graduatingYear')
+        res.body.data.should.have.property('bio')
+        res.body.data.should.have.property('createdAt')
+        res.body.data.should.have.property('updatedAt')
+        res.body.success.should.equal(true)
+        done()
       })
   })
 })
@@ -769,7 +758,6 @@ describe('/POST /api/v1/user/forgotPassword', () => {
 let id
 let hash
 describe('/GET /api/v1/user/reset/:id/:hash', () => {
-
   before(async () => {
     const user = await User.findOne({ email: 'studybuddycc2@gmail.com' })
     id = user._id.toString()
@@ -782,7 +770,6 @@ describe('/GET /api/v1/user/reset/:id/:hash', () => {
         if (err) {
           console.log(err.stack)
         }
-        console.log(res.body)
         res.should.have.status(422)
         res.body.should.be.a('object')
         res.body.should.have.property('error')
@@ -908,6 +895,101 @@ describe('/POST /api/v1/user/reset/:id/:hash', () => {
         res.body.should.have.property('message')
         res.body.message.should.be.a('string')
         res.body.message.should.equal('Password reset successful')
+        done()
+      })
+  })
+})
+
+/*
+  * Test for Edit User
+*/
+describe('/PATCH /api/v1/user/edit', () => {
+  it('no token provided', (done) => {
+    chai.request(server)
+      .patch('/api/v1/user/edit')
+      .send({
+        name: 'test'
+      })
+      .end((err, res) => {
+        if (err) {
+          console.log(err.stack)
+        }
+        res.should.have.status(401)
+        res.body.should.be.a('object')
+        res.body.should.have.property('error')
+        res.body.should.have.property('success')
+        res.body.error.should.be.a('string')
+        res.body.success.should.be.a('boolean')
+        res.body.success.should.equal(false)
+        res.body.error.should.equal('No token provided.')
+        done()
+      })
+  })
+  it('Success [Name]', (done) => {
+    chai.request(server)
+      .patch('/api/v1/user/edit')
+      .set('x-access-token', token)
+      .field('Content-Type', 'multipart/form-data')
+      .field('name', 'Anuj Parihar')
+      .end((err, res) => {
+        if (err) {
+          console.log(err.stack)
+        }
+        res.should.have.status(200)
+        res.body.should.be.a('object')
+        res.body.should.have.property('success')
+        res.body.success.should.be.a('boolean')
+        res.body.success.should.equal(true)
+        res.body.should.have.property('message')
+        res.body.should.have.property('data')
+        res.body.message.should.be.a('string')
+        res.body.message.should.equal('User updated')
+        done()
+      })
+  })
+  it('Success [Avatar]', (done) => {
+    chai.request(server)
+      .patch('/api/v1/user/edit')
+      .set('x-access-token', token)
+      .field('Content-Type', 'multipart/form-data')
+      .attach('avatar', path.resolve(__dirname, 'test.png'))
+      .end((err, res) => {
+        if (err) {
+          console.log(err.stack)
+        }
+        res.should.have.status(200)
+        res.body.should.be.a('object')
+        res.body.should.have.property('success')
+        res.body.success.should.be.a('boolean')
+        res.body.success.should.equal(true)
+        res.body.should.have.property('message')
+        res.body.should.have.property('data')
+        res.body.message.should.be.a('string')
+        res.body.message.should.equal('User updated')
+        done()
+      })
+  })
+  it('Success [Change Pass]', (done) => {
+    chai.request(server)
+      .patch('/api/v1/user/edit')
+      .set('x-access-token', token)
+      .field('Content-Type', 'multipart/form-data')
+      .field('oldPass', 'test')
+      .field('newPass', 'test')
+      .field('confirmPass', 'test')
+      .end((err, res) => {
+        if (err) {
+          console.log(err.stack)
+        }
+        res.should.have.status(200)
+        res.body.should.be.a('object')
+        res.body.should.have.property('success')
+        res.body.success.should.be.a('boolean')
+        res.body.success.should.equal(true)
+        res.body.should.have.property('message')
+        res.body.should.have.property('data')
+        res.body.message.should.be.a('string')
+        res.body.message.should.equal('Password updated')
         done()
       })
   })

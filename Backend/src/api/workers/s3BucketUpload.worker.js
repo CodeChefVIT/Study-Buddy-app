@@ -6,6 +6,13 @@ const s3 = new AWS.S3({
 })
 
 const upload = async (id, buffer, originalname) => {
+  if (process.NODE_ENV === 'test') {
+    const data = {
+      Location: 'this worked',
+      name: originalname
+    }
+    return data
+  }
   try {
     // check if image
     const fileType = buffer.toString('hex', 0, 4).toLowerCase()

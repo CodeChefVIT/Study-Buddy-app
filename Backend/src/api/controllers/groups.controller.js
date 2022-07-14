@@ -182,9 +182,9 @@ exports.getGroup = async (req, res) => {
   try {
     let group = await Groups.findById(req.params.id)
     if (!group) {
-      return res.status(400).json({
+      return res.status(404).json({
         success: false,
-        message: 'Group does not exist'
+        error: 'Group does not exist'
       })
     }
     group = Object.assign({}, group.toObject(), { isAdmin: false })
@@ -192,6 +192,11 @@ exports.getGroup = async (req, res) => {
       group.isAdmin = true
     } else {
       group.requests = undefined
+    }
+    const adminName = await User.findById(group.admin)
+    group.admin = {
+      id: group.admin,
+      name: adminName.name
     }
     let DaysLeft = 0
     for (let i = 0; i < group.modules; i++) {
@@ -206,7 +211,7 @@ exports.getGroup = async (req, res) => {
       group.quizes = undefined
       group.modules = undefined
     }
-    
+
     // add member names to group
     if (group.members) {
       for (let i = 0; i < group.members.length; i++) {
@@ -215,6 +220,7 @@ exports.getGroup = async (req, res) => {
           name: user.name,
           id: user.id,
           major: user.major,
+          regno: user.regno,
           avatar: user.avatar
         }
       }
@@ -245,19 +251,19 @@ exports.acceptRequest = async (req, res) => {
   try {
     const groupObj = await Groups.findById(group)
     if (!groupObj) {
-      return res.status(400).json({
+      return res.status(404).json({
         success: false,
         error: 'Group does not exist'
       })
     }
     const userObj = await User.findById(user)
-    if (!userObj) { return res.status(400).json({ success: false, error: 'User does not exist' }) }
+    if (!userObj) { return res.status(404).json({ success: false, error: 'User does not exist' }) }
 
-    if (groupObj.members.toString().includes(userObj._id)) { return res.status(400).json({ success: false, error: 'User is already in group' }) }
+    if (groupObj.members.toString().includes(userObj._id)) { return res.status(409).json({ success: false, error: 'User is already in group' }) }
 
-    if (groupObj.admin.toString() !== req.user.id) { return res.status(400).json({ success: false, error: 'User is not admin' }) }
+    if (groupObj.admin.toString() !== req.user.id) { return res.status(401).json({ success: false, error: 'User is not admin' }) }
 
-    if (!groupObj.requests.toString().includes(userObj._id)) { return res.status(400).json({ success: false, error: 'User has not requested to join group' }) }
+    if (!groupObj.requests.toString().includes(userObj._id)) { return res.status(409).json({ success: false, error: 'User has not requested to join group' }) }
 
     groupObj.members.push(userObj._id)
     groupObj.requests = groupObj.requests.filter(id => id.toString() !== userObj._id.toString())
@@ -287,28 +293,28 @@ exports.rejectRequest = async (req, res) => {
   try {
     const groupObj = await Groups.findById(group)
     if (!groupObj) {
-      return res.status(400).json({
+      return res.status(404).json({
         success: false,
-        message: 'Group does not exist'
+        error: 'Group does not exist'
       })
     }
     const userObj = await User.findById(user)
     if (!userObj) {
-      return res.status(400).json({
+      return res.status(404).json({
         success: false,
-        message: 'User does not exist'
+        error: 'User does not exist'
       })
     }
     if (groupObj.admin.toString() !== req.user.id) {
-      return res.status(400).json({
+      return res.status(401).json({
         success: false,
-        message: 'User is not admin'
+        error: 'User is not admin'
       })
     }
     if (!groupObj.requests.includes(userObj._id)) {
-      return res.status(400).json({
+      return res.status(409).json({
         success: false,
-        message: 'User has not requested to join group'
+        error: 'User has not requested to join group'
       })
     }
     groupObj.requests = groupObj.requests.filter(request => request.toString() !== userObj._id.toString())
@@ -320,7 +326,7 @@ exports.rejectRequest = async (req, res) => {
     })
   } catch (err) {
     console.log(err)
-    return res.status(500).json({ success: false, message: 'Some Internal Error Occurred' })
+    return res.status(500).json({ success: false, error: 'Some Internal Error Occurred' })
   }
 }
 /*
@@ -352,7 +358,7 @@ exports.getRequests = async (req, res) => {
     let user
     for (let i = 0; i < groupObj.requests.length; i++) {
       user = await User.findById(groupObj.requests[i])
-      
+
       arr.push({
         id: user._id,
         user: user.name,

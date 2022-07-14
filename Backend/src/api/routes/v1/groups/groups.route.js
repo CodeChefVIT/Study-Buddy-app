@@ -25,15 +25,15 @@ const schema = {
     })
   }),
   getGroup: Joi.object({
-    id: Joi.string().required()
+    id: Joi.string().required().regex(/^[0-9a-fA-F]{24}$/)
   }),
   Request: Joi.object({
-    group: Joi.string().required(),
-    user: Joi.string().required()
+    group: Joi.string().required().regex(/^[0-9a-fA-F]{24}$/),
+    user: Joi.string().required().regex(/^[0-9a-fA-F]{24}$/)
   }),
 
   getQuiz: Joi.object({
-    id: Joi.string().required()
+    id: Joi.string().required().regex(/^[0-9a-fA-F]{24}$/)
   }),
   createQuiz: Joi.object({
     // group: Joi.string().required(),
@@ -52,10 +52,10 @@ const schema = {
     })
   }),
   getQuizScore: Joi.object({
-    id: Joi.string().required()
+    id: Joi.string().required().regex(/^[0-9a-fA-F]{24}$/)
   }),
   deleteQuiz: Joi.object({
-    id: Joi.string().required()
+    id: Joi.string().required().regex(/^[0-9a-fA-F]{24}$/)
   })
 
 }
@@ -63,8 +63,10 @@ const schema = {
 router.post('/new', authorise, validate(schema.createGroup, 'body'), groups.createGroup)
 router.get('/', authorise, validate(schema.getAllGroups, 'query'), groups.getAllGroups)
 router.get('/request/:inviteCode', authorise, validate(schema.requestGroup, 'params'), groups.requestGroup)
+
 router.get('/user', authorise, groups.getUserGroups)
 router.get('/:id', authorise, validate(schema.getGroup, 'params'), groups.getGroup)
+
 router.get('/:group/request', authorise, groups.getRequests)
 router.get('/request/accept/:group/:user', authorise, validate(schema.Request, 'params'), groups.acceptRequest)
 router.get('/request/reject/:group/:user', authorise, validate(schema.Request, 'params'), groups.rejectRequest)

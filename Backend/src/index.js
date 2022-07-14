@@ -63,6 +63,11 @@ app.use(function (err, req, res, next) {
 
 app.use('/api/v1/', routes)
 
+// // redirect if no other route is hit
+// app.use((req, res) => {
+//   res.redirect('https://www.google.com')
+// })
+
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`)
