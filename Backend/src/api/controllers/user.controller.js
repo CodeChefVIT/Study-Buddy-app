@@ -1,9 +1,11 @@
+require('dotenv').config()
 const { join } = require('path')
 const User = require(join(__dirname, '..', 'models', 'User.model'))
 const jwt = require('jsonwebtoken')
+const multer = require('multer')
 const bcrypt = require('bcryptjs')
 const sendEmail = require(join(__dirname, '..', 'workers', 'sendEmail.worker'))
-
+const s3Upload = require(join(__dirname, '..', 'workers', 's3BucketUpload.worker'))
 const jwtsecret = process.env.SECRET_JWT || 'secret123'
 const expiresIn = process.env.JWT_EXPIRES_IN || '7d'
 
@@ -27,17 +29,23 @@ const createToken = (id, email, name) => {
   Query: None
   Params: None
   Body [Required]: name, email, password, confirm
-  Body [Optional]: avatar, graduatingYear, major, bio
+  Body [Optional]: graduatingYear, major, bio
   Returns: Success Message
 */
 exports.signup = async (req, res) => {
-  const { name, email, password, confirm, avatar, regno, graduatingYear, major, bio } = req.body
+  const { name, email, password, confirm, regno, graduatingYear, major, bio } = req.body
   try {
+    if (!(password === confirm)) {
+      return res.status(422).json({
+        success: false,
+        error: 'Passwords do not match'
+      })
+    }
     const user = await User.findOne({ email })
     if (user) {
-      return res.status(400).json({
+      return res.status(409).json({
         success: false,
-        message: 'User already exists'
+        error: 'Email already exists'
       })
     }
     // email verification hash
@@ -48,19 +56,12 @@ exports.signup = async (req, res) => {
       regno,
       password,
       confirm,
-      avatar,
       graduatingYear,
       major,
       bio,
       hash
     })
     const salt = await bcrypt.genSalt(10)
-    if (!(password === confirm)) {
-      return res.status(400).json({
-        success: false,
-        message: 'Passwords do not match'
-      })
-    }
     newUser.password = await bcrypt.hash(newUser.password, salt)
     const link = 'http://' + req.get('host') + '/api/v1/user/verify/' + newUser.id + '/' + hash
     await sendEmail(email, 'Verify Your Email', `Verify your email at ${link}`)
@@ -73,7 +74,7 @@ exports.signup = async (req, res) => {
     console.log(error)
     return res.status(500).json({
       success: false,
-      message: 'Server error'
+      error: 'Server error'
     })
   }
 }
@@ -89,24 +90,24 @@ exports.signup = async (req, res) => {
 exports.login = async (req, res) => {
   const { email, password } = req.body
   try {
-    const user = await User.findOne({ email: email })
+    const user = await User.findOne({ email })
     if (!user) {
-      return res.status(400).json({
+      return res.status(404).json({
         success: false,
-        message: 'User does not exist'
+        error: 'User does not exist'
       })
     }
     if (!user.isVerified) {
-      return res.status(400).json({
+      return res.status(401).json({
         success: false,
-        message: 'User is not verified, Please check email'
+        error: 'User is not verified, Please check email'
       })
     }
     const isMatch = await bcrypt.compare(password, user.password)
     if (!isMatch) {
-      return res.status(400).json({
+      return res.status(401).json({
         success: false,
-        message: 'Incorrect password'
+        error: 'Incorrect password'
       })
     }
     const token = createToken(user.id, user.email, user.name)
@@ -119,7 +120,135 @@ exports.login = async (req, res) => {
     console.log(error)
     return res.status(500).json({
       success: false,
-      message: 'Server error'
+      error: 'Server error'
+    })
+  }
+}
+
+/*
+  Type: POST
+  Desc: Forgot Password
+  Auth: None
+  Query: None
+  Params: None
+  Body: email
+  Returns: Success Message
+*/
+exports.forgotPassword = async (req, res) => {
+  const { email } = req.body
+  try {
+    const user = await User.findOne({ email })
+    if (!user) {
+      return res.status(409).json({
+        success: false,
+        error: 'User not found'
+      })
+    }
+    if (!user.isVerified) {
+      return res.status(401).json({
+        success: false,
+        error: 'User is not verified, Resend Verification email instead?'
+      })
+    }
+    const hash = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+    user.hash = hash
+    await user.save()
+    const link = 'http://' + req.get('host') + '/api/v1/user/reset/' + user.id + '/' + hash
+    await sendEmail(email, 'Reset Password', `Reset your password at ${link}`)
+    return res.status(200).json({
+      success: true,
+      message: 'Check your email for reset link'
+    })
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({
+      success: false,
+      error: 'Server error'
+    })
+  }
+}
+
+/*
+  Type: GET
+  Desc: to verify hash
+  Auth: None
+  Query: None
+  Params: id, hash
+  Body: None
+*/
+exports.verifyhash = async (req, res) => {
+  const { id, hash } = req.params
+  try {
+    const user = await User.findOne({ id })
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        error: 'User not found'
+      })
+    }
+    if (user.hash !== hash) {
+      return res.status(401).json({
+        success: false,
+        error: 'Invalid link'
+      })
+    }
+    return res.status(200).json({
+      success: true,
+      message: 'Reset link is valid',
+      email: user.email
+    })
+  } catch (err) {
+    console.log(err)
+    return res.status(500).json({
+      success: false,
+      error: 'Server error'
+    })
+  }
+}
+
+/*
+  Type: POST
+  Desc: to reset password
+  Auth: None
+  Query: None
+  Params: id, hash
+  Body: password, confirm
+*/
+exports.resetPassword = async (req, res) => {
+  const { password, confirm } = req.body
+  const { id, hash } = req.params
+  try {
+    const user = await User.findOne({ id })
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        error: 'User not found'
+      })
+    }
+    if (user.hash !== hash) {
+      return res.status(401).json({
+        success: false,
+        error: 'Invalid link'
+      })
+    }
+    if (!(password === confirm)) {
+      return res.status(422).json({
+        success: false,
+        error: 'Password do not match'
+      })
+    }
+    const salt = await bcrypt.genSalt(10)
+    user.password = await bcrypt.hash(password, salt)
+    await user.save()
+    return res.status(200).json({
+      success: true,
+      message: 'Password reset successful'
+    })
+  } catch (err) {
+    console.log(err)
+    return res.status(500).json({
+      success: false,
+      error: 'Server error'
     })
   }
 }
@@ -139,27 +268,29 @@ exports.verify = async (req, res) => {
   try {
     const user = await User.findById(id)
     if (!user) {
-      return res.status(400).json({
+      return res.status(409).json({
         success: false,
-        message: 'User does not exist'
+        error: 'User not found'
       })
     }
     if (user.isVerified) {
-      return res.status(400).json({
-        success: false,
-        message: 'User is already verified'
-      })
+      // return res.status(409).json({
+      //   success: false,
+      //   error: 'User is already verified'
+      // })
+      return res.redirect(process.env.FRONTEND_URL + '/login')
     }
     user.isVerified = true
-    if (user.hash !== hash) { return res.status(400).json({ message: "Hash doesn't match" }) }
+    if (user.hash !== hash) { return res.status(401).json({ success: false, error: "Hash doesn't match" }) }
 
     await user.save()
     // redirect
-    return res.redirect('https://studybuddy.com/')
+    return res.redirect(process.env.FRONTEND_URL + '/login')
   } catch (error) {
     console.log(error)
     return res.status(500).json({
-      message: 'Server error'
+      success: false,
+      error: 'Server error'
     })
   }
 }
@@ -176,17 +307,17 @@ exports.verify = async (req, res) => {
 exports.resend = async (req, res) => {
   const { email } = req.body
   try {
-    const user = await User.findOne({ email: email })
+    const user = await User.findOne({ email })
     if (!user) {
-      return res.status(400).json({
+      return res.status(404).json({
         success: false,
-        message: 'User does not exist'
+        error: 'User does not exist'
       })
     }
     if (user.isVerified) {
-      return res.status(400).json({
+      return res.status(409).json({
         success: false,
-        message: 'User is already verified'
+        error: 'User is already verified'
       })
     }
     const hash = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
@@ -195,7 +326,6 @@ exports.resend = async (req, res) => {
 
     const link = 'http://' + req.get('host') + '/api/v1/user/verify/' + user.id + '/' + hash
     await sendEmail(email, 'Verify Your Email', `Verify your email at ${link}`)
-    console.log(link)
     return res.json({
       success: true,
       message: 'Verification Email Sent'
@@ -204,7 +334,7 @@ exports.resend = async (req, res) => {
     console.log(error)
     return res.status(500).json({
       success: false,
-      message: 'Server error'
+      error: 'Server error'
     })
   }
 }
@@ -215,70 +345,81 @@ exports.resend = async (req, res) => {
 */
 
 exports.edit = async (req, res) => {
-  const { name, email, avatar, currentPassword, password, regno, confirmPassword, graduatingYear, major, bio } = req.body
-  try {
-    const user = await User.findById(req.user.id)
-    if (name || bio || regno || avatar || graduatingYear || major) {
-      if (name) {
-        user.name = name
-      }
-      if (bio) {
-        user.bio = bio
-      }
-      if (avatar) {
-        user.avatar = avatar
-      }
-      if (graduatingYear) {
-        user.graduatingYear = graduatingYear
-      }
-      if (major) {
-        user.major = major
-      }
-      if (regno) {
-        user.regno = regno
-      }
-      await user.save()
-      return res.status(200).json({
-        message: 'User updated'
-      })
-    }
-    const isMatch = await bcrypt.compare(currentPassword, user.password)
-    if (!isMatch) {
-      return res.status(400).json({
-        success: false,
-        message: 'Incorrect password'
-      })
-    }
-    if (!user) {
-      return res.status(400).json({
-        success: false,
-        message: 'User does not exist'
-      })
-    }
-    if (email) user.email = email
-
-    if (password) {
-      if (password !== confirmPassword) {
+  multer({
+    storage: multer.memoryStorage()
+  }).single('avatar')(req, res, async (err) => {
+    const { name, bio } = req.body
+    const { oldPass, newPass, confirmPass } = req.body
+    try {
+      if (err) return res.status(400).json({ error: err.message })
+      const user = await User.findById(req.user.id)
+      if (!user) {
         return res.status(400).json({
           success: false,
-          message: 'Passwords do not match'
+          message: 'User does not exist'
         })
       }
-      const salt = await bcrypt.genSalt(10)
-      user.password = await bcrypt.hash(req.body.password, salt)
+      if (name || bio || req.file) {
+        if (name) {
+          user.name = name
+        }
+        if (bio) {
+          user.bio = bio
+        }
+        if (req.file) {
+          const { originalname, buffer } = req.file
+          const data = await s3Upload(req.user.id, buffer, originalname)
+          if (!data) {
+            console.log('Some Error occurred here')
+          }
+          user.avatar = data.Location
+        }
+        await user.save()
+        return res.status(200).json({
+          success: true,
+          message: 'User updated',
+          data: {
+            name: user.name,
+            avatar: user.avatar,
+            bio: user.bio
+          }
+        })
+      }
+      const isMatch = await bcrypt.compare(oldPass, user.password)
+      if (!isMatch) {
+        return res.status(400).json({
+          success: false,
+          message: 'Incorrect password'
+        })
+      }
+      if (newPass) {
+        if (newPass !== confirmPass) {
+          return res.status(400).json({
+            success: false,
+            message: 'Passwords do not match'
+          })
+        }
+        const salt = await bcrypt.genSalt(10)
+        user.password = await bcrypt.hash(newPass, salt)
+      }
+      await user.save()
+      return res.json({
+        success: true,
+        message: 'Password updated',
+        data: {
+          name: user.name,
+          avatar: user.avatar,
+          bio: user.bio
+        }
+      })
+    } catch (error) {
+      console.log(error)
+      return res.status(500).json({
+        success: false,
+        message: 'Server error'
+      })
     }
-    await user.save()
-    return res.json({
-      success: true,
-      message: 'User updated'
-    })
-  } catch (error) {
-    console.log(error)
-    return res.status(500).json({
-      success: false,
-      message: 'Server error'
-    })
-  }
+  })
 }
 
 /*
@@ -313,3 +454,5 @@ exports.get = async (req, res) => {
     })
   }
 }
+
+// ! TO DO reset password

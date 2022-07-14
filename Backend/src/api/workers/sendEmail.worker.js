@@ -13,13 +13,14 @@ const sendEmail = async (email, subject, text) => {
       }
     })
 
-    await transporter.sendMail({
-      from: 'StudyBuddy CodeChef VIT <no-reply@studybuddy.cc>',
-      to: email,
-      subject: subject,
-      text: text
-    })
-    console.log('email sent sucessfully')
+    if (process.env.NODE_ENV !== 'test') {
+      await transporter.sendMail({
+        from: 'StudyBuddy CodeChef VIT <no-reply@studybuddy.cc>',
+        to: email,
+        subject,
+        text
+      })
+    }
   } catch (error) {
     console.log('email not sent')
     console.log(error)
