@@ -29,7 +29,7 @@ const ViewQuiz = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`https://study-buddy-app-production.up.railway.app/api/v1${path}`, {
+    fetch(`${process.env.REACT_APP_URL}${path}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

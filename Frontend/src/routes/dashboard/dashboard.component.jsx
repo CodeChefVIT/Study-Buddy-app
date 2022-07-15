@@ -7,7 +7,6 @@ import DashCard from "./../../components/dashboard-card/dashboard-card.component
 
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
-// import { padding } from "@mui/system";
 
 const Dashboard = () => {
   const [groups, setGroups] = useState([]);
@@ -21,16 +20,13 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
-    fetch(
-      "https://study-buddy-app-production.up.railway.app/api/v1/groups/user",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    )
+    fetch(`${process.env.REACT_APP_URL}/groups/user`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
       .then((response) => response.json())
       .then(({ groups }) => setGroups(groups));
     setLoading(false);

@@ -83,3 +83,11 @@
   border: none;
   cursor: pointer;
 }
+
+.invite-title {
+  font-size: 4.8rem;
+  font-weight: 500;
+  justify-content: center;
+  color: #fff;
+  margin-bottom: 42vh;
+}

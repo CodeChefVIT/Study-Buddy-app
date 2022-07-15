@@ -14,6 +14,9 @@ import Image2 from "./../../assets/send.png";
 
 import "./grpsdashboard.styles.css";
 
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
+
 const GrpDet = (props) => {
   const { group, path } = props;
   const navigate = useNavigate();
@@ -91,7 +94,7 @@ const GrpDash = () => {
   const path = usePathname();
 
   useEffect(() => {
-    fetch(`https://study-buddy-app-production.up.railway.app/api/v1${path}`, {
+    fetch(`${process.env.REACT_APP_URL}${path}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -110,7 +113,16 @@ const GrpDash = () => {
       {localStorage.getItem("token") ? <NavigationAuth /> : <Navigation />}
       <div className="groups-in">
         {loading || group.length === 0 ? (
-          <h1 className="heading-tertiary mar-b-h">Loading...</h1>
+          <Box
+            sx={{
+              display: "flex",
+              paddingBottom: "40vh",
+              justifyContent: "center",
+              paddingTop: "20vh",
+            }}
+          >
+            <CircularProgress />
+          </Box>
         ) : (
           <GrpDet group={group} path={path} />
         )}

@@ -10,18 +10,15 @@ import SearchBox from "../../components/search-box/search-box.component";
 
 import "./grpmember.styles.css";
 
-const defaultData = [
-  {
-    name: "Trial User",
-    id: "62cd7f7f797670990068a11f",
-  },
-];
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
 const GrpMembers = () => {
-  const [members, setMembers] = useState(defaultData);
+  const [members, setMembers] = useState([]);
   const navigate = useNavigate();
   const [searchField, setSearchField] = useState("");
-  const [filteredMembers, setFilteredMembers] = useState(defaultData);
+  const [filteredMembers, setFilteredMembers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!localStorage.getItem("token")) {
@@ -38,18 +35,16 @@ const GrpMembers = () => {
   const groupId = pathArr[0];
 
   useEffect(() => {
-    fetch(
-      `https://study-buddy-app-production.up.railway.app/api/v1${groupId}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    )
+    fetch(`${process.env.REACT_APP_URL}${groupId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
       .then((response) => response.json())
       .then(({ group }) => setMembers(group.members));
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -76,10 +71,22 @@ const GrpMembers = () => {
           />
         </div>
         <div className="grp-mem-container">
-          {filteredMembers &&
+          {loading || filteredMembers.length === 0 ? (
+            <Box
+              sx={{
+                display: "flex",
+                paddingBottom: "10.8rem",
+                justifyContent: "center",
+                paddingTop: "20vh",
+              }}
+            >
+              <CircularProgress />
+            </Box>
+          ) : (
             filteredMembers.map((member) => {
               return <GrpMemberCard key={member.id} member={member} />;
-            })}
+            })
+          )}
         </div>
       </section>
       <Footer />

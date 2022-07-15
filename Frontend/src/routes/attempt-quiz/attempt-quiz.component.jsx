@@ -38,16 +38,13 @@ const AttemptQuiz = () => {
   console.log(QuizId);
 
   useEffect(() => {
-    fetch(
-      `https://study-buddy-app-production.up.railway.app/api/v1/groups/quiz/${QuizId}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    )
+    fetch(`${process.env.REACT_APP_URL}/groups/quiz/${QuizId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
       .then((response) => response.json())
       .then(({ questions }) => setQuestions(questions));
   }, []);

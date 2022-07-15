@@ -28,16 +28,13 @@ const JoinStudyGrp = () => {
   }, []);
 
   const response = useEffect(() => {
-    fetch(
-      `https://study-buddy-app-production.up.railway.app/api/v1/groups?limit=5000`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    )
+    fetch(`${process.env.REACT_APP_URL}/groups?limit=5000`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
       .then((res) => res.json())
       .then(({ groups }) => setGroups(groups));
     setLoading(false);

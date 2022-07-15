@@ -2,22 +2,22 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import Alert from "@mui/material/Alert";
+import Stack from "@mui/material/Stack";
+
 const JoinGrpCard = ({ group }) => {
   const { inviteCode, name, subject, members } = group;
   const [data, setData] = useState([]);
   const navigate = useNavigate();
 
   const navigateSendReq = () => {
-    fetch(
-      `https://study-buddy-app-production.up.railway.app/api/v1/groups/request/${inviteCode}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    )
+    fetch(`${process.env.REACT_APP_URL}/groups/request/${inviteCode}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
       .then((response) => {
         if (response.status === 200) {
           navigate(`/dashboard`);

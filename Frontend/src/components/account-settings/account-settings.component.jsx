@@ -12,15 +12,12 @@ const AccSet = () => {
 
   useEffect(() => {
     const getProfileDet = async () => {
-      const responseGet = await fetch(
-        `https://study-buddy-app-production.up.railway.app/api/v1/user/`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      )
+      const responseGet = await fetch(`${process.env.REACT_APP_URL}/user/`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
         .then((response) => response.json())
         .then(({ data }) => setUrl(data.avatar));
     };
@@ -39,16 +36,13 @@ const AccSet = () => {
       console.log(key[0] + ", " + key[1]);
     }
 
-    const response = await fetch(
-      `https://study-buddy-app-production.up.railway.app/api/v1/user/edit`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: defaultForm,
-      }
-    );
+    const response = await fetch(`${process.env.REACT_APP_URL}/user/edit`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: defaultForm,
+    });
     console.log(response);
 
     if (response.status === 200) {

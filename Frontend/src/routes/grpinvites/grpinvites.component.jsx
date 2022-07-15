@@ -9,16 +9,13 @@ import Footer from "./../footer/footer.component";
 
 import "./grpinvites.styles.css";
 
-const defaultData = [
-  {
-    user: "Trial User",
-    regno: "21BCE0021",
-  },
-];
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
 const GrpInvites = () => {
-  const [members, setMembers] = useState(defaultData);
+  const [members, setMembers] = useState([]);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!localStorage.getItem("token")) {
@@ -33,7 +30,7 @@ const GrpInvites = () => {
   const path = usePathname();
 
   useEffect(() => {
-    fetch(`https://study-buddy-app-production.up.railway.app/api/v1${path}`, {
+    fetch(`${process.env.REACT_APP_URL}${path}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -42,6 +39,7 @@ const GrpInvites = () => {
     })
       .then((response) => response.json())
       .then(({ requests }) => setMembers(requests));
+    setLoading(false);
   }, []);
 
   console.log(members);
@@ -51,10 +49,24 @@ const GrpInvites = () => {
       {localStorage.getItem("token") ? <NavigationAuth /> : <Navigation />}
       <section className="groups-member">
         <div className="grp-mem-container">
-          {members &&
+          {loading ? (
+            <Box
+              sx={{
+                display: "flex",
+                paddingBottom: "10.8rem",
+                justifyContent: "center",
+                paddingTop: "20vh",
+              }}
+            >
+              <CircularProgress />
+            </Box>
+          ) : members.length === 0 ? (
+            <h1 className="invite-title">Sorry there are no requests </h1>
+          ) : (
             members.map((member) => {
               return <GrpInviteCard key={member.id} member={member} />;
-            })}
+            })
+          )}
         </div>
       </section>
       <Footer />

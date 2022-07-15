@@ -2,7 +2,6 @@
 
 const GrpMemberCard = ({ member }) => {
   const { name, major, avatar } = member;
-  console.log(member);
 
   return (
     <div className="mem-box mar-b-2">

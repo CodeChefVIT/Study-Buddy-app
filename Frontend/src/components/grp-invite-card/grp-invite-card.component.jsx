@@ -16,7 +16,7 @@ const GrpInviteCard = ({ member }) => {
 
   const handleAccept = () => {
     fetch(
-      `https://study-buddy-app-production.up.railway.app/api/v1/groups/request/accept/${arr[2]}/${id}`,
+      `${process.env.REACT_APP_URL}/groups/request/accept/${arr[2]}/${id}`,
       {
         method: "GET",
         headers: {
@@ -34,7 +34,7 @@ const GrpInviteCard = ({ member }) => {
 
   const handleReject = () => {
     fetch(
-      `https://study-buddy-app-production.up.railway.app/api/v1/groups/request/reject/${arr[2]}/${id}`,
+      `${process.env.REACT_APP_URL}/groups/request/reject/${arr[2]}/${id}`,
       {
         method: "GET",
         headers: {
