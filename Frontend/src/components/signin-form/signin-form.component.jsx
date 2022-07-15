@@ -86,7 +86,7 @@ const SigninForm = () => {
           />
           <p className="para-primary align-l">
             Forgot Password? &nbsp;
-            <Link to="/" className="log-nav-link">
+            <Link to="/user/forgotPassword" className="log-nav-link">
               Reset Password
             </Link>
           </p>

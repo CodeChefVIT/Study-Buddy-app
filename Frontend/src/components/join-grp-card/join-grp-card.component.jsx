@@ -8,6 +8,8 @@ import Stack from "@mui/material/Stack";
 const JoinGrpCard = ({ group }) => {
   const { inviteCode, name, subject, members } = group;
   const [data, setData] = useState([]);
+  // const { error, SetError } = useState(false);
+  // const { alertMsg, setAlertMsg } = useState("");
   const navigate = useNavigate();
 
   const navigateSendReq = () => {
@@ -22,6 +24,8 @@ const JoinGrpCard = ({ group }) => {
         if (response.status === 200) {
           navigate(`/dashboard`);
         } else {
+          // SetError(true);
+          // setAlertMsg("Request already sent");
           alert("Request already sent");
         }
       })
@@ -30,6 +34,14 @@ const JoinGrpCard = ({ group }) => {
         navigate(`/dashboard`);
       });
   };
+
+  // if (error) {
+  //   return (
+  //     <Stack sx={{ width: "100%" }} spacing={2}>
+  //       <Alert severity="error">Request already sent</Alert>
+  //     </Stack>
+  //   );
+  // }
 
   return (
     <div className="box">

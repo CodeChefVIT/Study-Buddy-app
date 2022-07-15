@@ -11,9 +11,13 @@ import SearchBox from "../../components/search-box/search-box.component";
 
 import "./view-quizes.styles.css";
 
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
+
 const ViewQuiz = () => {
   const navigate = useNavigate();
   const [quizes, setQuizes] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const usePathname = () => {
     const location = useLocation();
@@ -38,6 +42,7 @@ const ViewQuiz = () => {
     })
       .then((response) => response.json())
       .then(({ data }) => setQuizes(data));
+    setLoading(false);
   }, []);
 
   return (
@@ -48,10 +53,24 @@ const ViewQuiz = () => {
           <h1 className="heading-primary-sm">Find Quizes</h1>
         </div>
         <div className="quiz-container">
-          {quizes &&
+          {loading ? (
+            <Box
+              sx={{
+                display: "flex",
+                paddingBottom: "10.8rem",
+                justifyContent: "center",
+                paddingTop: "20vh",
+              }}
+            >
+              <CircularProgress />
+            </Box>
+          ) : !quizes ? (
+            <h1 className="invite-title">Sorry there are no quizes</h1>
+          ) : (
             quizes.map((quiz) => {
               return <ViewQuizesCard key={quiz.id} quiz={quiz} />;
-            })}
+            })
+          )}
         </div>
       </section>
       <Footer />

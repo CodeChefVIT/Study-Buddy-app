@@ -14,6 +14,8 @@ import GrpMembers from "./routes/grpmember/grpmember.component";
 import CreateQuiz from "./routes/createquiz/createquiz.component";
 import ViewQuizes from "./routes/view-quizes/view-quizes.component";
 import AttemptQuiz from "./routes/attempt-quiz/attempt-quiz.component";
+import ForgotPass from "./routes/forgotPass/forgotpass.component";
+import ResetPassEmail from "./routes/reset-password/reset-password.component";
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
         <Route index element={<Home />} />
         <Route path="signup" element={<Signup />} />
         <Route path="login" element={<Signin />} />
+        <Route path="user/forgotPassword" element={<ForgotPass />} />
+        <Route path="user/reset/:id/:id" element={<ResetPassEmail />} />
       </Route>
       <Route path="dashboard" element={<Dashboard />} />
       <Route path="create-study-grp" element={<CreateStudyGrp />} />
