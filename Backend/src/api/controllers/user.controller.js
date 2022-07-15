@@ -153,7 +153,7 @@ exports.forgotPassword = async (req, res) => {
     const hash = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
     user.hash = hash
     await user.save()
-    const link = 'http://' + req.get('host') + '/api/v1/user/reset/' + user.id + '/' + hash
+    const link = 'https://' + process.env.FRONTEND_URL + '/user/reset/' + user.id + '/' + hash
     await sendEmail(email, 'Reset Password', `Reset your password at ${link}`)
     return res.status(200).json({
       success: true,
