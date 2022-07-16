@@ -28,6 +28,8 @@ const ForgotPassForm = () => {
 
     console.log(formFields);
 
+    console.log(`${process.env.REACT_APP_URL}/user/forgotPassword`);
+
     const response = await fetch(
       `${process.env.REACT_APP_URL}/user/forgotPassword`,
       {
