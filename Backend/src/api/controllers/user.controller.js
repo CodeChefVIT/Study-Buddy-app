@@ -8,6 +8,7 @@ const sendEmail = require(join(__dirname, '..', 'workers', 'sendEmail.worker'))
 const s3Upload = require(join(__dirname, '..', 'workers', 's3BucketUpload.worker'))
 const jwtsecret = process.env.SECRET_JWT || 'secret123'
 const expiresIn = process.env.JWT_EXPIRES_IN || '7d'
+const frontendURL = process.env.FRONTEND_URL
 
 const createToken = (id, email, name) => {
   return jwt.sign(
@@ -153,7 +154,7 @@ exports.forgotPassword = async (req, res) => {
     const hash = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
     user.hash = hash
     await user.save()
-    const link = 'https://' + process.env.FRONTEND_URL + '/user/reset/' + user.id + '/' + hash
+    const link = 'https://' +  + '/user/reset/' + user.id + '/' + hash
     await sendEmail(email, 'Reset Password', `Reset your password at ${link}`)
     return res.status(200).json({
       success: true,
@@ -279,14 +280,14 @@ exports.verify = async (req, res) => {
       //   success: false,
       //   error: 'User is already verified'
       // })
-      return res.redirect(process.env.FRONTEND_URL + '/login')
+      return res.redirect(frontendURL + '/login')
     }
     user.isVerified = true
     if (user.hash !== hash) { return res.status(401).json({ success: false, error: "Hash doesn't match" }) }
 
     await user.save()
     // redirect
-    return res.redirect(process.env.FRONTEND_URL + '/login')
+    return res.redirect(frontendURL + '/login')
   } catch (error) {
     console.log(error)
     return res.status(500).json({

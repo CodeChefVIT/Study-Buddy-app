@@ -91,9 +91,6 @@ exports.attemptQuiz = async (req, res) => {
   const { id } = req.params
   const { QuestionData } = req.body
   try {
-    const user = await User.findById(req.user.id)
-    if (!user) { return res.status(404).json({ success: false, error: 'User does not exist' }) }
-
     const quiz = await Quiz.findById(id)
     if (!quiz) { return res.status(404).json({ success: false, error: 'Quiz does not exist' }) }
 
