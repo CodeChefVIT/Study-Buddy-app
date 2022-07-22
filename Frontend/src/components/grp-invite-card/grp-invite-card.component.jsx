@@ -48,7 +48,7 @@ const GrpInviteCard = ({ member }) => {
   };
 
   return (
-    <div className="mem-box">
+    <div className="mem-box mar-b">
       <div className="mem-con">
         <img className="mem-img" src={Image1} alt="user icon" />
         <div>
