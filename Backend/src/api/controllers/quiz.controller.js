@@ -219,7 +219,7 @@ exports.deleteQuiz = async (req, res) => {
     return res.status(500).json({ success: false, error: 'Some Internal Error Occured' })
   }
 }
-
+ // ! here
 exports.getQuizzes = async (req, res) => {
   const { group } = req.params
   try {
@@ -228,7 +228,7 @@ exports.getQuizzes = async (req, res) => {
     const groupQuizzes = await Quiz.find({ group })
     if (!groupQuizzes) { return res.status(404).json({ success: false, error: 'No quizzes in this group' }) }
     if (groupQuizzes.length === 0) { return res.status(404).json({ success: false, error: 'No quizzes in this group' }) }
-    let obj = {}
+    let obj = []
     for (let i = 0; i < groupQuizzes.length; i++) {
       const { _id, creator, time, questions } = groupQuizzes[i]
       // filter question to not show answer
@@ -241,12 +241,12 @@ exports.getQuizzes = async (req, res) => {
         const { question, options } = questions
         return { question, options }
       })
-      obj = {
+      obj.push({
         id: _id,
         creator: creatorUser,
         time,
         questions: questions2
-      }
+      })
     }
     return res.status(200).json({ success: true, data: obj })
   } catch (err) {
