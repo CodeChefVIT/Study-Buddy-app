@@ -24,7 +24,6 @@ const ViewQuiz = () => {
     return location.pathname;
   };
   const path = usePathname();
-  // console.log(path);
 
   useEffect(() => {
     if (!localStorage.getItem("token")) {
@@ -41,9 +40,15 @@ const ViewQuiz = () => {
       },
     })
       .then((response) => response.json())
-      .then(({ data }) => setQuizes(data));
+      .then(({ data }) => {
+        setQuizes(data);
+        console.log(data);
+      });
     setLoading(false);
   }, []);
+
+  console.log(quizes.questions);
+  console.log(quizes.time);
 
   return (
     <div>
@@ -53,7 +58,7 @@ const ViewQuiz = () => {
           <h1 className="heading-primary-sm">Find Quizes</h1>
         </div>
         <div className="quiz-container">
-          {loading ? (
+          {loading || quizes.length === 0 ? (
             <Box
               sx={{
                 display: "flex",
@@ -64,12 +69,15 @@ const ViewQuiz = () => {
             >
               <CircularProgress />
             </Box>
-          ) : !quizes ? (
-            <h1 className="invite-title">Sorry there are no quizes</h1>
           ) : (
-            quizes.map((quiz) => {
-              return <ViewQuizesCard key={quiz.id} quiz={quiz} />;
-            })
+            // quizes.map((quiz) => {
+            //   return <ViewQuizesCard key={quiz.id} quiz={quiz} />;
+            // })
+            <div>
+              {quizes.map((quiz) => {
+                return <ViewQuizesCard key={quiz.id} quiz={quiz} />;
+              })}
+            </div>
           )}
         </div>
       </section>

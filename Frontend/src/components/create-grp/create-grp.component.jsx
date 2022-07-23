@@ -10,14 +10,14 @@ const defaultFormFields = {
   name: "",
   subject: "",
   description: "",
-  modules: [],
+  // modules: [],
 };
 
 const CreateGrp = (props) => {
   const navigate = useNavigate();
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { name, subject, description } = formFields;
-  const [modules, setModules] = useState(formFields.modules);
+  const [modules, setModules] = useState([]);
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
@@ -32,7 +32,10 @@ const CreateGrp = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formFields);
+    // formFields.modules = modules.shift();
+    console.log(modules);
+    var formSubmit = [...formFields, { modules: modules }];
+    console.log(formSubmit);
 
     const response = await fetch(`${process.env.REACT_APP_URL}/groups/new`, {
       method: "POST",
@@ -40,7 +43,7 @@ const CreateGrp = (props) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-      body: JSON.stringify(formFields),
+      body: JSON.stringify(formSubmit),
     }).then((res) => res.json());
     console.log(response);
 
@@ -54,10 +57,12 @@ const CreateGrp = (props) => {
   };
 
   const addModule = (module) => {
+    console.log(module);
     setModules(modules.concat(module));
-    console.log(modules);
-    setFormFields({ ...formFields, modules: [...modules] });
   };
+
+  console.log(modules);
+  // console.log(formFields);
 
   return (
     <section className="create mar-t">

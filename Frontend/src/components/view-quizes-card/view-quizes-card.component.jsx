@@ -15,7 +15,10 @@ const ViewQuizesCard = ({ quiz }) => {
       </div>
       <div className="mar">
         <h2 className="heading-tertiary-sm align-l">
+          {/*
+
           Number of questions:{quiz.questions.length}{" "}
+        */}
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Time Alotted: {quiz.time}
         </h2>
       </div>

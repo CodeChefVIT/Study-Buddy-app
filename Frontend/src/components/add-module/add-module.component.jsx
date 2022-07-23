@@ -5,7 +5,6 @@ const CreateModule = (props) => {
     const modules = {
       ...enteredModule,
     };
-
     props.onAddModule(modules);
   };
 
