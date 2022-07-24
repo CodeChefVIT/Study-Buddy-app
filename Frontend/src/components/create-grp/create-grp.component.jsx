@@ -67,59 +67,63 @@ const CreateGrp = (props) => {
   return (
     <section className="create mar-t">
       <CreateModule onAddModule={addModule} />
-      <div className="create-background">
-        <div className="shape-c"></div>
-        <div className="shape-c"></div>
-      </div>
-      <form className="form-create" onSubmit={handleSubmit}>
-        <div className="heading-primary">Create Study Group</div>
-        <label htmlFor="coursename">Course Name</label>
-        <input
-          name="name"
-          type="text"
-          required
-          onChange={handleChange}
-          value={name}
-          placeholder="Differential equatins"
-          id="coursename"
-        />
-        <label htmlFor="coursecode">Course Code</label>
-        <input
-          name="subject"
-          required
-          onChange={handleChange}
-          type="text"
-          value={subject}
-          placeholder="BMAT102L"
-          id="coursecode"
-        />
-        <label htmlFor="description">Group Description</label>
-        <input
-          name="description"
-          required
-          onChange={handleChange}
-          type="text"
-          value={description}
-          placeholder="Hey mates, Let's study differential equations"
-          id="description"
-        />
-        <div className="heading-primary pad-t">Your Modules</div>
-        {modules.length > 0 ? (
-          modules.map((module) => {
-            return (
-              <div>
-                <h1 className="heading-primary-sm-mod">
-                  {module.name} : {module.daysToComplete}
-                </h1>
-              </div>
-            );
-          })
-        ) : (
-          <h1 className="heading-primary-sm-mod">No modules added</h1>
-        )}
+      {modules.length > 0 && (
+        <div>
+          <div className="create-background">
+            <div className="shape-c"></div>
+            <div className="shape-c"></div>
+          </div>
+          <form className="form-create" onSubmit={handleSubmit}>
+            <div className="heading-primary">Create Study Group</div>
+            <label htmlFor="coursename">Course Name</label>
+            <input
+              name="name"
+              type="text"
+              required
+              onChange={handleChange}
+              value={name}
+              placeholder="Differential equatins"
+              id="coursename"
+            />
+            <label htmlFor="coursecode">Course Code</label>
+            <input
+              name="subject"
+              required
+              onChange={handleChange}
+              type="text"
+              value={subject}
+              placeholder="BMAT102L"
+              id="coursecode"
+            />
+            <label htmlFor="description">Group Description</label>
+            <input
+              name="description"
+              required
+              onChange={handleChange}
+              type="text"
+              value={description}
+              placeholder="Hey mates, Let's study differential equations"
+              id="description"
+            />
+            <div className="heading-primary pad-t">Your Modules</div>
+            {modules.length > 0 ? (
+              modules.map((module) => {
+                return (
+                  <div>
+                    <h1 className="heading-primary-sm-mod">
+                      {module.name} : {module.daysToComplete}
+                    </h1>
+                  </div>
+                );
+              })
+            ) : (
+              <h1 className="heading-primary-sm-mod">No modules added</h1>
+            )}
 
-        <button className="button mar-t-2">Create Group</button>
-      </form>
+            <button className="button mar-t-2">Create Group</button>
+          </form>
+        </div>
+      )}
     </section>
   );
 };
