@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 const ViewQuizesCard = ({ quiz }) => {
-  const Grppath = `/groups/quiz/attempt/${quiz._id}`;
+  const Grppath = `/groups/quiz/attempt/${quiz.id}`;
 
   return (
     <div className="quiz-box">
@@ -15,10 +15,7 @@ const ViewQuizesCard = ({ quiz }) => {
       </div>
       <div className="mar">
         <h2 className="heading-tertiary-sm align-l">
-          {/*
-
           Number of questions:{quiz.questions.length}{" "}
-        */}
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Time Alotted: {quiz.time}
         </h2>
       </div>
