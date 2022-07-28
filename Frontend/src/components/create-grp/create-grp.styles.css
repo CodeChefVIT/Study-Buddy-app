@@ -46,11 +46,19 @@
 }
 
 form * {
-  font-family: IBM Plex Sans, sans-serif;
   color: #ffffff;
   letter-spacing: 0.5px;
   outline: none;
   border: none;
+}
+
+.heading-primary-sm-mod {
+  font-size: 3.6rem;
+  font-weight: 500;
+  line-height: 1.05;
+  color: #fff;
+  letter-spacing: -0.5px;
+  margin-bottom: 2.4rem;
 }
 
 label {

@@ -37,17 +37,14 @@ const CreateQuiz = (props) => {
     event.preventDefault();
     console.log(formFields);
 
-    const response = await fetch(
-      `https://study-buddy-app-production.up.railway.app/api/v1${path}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(formFields),
-      }
-    ).then((res) => res.json());
+    const response = await fetch(`${process.env.REACT_APP_URL}${path}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(formFields),
+    }).then((res) => res.json());
     console.log(response);
 
     try {

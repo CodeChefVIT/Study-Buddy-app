@@ -14,9 +14,72 @@ import Image2 from "./../../assets/send.png";
 
 import "./grpsdashboard.styles.css";
 
-const GrpDash = () => {
-  const [group, setGroup] = useState([{}]);
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
+
+const GrpDet = (props) => {
+  const { group, path } = props;
   const navigate = useNavigate();
+  const { name, subject, modules, inviteCode } = group;
+
+  return (
+    <div>
+      <div className="group-hero">
+        <h1 className="heading-primary-sm-2">{name}</h1>
+        <h1 className="heading-primary-sm-2">{subject}</h1>
+      </div>
+      <div className="btn-sp">
+        <button
+          onClick={() => navigate(`${path}/members`)}
+          className="button-grps"
+          type="text"
+        >
+          See All Members
+        </button>
+        <button
+          onClick={() => navigate(`${path}/request`)}
+          className="button-grps"
+          type="text"
+        >
+          View Requests
+        </button>
+      </div>
+      <div className="btn-sp">
+        <button
+          onClick={() => navigate(`${path}/quiz/new`)}
+          className="button-grps"
+        >
+          <img className="grp-btn-img" src={Image1} alt="search icon" />
+          <h2 class="heading-tertiary-create">Create Quiz</h2>
+        </button>
+
+        <button className="button-grp-in">
+          <img className="grp-btn-img" src={Image2} alt="search icon" />
+          <ClipboardCopy copyText={inviteCode} />
+        </button>
+      </div>
+
+      <button
+        className="button-grps long "
+        onClick={() => navigate(`${path}/quiz`)}
+      >
+        <p>Attempt Quiz</p>
+      </button>
+
+      <h1 className="heading-primary-sm-2 mar-t-3">Modules</h1>
+
+      <div className="grp-container">
+        {modules &&
+          modules.map((module) => <ModCard key={module.id} module={module} />)}
+      </div>
+    </div>
+  );
+};
+
+const GrpDash = () => {
+  const [group, setGroup] = useState([]);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!localStorage.getItem("token")) {
@@ -31,7 +94,7 @@ const GrpDash = () => {
   const path = usePathname();
 
   useEffect(() => {
-    fetch(`https://study-buddy-app-production.up.railway.app/api/v1${path}`, {
+    fetch(`${process.env.REACT_APP_URL}${path}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -40,56 +103,31 @@ const GrpDash = () => {
     })
       .then((response) => response.json())
       .then(({ group }) => setGroup(group));
+    setLoading(false);
   }, []);
 
-  const { name, subject, modules, inviteCode } = group;
+  console.log(group);
 
   return (
     <div>
       {localStorage.getItem("token") ? <NavigationAuth /> : <Navigation />}
       <div className="groups-in">
-        <div className="group-hero">
-          <h1 className="heading-primary-sm-2">{name}</h1>
-          <h1 className="heading-primary-sm-2">{subject}</h1>
-        </div>
-        <button
-          onClick={() => navigate(`${path}/members`)}
-          className="button-grps long"
-          type="text"
-        >
-          See All Members
-        </button>
-        <div className="btn-sp">
-          <button
-            onClick={() => navigate(`${path}/quiz/new`)}
-            className="button-grps"
+        {loading || group.length === 0 ? (
+          <Box
+            sx={{
+              display: "flex",
+              paddingBottom: "40vh",
+              justifyContent: "center",
+              paddingTop: "20vh",
+            }}
           >
-            <img className="grp-btn-img" src={Image1} alt="search icon" />
-            <h2 class="heading-tertiary-create">Create Quiz</h2>
-          </button>
-
-          <button className="button-grps">
-            <img className="grp-btn-img" src={Image2} alt="search icon" />
-            <ClipboardCopy copyText={inviteCode} />
-          </button>
-        </div>
-
-        <button
-          className="button-grps long "
-          onClick={() => navigate(`${path}/quiz`)}
-        >
-          <p>Attempt Quiz</p>
-        </button>
-
-        <h1 className="heading-primary-sm-2 mar-t-3">Modules</h1>
-
-        <div className="grp-container">
-          {modules &&
-            modules.map((module) => (
-              <ModCard key={module.id} module={module} />
-            ))}
-        </div>
+            <CircularProgress />
+          </Box>
+        ) : (
+          <GrpDet group={group} path={path} />
+        )}
       </div>
+
       <Footer />
     </div>
   );

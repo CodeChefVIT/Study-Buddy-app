@@ -5,9 +5,12 @@ import NavigationAuth from "../navigation-auth/navigation-auth.component";
 import Footer from "./../footer/footer.component";
 import DashCard from "./../../components/dashboard-card/dashboard-card.component";
 
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
+
 const Dashboard = () => {
-  const [groups, setGroups] = useState([{}]);
-  const [loading, setLoading] = useState(false);
+  const [groups, setGroups] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,35 +20,43 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
-    fetch(
-      "https://study-buddy-app-production.up.railway.app/api/v1/groups/user",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    )
+    fetch(`${process.env.REACT_APP_URL}/groups/user`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
       .then((response) => response.json())
       .then(({ groups }) => setGroups(groups));
-    setLoading(true);
+    setLoading(false);
   }, []);
+
+  console.log(groups);
 
   return (
     <div>
       {localStorage.getItem("token") ? <NavigationAuth /> : <Navigation />}
       <section className="dashboard">
-        <h1 className="heading-primary">My Groups</h1>
-        <div className="grpsv-container">
-          {loading ? (
-            groups.map((group) => {
+        <h1 className="heading-primary-sm-2 mar-b">My Groups</h1>
+        {loading || groups.length === 0 ? (
+          <Box
+            sx={{
+              display: "flex",
+              paddingBottom: "40vh",
+              justifyContent: "center",
+              paddingTop: "20vh",
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        ) : (
+          <div className="grpsv-container">
+            {groups.map((group) => {
               return <DashCard key={group.id} group={group} />;
-            })
-          ) : (
-            <p>Loading...</p>
-          )}
-        </div>
+            })}
+          </div>
+        )}
       </section>
       <Footer />
     </div>
