@@ -916,7 +916,7 @@ describe('/POST /api/v1/user/reset/:id/:hash', () => {
         res.body.success.should.equal(true)
         res.body.message.should.equal('Login successful')
         done()
-    })
+      })
   })
 })
 

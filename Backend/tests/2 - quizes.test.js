@@ -397,7 +397,6 @@ describe('/GET /api/v1/groups/:group/quiz', () => {
         if (err) {
           console.log(err.stack)
         }
-        console.log(res.body)
         res.should.have.status(200)
         res.body.should.be.a('object')
         res.body.should.have.property('success')

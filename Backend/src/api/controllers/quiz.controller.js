@@ -3,6 +3,9 @@ const { Groups, Quiz } = require(join(__dirname, '..', 'models', 'Groups.model')
 const moment = require('moment')
 const User = require(join(__dirname, '..', 'models', 'User.model'))
 
+const logger = require(join(__dirname, '..', '..', 'config', 'logger'))
+const NAMESPACE = 'QUIZ CONTROLLER'
+
 /*
     Type: GET
     Desc: Get Quiz
@@ -14,6 +17,7 @@ const User = require(join(__dirname, '..', 'models', 'User.model'))
 */
 exports.getQuiz = async (req, res) => {
   const { id } = req.params
+  logger.info(NAMESPACE, 'Getting Quizes')
   try {
     const quiz = await Quiz.findById(id)
     // check if user is a part of the group
@@ -32,8 +36,10 @@ exports.getQuiz = async (req, res) => {
       name: creatorName.name
     }
     const attemptedData = attempted.filter(attempt => attempt.user.toString() === req.user.id)
+    logger.info(NAMESPACE, 'Quiz Found')
     return res.status(200).json({ success: true, group, time, creator, questions, attempted: attemptedData })
   } catch (err) {
+    logger.error(NAMESPACE, err)
     return res.status(500).json({ success: false, error: 'Some Internal Error Occured' })
   }
 }
@@ -50,6 +56,7 @@ exports.getQuiz = async (req, res) => {
 exports.createQuiz = async (req, res) => {
   const { group } = req.params
   const { time, questions } = req.body
+  logger.info(NAMESPACE, 'Creating Quiz')
   try {
     // ! TO DO moment fix
     if (!(group && time && questions)) { return res.status(422).json({ success: false, error: 'Missing required fields' }) }
@@ -71,9 +78,10 @@ exports.createQuiz = async (req, res) => {
       questions
     })
     await quiz.save()
+    logger.info(NAMESPACE, 'Quiz Created')
     return res.status(200).json({ success: true, message: 'Quiz created', id: quiz._id })
   } catch (err) {
-    console.log(err)
+    logger.error(NAMESPACE, err)
     return res.status(500).json({ success: false, error: 'Some Internal Error Occured' })
   }
 }
@@ -90,6 +98,7 @@ exports.createQuiz = async (req, res) => {
 exports.attemptQuiz = async (req, res) => {
   const { id } = req.params
   const { QuestionData } = req.body
+  logger.info(NAMESPACE, 'Attempting Quiz')
   try {
     const quiz = await Quiz.findById(id)
     if (!quiz) { return res.status(404).json({ success: false, error: 'Quiz does not exist' }) }
@@ -128,8 +137,6 @@ exports.attemptQuiz = async (req, res) => {
     }
 
     // search for the quiz in the attempted array
-    const attempted = quiz.attempted.filter(attempt => attempt.user.toString() === req.user.id)
-    console.log(attempted)
     const index = quiz.attempted.findIndex(attempt => attempt.user.toString() === req.user.id)
     if (index === -1) {
       quiz.attempted.push({
@@ -145,9 +152,10 @@ exports.attemptQuiz = async (req, res) => {
     }
 
     await quiz.save()
+    logger.info(NAMESPACE, 'Quiz Attempted')
     return res.status(200).json({ success: true, data: arr, score })
   } catch (err) {
-    console.log(err)
+    logger.error(NAMESPACE, err)
     return res.status(500).json({ success: false, error: 'Some Internal Error Occured' })
   }
 }/*
@@ -160,6 +168,7 @@ exports.attemptQuiz = async (req, res) => {
 */
 exports.getQuizScore = async (req, res) => {
   const { id } = req.params
+  logger.info(NAMESPACE, 'Getting Quiz Score')
   try {
     const quiz = await Quiz.findById(id)
     if (!quiz) { return res.status(404).json({ success: false, error: 'Quiz does not exist' }) }
@@ -186,6 +195,7 @@ exports.getQuizScore = async (req, res) => {
       }
     }
     if (!found || arr.length === 0) { return res.status(404).json({ success: false, error: 'User has not attempted this quiz' }) }
+    logger.info(NAMESPACE, 'Quiz Score Retrieved')
     return res.status(200).json({ success: true, data: arr })
   } catch (err) {
     console.log(err)
@@ -205,6 +215,7 @@ exports.getQuizScore = async (req, res) => {
 
 exports.deleteQuiz = async (req, res) => {
   const { id } = req.params
+  logger.info(NAMESPACE, 'Deleting Quiz')
   try {
     const quiz = await Quiz.findById(id)
     if (!quiz) { return res.status(404).json({ success: false, error: 'Quiz does not exist' }) }
@@ -213,22 +224,24 @@ exports.deleteQuiz = async (req, res) => {
     // check if user is admin
     if (Group.admin.toString() !== req.user.id) { return res.status(401).json({ success: false, error: 'You are not an admin of this group' }) }
     await quiz.remove()
+    logger.info(NAMESPACE, 'Quiz Deleted')
     return res.status(200).json({ success: true, message: 'Quiz Deleted' })
   } catch (err) {
-    console.log(err)
+    logger.error(NAMESPACE, err)
     return res.status(500).json({ success: false, error: 'Some Internal Error Occured' })
   }
 }
- // ! here
+// ! here
 exports.getQuizzes = async (req, res) => {
   const { group } = req.params
+  logger.info(NAMESPACE, 'Getting Quizzes')
   try {
     const UserInGroup = await Groups.findById(group)
     if (!UserInGroup.members.toString().includes(req.user.id)) { return res.status(401).json({ success: false, error: 'You are not a member of this group' }) }
     const groupQuizzes = await Quiz.find({ group })
     if (!groupQuizzes) { return res.status(404).json({ success: false, error: 'No quizzes in this group' }) }
     if (groupQuizzes.length === 0) { return res.status(404).json({ success: false, error: 'No quizzes in this group' }) }
-    let obj = []
+    const obj = []
     for (let i = 0; i < groupQuizzes.length; i++) {
       const { _id, creator, time, questions } = groupQuizzes[i]
       // filter question to not show answer
@@ -248,9 +261,10 @@ exports.getQuizzes = async (req, res) => {
         questions: questions2
       })
     }
+    logger.info(NAMESPACE, 'Quizzes Retrieved')
     return res.status(200).json({ success: true, data: obj })
   } catch (err) {
-    console.log(err)
+    logger.error(NAMESPACE, err)
     return res.status(500).json({ success: false, error: 'Some Internal Error Occured' })
   }
 }
