@@ -4,8 +4,8 @@ const AddQuestions = (props) => {
   const saveQuestionArray = (enteredQuestion) => {
     const questions = {
       ...enteredQuestion,
+      id: Math.random().toString(),
     };
-
     props.onAddQuestion(questions);
   };
 

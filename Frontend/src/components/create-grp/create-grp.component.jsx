@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./create-grp.styles.css";
+import ErrorModal from "../../components/error/error.component";
 
 import CreateModule from "./../add-module/add-module.component";
 
@@ -10,7 +11,7 @@ const defaultFormFields = {
   name: "",
   subject: "",
   description: "",
-  // modules: [],
+  modules: [],
 };
 
 const CreateGrp = (props) => {
@@ -18,6 +19,7 @@ const CreateGrp = (props) => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { name, subject, description } = formFields;
   const [modules, setModules] = useState([]);
+  const [error, setError] = useState();
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
@@ -27,15 +29,12 @@ const CreateGrp = (props) => {
     const { name, value } = event.target;
 
     setFormFields({ ...formFields, [name]: value });
-    // console.log(formFields);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // formFields.modules = modules.shift();
     console.log(modules);
-    var formSubmit = [...formFields, { modules: modules }];
-    console.log(formSubmit);
+    setFormFields({ ...formFields, modules: [...modules] });
 
     const response = await fetch(`${process.env.REACT_APP_URL}/groups/new`, {
       method: "POST",
@@ -43,88 +42,99 @@ const CreateGrp = (props) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-      body: JSON.stringify(formSubmit),
+      body: JSON.stringify(formFields),
     }).then((res) => res.json());
     console.log(response);
 
     try {
+      setError({
+        message: "Group Created Successfully",
+      });
       resetFormFields();
-      navigate("/dashboard");
-      alert("Group Created successfully!");
+      setModules([]);
     } catch (error) {
-      alert("Group Creation Error", error);
+      setError({
+        message: "Something went wrong, please try again",
+      });
     }
   };
 
-  const addModule = (module) => {
-    console.log(module);
-    setModules(modules.concat(module));
+  const addModule = (modules) => {
+    setModules((prevModules) => {
+      return [modules, ...prevModules];
+    });
+
+    setFormFields({ ...formFields, modules: [...modules] });
   };
 
-  console.log(modules);
-  // console.log(formFields);
+  const errorHandler = () => {
+    setError(null);
+  };
 
   return (
-    <section className="create mar-t">
-      <CreateModule onAddModule={addModule} />
-      {modules.length > 0 && (
-        <div>
-          <div className="create-background">
-            <div className="shape-c"></div>
-            <div className="shape-c"></div>
-          </div>
-          <form className="form-create" onSubmit={handleSubmit}>
-            <div className="heading-primary">Create Study Group</div>
-            <label htmlFor="coursename">Course Name</label>
-            <input
-              name="name"
-              type="text"
-              required
-              onChange={handleChange}
-              value={name}
-              placeholder="Differential equatins"
-              id="coursename"
-            />
-            <label htmlFor="coursecode">Course Code</label>
-            <input
-              name="subject"
-              required
-              onChange={handleChange}
-              type="text"
-              value={subject}
-              placeholder="BMAT102L"
-              id="coursecode"
-            />
-            <label htmlFor="description">Group Description</label>
-            <input
-              name="description"
-              required
-              onChange={handleChange}
-              type="text"
-              value={description}
-              placeholder="Hey mates, Let's study differential equations"
-              id="description"
-            />
-            <div className="heading-primary pad-t">Your Modules</div>
-            {modules.length > 0 ? (
-              modules.map((module) => {
-                return (
-                  <div>
-                    <h1 className="heading-primary-sm-mod">
-                      {module.name} : {module.daysToComplete}
-                    </h1>
-                  </div>
-                );
-              })
-            ) : (
-              <h1 className="heading-primary-sm-mod">No modules added</h1>
-            )}
+    <div>
+      {error && <ErrorModal message={error.message} onConfirm={errorHandler} />}
+      <section className="create mar-t">
+        <CreateModule onAddModule={addModule} />
+        {modules.length > 0 && (
+          <div>
+            <div className="create-background">
+              <div className="shape-c"></div>
+              <div className="shape-c"></div>
+            </div>
+            <form className="form-create" onSubmit={handleSubmit}>
+              <div className="heading-primary">Create Study Group</div>
+              <label htmlFor="coursename">Course Name</label>
+              <input
+                name="name"
+                type="text"
+                required
+                onChange={handleChange}
+                value={name}
+                placeholder="Differential equatins"
+                id="coursename"
+              />
+              <label htmlFor="coursecode">Course Code</label>
+              <input
+                name="subject"
+                required
+                onChange={handleChange}
+                type="text"
+                value={subject}
+                placeholder="BMAT102L"
+                id="coursecode"
+              />
+              <label htmlFor="description">Group Description</label>
+              <input
+                name="description"
+                required
+                onChange={handleChange}
+                type="text"
+                value={description}
+                placeholder="Hey mates, Let's study differential equations"
+                id="description"
+              />
+              <div className="heading-primary pad-t">Your Modules</div>
+              {modules.length > 0 ? (
+                modules.map((module) => {
+                  return (
+                    <div>
+                      <h1 className="heading-primary-sm-mod">
+                        {module.name} : {module.daysToComplete}
+                      </h1>
+                    </div>
+                  );
+                })
+              ) : (
+                <h1 className="heading-primary-sm-mod">No modules added</h1>
+              )}
 
-            <button className="button mar-t-2">Create Group</button>
-          </form>
-        </div>
-      )}
-    </section>
+              <button className="button mar-t-2">Create Group</button>
+            </form>
+          </div>
+        )}
+      </section>
+    </div>
   );
 };
 

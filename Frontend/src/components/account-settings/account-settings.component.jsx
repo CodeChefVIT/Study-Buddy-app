@@ -1,14 +1,17 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
+import React from "react";
 
 import "./account-settings.styles.css";
+import ErrorModal from "../error/error.component";
 
 const AccSet = () => {
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
   let defaultForm = new FormData();
   const [url, setUrl] = useState();
+  const [error, setError] = useState();
 
   useEffect(() => {
     const getProfileDet = async () => {
@@ -19,12 +22,13 @@ const AccSet = () => {
         },
       })
         .then((response) => response.json())
-        .then(({ data }) => setUrl(data.avatar));
+        .then(({ data }) => {
+          setUrl(data.avatar);
+          setName(data.name);
+        });
     };
     getProfileDet();
   }, []);
-
-  console.log(url);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -46,9 +50,13 @@ const AccSet = () => {
     console.log(response);
 
     if (response.status === 200) {
-      alert("User Updated Sucessfully!");
+      setError({
+        message: "Profile Updated Successfully",
+      });
     } else {
-      alert("User Updation Failed");
+      setError({
+        message: "Profile Updation Failed. Please Try Again",
+      });
     }
   };
 
@@ -65,44 +73,45 @@ const AccSet = () => {
     setName(event.target.value);
   };
 
+  const errorHandler = () => {
+    setError(null);
+  };
+
   return (
-    <form
-      className="form-account"
-      encType="multipart/form-data"
-      onSubmit={handleSubmit}
-    >
-      <div className="heading-primary">Your Account Settings</div>
+    <React.Fragment>
+      {error && <ErrorModal message={error.message} onConfirm={errorHandler} />}
+      <form
+        className="form-account"
+        encType="multipart/form-data"
+        onSubmit={handleSubmit}
+      >
+        <div className="heading-primary">Your Account Settings</div>
 
-      <div className="pic-cha">
-        <img className="prof-pic-up mar-r" src={url} alt="profile pic" />
+        <div className="pic-cha">
+          <img className="prof-pic-up mar-r" src={url} alt="profile pic" />
+          <input
+            type="file"
+            accept="image/png"
+            onChange={handleFileChange}
+            id="avatar"
+          />
+        </div>
+
+        <div className="heading-secondary-sm-2 mar-t">{name}</div>
+
+        <label htmlFor="bio">Bio</label>
         <input
-          type="file"
-          accept="image/png"
-          onChange={handleFileChange}
-          id="avatar"
+          placeholder="Bio"
+          type="text"
+          onChange={handleBioChange}
+          id="bio"
         />
-      </div>
 
-      <label htmlFor="username">Name</label>
-      <input
-        placeholder="Name"
-        type="text"
-        onChange={handleNameChange}
-        id="username"
-      />
-
-      <label htmlFor="bio">Bio</label>
-      <input
-        placeholder="Bio"
-        type="text"
-        onChange={handleBioChange}
-        id="bio"
-      />
-
-      <button to="/" className="button mar-t">
-        Save Changes
-      </button>
-    </form>
+        <button to="/" className="button mar-t">
+          Save Changes
+        </button>
+      </form>
+    </React.Fragment>
   );
 };
 

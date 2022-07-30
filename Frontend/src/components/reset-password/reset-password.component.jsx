@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ErrorModal from "../error/error.component";
 
 const defaultFormFields = {
   oldPass: "",
@@ -9,6 +10,7 @@ const defaultFormFields = {
 const ResetPass = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { oldPass, newPass, confirmPass } = formFields;
+  const [error, setError] = useState();
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
@@ -18,7 +20,10 @@ const ResetPass = () => {
     event.preventDefault();
 
     if (newPass !== confirmPass) {
-      alert("passwords do not match");
+      setError({
+        message: "Password and Confirm Password do not match",
+      });
+
       return;
     }
 
@@ -35,10 +40,16 @@ const ResetPass = () => {
     console.log(response);
 
     if (response.success) {
-      alert("User Updated Sucessfully!");
+      setError({
+        message: "User Updated Sucessfully!",
+      });
+
       resetFormFields();
     } else {
-      alert("User Updation Failed");
+      const { error } = response;
+      setError({
+        message: error,
+      });
     }
   };
 
@@ -48,45 +59,52 @@ const ResetPass = () => {
     setFormFields({ ...formFields, [name]: value });
   };
 
+  const errorHandler = () => {
+    setError(null);
+  };
+
   return (
-    <form className="form-account" onSubmit={handleSubmit}>
-      <div className="heading-primary">Password Change</div>
+    <div>
+      {error && <ErrorModal message={error.message} onConfirm={errorHandler} />}
+      <form className="form-account" onSubmit={handleSubmit}>
+        <div className="heading-primary">Password Change</div>
 
-      <label htmlFor="username">Old Password</label>
-      <input
-        type="password"
-        placeholder="Old Password"
-        required
-        onChange={handleChange}
-        name="oldPass"
-        value={oldPass}
-        id="oldPass"
-      />
+        <label htmlFor="username">Old Password</label>
+        <input
+          type="password"
+          placeholder="Old Password"
+          required
+          onChange={handleChange}
+          name="oldPass"
+          value={oldPass}
+          id="oldPass"
+        />
 
-      <label htmlFor="username">New Password</label>
-      <input
-        type="password"
-        placeholder="New Password"
-        required
-        onChange={handleChange}
-        name="newPass"
-        value={newPass}
-        id="newPass"
-      />
+        <label htmlFor="username">New Password</label>
+        <input
+          type="password"
+          placeholder="New Password"
+          required
+          onChange={handleChange}
+          name="newPass"
+          value={newPass}
+          id="newPass"
+        />
 
-      <label htmlFor="username">Confirm Password</label>
-      <input
-        type="password"
-        placeholder="Confirm Password"
-        required
-        onChange={handleChange}
-        name="confirmPass"
-        value={confirmPass}
-        id="confirmPass"
-      />
+        <label htmlFor="username">Confirm Password</label>
+        <input
+          type="password"
+          placeholder="Confirm Password"
+          required
+          onChange={handleChange}
+          name="confirmPass"
+          value={confirmPass}
+          id="confirmPass"
+        />
 
-      <button className="button mar-t">Save Changes</button>
-    </form>
+        <button className="button mar-t">Save Changes</button>
+      </form>
+    </div>
   );
 };
 

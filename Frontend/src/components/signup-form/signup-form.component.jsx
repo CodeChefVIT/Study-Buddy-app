@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+
+import ErrorModal from "../../components/error/error.component";
 
 import Button from "./../button/button.component";
 import "./sigunup-form.styles.css";
@@ -17,7 +18,7 @@ const defaultFormFields = {
 const SignUpForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { name, email, regno, major, password, confirm } = formFields;
-  const navigate = useNavigate();
+  const [error, setError] = useState();
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
@@ -27,7 +28,9 @@ const SignUpForm = () => {
     event.preventDefault();
 
     if (password !== confirm) {
-      alert("passwords do not match");
+      setError({
+        message: "Password and Confirm Password do not match",
+      });
       return;
     }
 
@@ -41,20 +44,23 @@ const SignUpForm = () => {
     console.log(response);
 
     const { message } = response;
-    alert(message);
+    setError({
+      message: message,
+    });
 
     if (response.success) {
       localStorage.setItem("token", response.token);
-      navigate("/");
+      setError({
+        message: "User Created",
+      });
     } else {
-      alert("User Creation Failed");
+      const { error } = response;
+      setError({
+        message: error,
+      });
     }
 
-    try {
-      resetFormFields();
-    } catch (error) {
-      console.log("user creation error", error);
-    }
+    resetFormFields();
   };
 
   const handleChange = (event) => {
@@ -63,8 +69,13 @@ const SignUpForm = () => {
     setFormFields({ ...formFields, [name]: value });
   };
 
+  const errorHandler = () => {
+    setError(null);
+  };
+
   return (
     <div>
+      {error && <ErrorModal message={error.message} onConfirm={errorHandler} />}
       <section className="signup">
         <div className="signup-background">
           <div className="signup-shape"></div>

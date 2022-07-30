@@ -138,6 +138,14 @@ body {
   color: #fff;
 }
 
+.heading-secondary-sm-2 {
+  font-size: 3.6rem;
+  line-height: 1.6;
+  margin-bottom: 2.4rem;
+  font-weight: 500;
+  color: #fff;
+}
+
 .heading-tertiary {
   font-size: 2rem;
   line-height: 1.6;
