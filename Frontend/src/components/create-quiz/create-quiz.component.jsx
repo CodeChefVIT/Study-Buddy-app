@@ -14,7 +14,7 @@ const defaultFormFields = {
 const CreateQuiz = (props) => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { time } = formFields;
-  const [questions, setQuestions] = useState(defaultFormFields.questions);
+  const [questions, setQuestions] = useState([]);
 
   const usePathname = () => {
     const location = useLocation();
@@ -37,6 +37,8 @@ const CreateQuiz = (props) => {
     event.preventDefault();
     console.log(formFields);
 
+    setFormFields({ ...formFields, questions: [...questions] });
+
     const response = await fetch(`${process.env.REACT_APP_URL}${path}`, {
       method: "POST",
       headers: {
@@ -54,10 +56,13 @@ const CreateQuiz = (props) => {
     }
   };
 
-  const addQuestion = (question) => {
-    console.log(question);
-    setQuestions(questions.concat(question));
+  const addQuestion = (questions) => {
+    setQuestions((prevQuestions) => {
+      return [questions, ...prevQuestions];
+    });
+
     console.log(questions);
+
     setFormFields({ ...formFields, questions: [...questions] });
   };
 
@@ -70,7 +75,7 @@ const CreateQuiz = (props) => {
         <label htmlFor="modulename">Time </label>
         <input
           name="time"
-          type="text"
+          type="time"
           required
           onChange={handleQuizChange}
           value={time}

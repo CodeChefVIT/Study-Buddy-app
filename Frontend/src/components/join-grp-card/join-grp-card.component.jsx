@@ -2,15 +2,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Alert from "@mui/material/Alert";
-import Stack from "@mui/material/Stack";
+import ErrorModal from "../error/error.component";
 
 const JoinGrpCard = ({ group }) => {
   const { inviteCode, name, subject, members } = group;
   const [data, setData] = useState([]);
-  // const { error, SetError } = useState(false);
-  // const { alertMsg, setAlertMsg } = useState("");
   const navigate = useNavigate();
+  const [error, setError] = useState();
 
   const navigateSendReq = () => {
     fetch(`${process.env.REACT_APP_URL}/groups/request/${inviteCode}`, {
@@ -19,44 +17,38 @@ const JoinGrpCard = ({ group }) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          navigate(`/dashboard`);
-        } else {
-          // SetError(true);
-          // setAlertMsg("Request already sent");
-          alert("Request already sent");
-        }
-      })
-      .then((data) => {
-        setData(data);
+    }).then((response) => {
+      if (response.status === 200) {
         navigate(`/dashboard`);
-      });
+      } else {
+        setError({
+          message: "You have already sent a request to this group",
+        });
+      }
+    });
   };
 
-  // if (error) {
-  //   return (
-  //     <Stack sx={{ width: "100%" }} spacing={2}>
-  //       <Alert severity="error">Request already sent</Alert>
-  //     </Stack>
-  //   );
-  // }
+  const errorHandler = () => {
+    setError(null);
+  };
 
   return (
-    <div className="box">
-      <div className="grp-con">
-        <h2 className="heading-primary-sm-2 align-l">{name}</h2>
-        <button onClick={navigateSendReq} className="button">
-          Join Group
-        </button>
-      </div>
-      <div className="mar">
-        <h2 className="heading-tertiary-sm align-l">
-          {inviteCode} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {subject}
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Members:{" "}
-          {members ? members.length : 0}
-        </h2>
+    <div>
+      {error && <ErrorModal message={error.message} onConfirm={errorHandler} />}
+      <div className="box">
+        <div className="grp-con">
+          <h2 className="heading-primary-sm-2 align-l">{name}</h2>
+          <button onClick={navigateSendReq} className="button">
+            Join Group
+          </button>
+        </div>
+        <div className="mar">
+          <h2 className="heading-tertiary-sm align-l">
+            {inviteCode} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {subject}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Members:{" "}
+            {members ? members.length : 0}
+          </h2>
+        </div>
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import Button from "../button/button.component";
-
+import ErrorModal from "../error/error.component";
 import "./forgot-form.styles.css";
 
 const defaultFormFields = {
@@ -12,6 +12,7 @@ const defaultFormFields = {
 const ForgotPassForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email } = formFields;
+  const [error, setError] = useState();
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
@@ -41,53 +42,59 @@ const ForgotPassForm = () => {
         body: JSON.stringify(formFields),
       }
     ).then((res) => res.json());
-    console.log(response);
 
     if (response.success) {
-      alert("Password reset link has been sent to your email");
+      setError({
+        message: "Password reset link has been sent to your email",
+      });
     } else {
-      alert("Email is not registered");
+      setError({
+        message: "Email is not registered",
+      });
     }
 
-    try {
-      resetFormFields();
-    } catch (error) {
-      console.log("user creation error", error);
-    }
+    resetFormFields();
+  };
+
+  const errorHandler = () => {
+    setError(null);
   };
 
   return (
     <div>
-      <div className="forgot">
-        <div className="forgot-background">
-          <div className="shape"></div>
-          <div className="shape"></div>
-        </div>
-        <form className="form-forgot" onSubmit={handleSubmit}>
-          <div className="heading-primary">Reset Password</div>
-          <div className="heading-secondary">
-            Please Enter Mail to get Reset Link
+      {error && <ErrorModal message={error.message} onConfirm={errorHandler} />}
+      <div>
+        <div className="forgot">
+          <div className="forgot-background">
+            <div className="shape"></div>
+            <div className="shape"></div>
           </div>
+          <form className="form-forgot" onSubmit={handleSubmit}>
+            <div className="heading-primary">Reset Password</div>
+            <div className="heading-secondary">
+              Please Enter Mail to get Reset Link
+            </div>
 
-          <label htmlFor="email">Enter your Mail</label>
-          <input
-            name="email"
-            type="email"
-            required
-            onChange={handleChange}
-            value={email}
-            placeholder="Email"
-            className="mar-b-2"
-          />
-          <Button className="mar-t">Reset Password</Button>
+            <label htmlFor="email">Enter your Mail</label>
+            <input
+              name="email"
+              type="email"
+              required
+              onChange={handleChange}
+              value={email}
+              placeholder="Email"
+              className="mar-b-2"
+            />
+            <Button className="mar-t">Reset Password</Button>
 
-          <p className="para-primary align-l">
-            Don't have an account? &nbsp;
-            <Link to="/signup" className="log-nav-link">
-              Signup
-            </Link>
-          </p>
-        </form>
+            <p className="para-primary align-l">
+              Don't have an account? &nbsp;
+              <Link to="/signup" className="log-nav-link">
+                Signup
+              </Link>
+            </p>
+          </form>
+        </div>
       </div>
     </div>
   );

@@ -3,6 +3,8 @@ import { Link, useLocation } from "react-router-dom";
 
 import Button from "../button/button.component";
 
+import ErrorModal from "../error/error.component";
+
 const defaultFormFields = {
   password: "",
   confirm: "",
@@ -12,6 +14,7 @@ const ResetPassForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { password, confirm } = formFields;
   // const [mailVer, setMailVer] = useState(false);
+  const [error, setError] = useState();
 
   const usePathname = () => {
     const location = useLocation();
@@ -45,20 +48,25 @@ const ResetPassForm = () => {
     console.log(response);
 
     if (response.success) {
-      alert("Password Reset Sucessful");
+      setError({
+        message: "Password Reset Sucessful",
+      });
     } else {
-      alert("Email is not registered");
+      setError({
+        message: "Email is not registered",
+      });
     }
 
-    try {
-      resetFormFields();
-    } catch (error) {
-      console.log("user creation error", error);
-    }
+    resetFormFields();
+  };
+
+  const errorHandler = () => {
+    setError(null);
   };
 
   return (
     <div>
+      {error && <ErrorModal message={error.message} onConfirm={errorHandler} />}
       <div className="forgot">
         <div className="forgot-background">
           <div className="shape"></div>

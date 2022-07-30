@@ -4,7 +4,9 @@ const CreateModule = (props) => {
   const saveModuleArray = (enteredModule) => {
     const modules = {
       ...enteredModule,
+      id: Math.random().toString(),
     };
+
     props.onAddModule(modules);
   };
 
