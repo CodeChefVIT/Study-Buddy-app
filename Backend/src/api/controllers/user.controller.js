@@ -464,4 +464,3 @@ exports.get = async (req, res) => {
   }
 }
 
-// ! TO DO reset password
