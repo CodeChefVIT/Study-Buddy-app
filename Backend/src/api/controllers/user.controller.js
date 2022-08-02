@@ -8,6 +8,10 @@ const sendEmail = require(join(__dirname, '..', 'workers', 'sendEmail.worker'))
 const s3Upload = require(join(__dirname, '..', 'workers', 's3BucketUpload.worker'))
 const jwtsecret = process.env.SECRET_JWT || 'secret123'
 const expiresIn = process.env.JWT_EXPIRES_IN || '7d'
+const frontendURL = process.env.FRONTEND_URL
+
+const logger = require(join(__dirname, '..', '..', 'config', 'logger'))
+const NAMESPACE = 'USER CONTROLLER'
 
 const createToken = (id, email, name) => {
   return jwt.sign(
@@ -34,6 +38,7 @@ const createToken = (id, email, name) => {
 */
 exports.signup = async (req, res) => {
   const { name, email, password, confirm, regno, graduatingYear, major, bio } = req.body
+  logger.info(NAMESPACE, 'Signup request received')
   try {
     if (!(password === confirm)) {
       return res.status(422).json({
@@ -66,12 +71,13 @@ exports.signup = async (req, res) => {
     const link = 'http://' + req.get('host') + '/api/v1/user/verify/' + newUser.id + '/' + hash
     await sendEmail(email, 'Verify Your Email', `Verify your email at ${link}`)
     await newUser.save()
+    logger.info(NAMESPACE, 'Signup successful')
     return res.status(200).json({
       success: true,
       message: 'User created, Check email for verification'
     })
   } catch (error) {
-    console.log(error)
+    logger.error(NAMESPACE, 'Signup failed', error)
     return res.status(500).json({
       success: false,
       error: 'Server error'
@@ -89,6 +95,7 @@ exports.signup = async (req, res) => {
 */
 exports.login = async (req, res) => {
   const { email, password } = req.body
+  logger.info(NAMESPACE, 'Login request received')
   try {
     const user = await User.findOne({ email })
     if (!user) {
@@ -111,13 +118,14 @@ exports.login = async (req, res) => {
       })
     }
     const token = createToken(user.id, user.email, user.name)
+    logger.info(NAMESPACE, 'Login successful')
     return res.status(200).json({
       success: true,
       message: 'Login successful',
       token
     })
   } catch (error) {
-    console.log(error)
+    logger.error(NAMESPACE, 'Login failed', error)
     return res.status(500).json({
       success: false,
       error: 'Server error'
@@ -136,6 +144,7 @@ exports.login = async (req, res) => {
 */
 exports.forgotPassword = async (req, res) => {
   const { email } = req.body
+  logger.info(NAMESPACE, 'Forgot Password request received')
   try {
     const user = await User.findOne({ email })
     if (!user) {
@@ -153,14 +162,15 @@ exports.forgotPassword = async (req, res) => {
     const hash = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
     user.hash = hash
     await user.save()
-    const link = 'http://' + req.get('host') + '/api/v1/user/reset/' + user.id + '/' + hash
+    logger.info(NAMESPACE, 'Forgot Password successful')
+    const link = 'https://' + frontendURL + '/user/reset/' + user.id + '/' + hash
     await sendEmail(email, 'Reset Password', `Reset your password at ${link}`)
     return res.status(200).json({
       success: true,
       message: 'Check your email for reset link'
     })
   } catch (error) {
-    console.log(error)
+    logger.error(NAMESPACE, 'Forgot Password failed', error)
     return res.status(500).json({
       success: false,
       error: 'Server error'
@@ -178,8 +188,9 @@ exports.forgotPassword = async (req, res) => {
 */
 exports.verifyhash = async (req, res) => {
   const { id, hash } = req.params
+  logger.info(NAMESPACE, 'Verify Hash request received')
   try {
-    const user = await User.findOne({ id })
+    const user = await User.findById(id)
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -192,13 +203,14 @@ exports.verifyhash = async (req, res) => {
         error: 'Invalid link'
       })
     }
+    logger.info(NAMESPACE, 'Verify Hash successful')
     return res.status(200).json({
       success: true,
       message: 'Reset link is valid',
       email: user.email
     })
   } catch (err) {
-    console.log(err)
+    logger.error(NAMESPACE, 'Verify Hash failed', err)
     return res.status(500).json({
       success: false,
       error: 'Server error'
@@ -217,8 +229,9 @@ exports.verifyhash = async (req, res) => {
 exports.resetPassword = async (req, res) => {
   const { password, confirm } = req.body
   const { id, hash } = req.params
+  logger.info(NAMESPACE, 'Reset Password request received')
   try {
-    const user = await User.findOne({ id })
+    const user = await User.findById(id)
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -239,13 +252,15 @@ exports.resetPassword = async (req, res) => {
     }
     const salt = await bcrypt.genSalt(10)
     user.password = await bcrypt.hash(password, salt)
+    user.hash = ''
     await user.save()
+    logger.info(NAMESPACE, 'Reset Password successful')
     return res.status(200).json({
       success: true,
       message: 'Password reset successful'
     })
   } catch (err) {
-    console.log(err)
+    logger.error(NAMESPACE, 'Reset Password failed', err)
     return res.status(500).json({
       success: false,
       error: 'Server error'
@@ -265,6 +280,7 @@ exports.resetPassword = async (req, res) => {
 
 exports.verify = async (req, res) => {
   const { id, hash } = req.params
+  logger.info(NAMESPACE, 'Verify request received')
   try {
     const user = await User.findById(id)
     if (!user) {
@@ -278,16 +294,18 @@ exports.verify = async (req, res) => {
       //   success: false,
       //   error: 'User is already verified'
       // })
-      return res.redirect(process.env.FRONTEND_URL + '/login')
+      logger.info(NAMESPACE, 'User Redirected to login page')
+      return res.redirect(frontendURL + '/login')
     }
     user.isVerified = true
     if (user.hash !== hash) { return res.status(401).json({ success: false, error: "Hash doesn't match" }) }
 
     await user.save()
+    logger.info(NAMESPACE, 'Verify successful')
     // redirect
-    return res.redirect(process.env.FRONTEND_URL + '/login')
+    return res.redirect(frontendURL + '/login')
   } catch (error) {
-    console.log(error)
+    logger.error(NAMESPACE, 'Verify failed', error)
     return res.status(500).json({
       success: false,
       error: 'Server error'
@@ -306,6 +324,7 @@ exports.verify = async (req, res) => {
 
 exports.resend = async (req, res) => {
   const { email } = req.body
+  logger.info(NAMESPACE, 'Resend request received')
   try {
     const user = await User.findOne({ email })
     if (!user) {
@@ -323,7 +342,7 @@ exports.resend = async (req, res) => {
     const hash = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
     user.hash = hash
     await user.save()
-
+    logger.info(NAMESPACE, 'Resend Email successful')
     const link = 'http://' + req.get('host') + '/api/v1/user/verify/' + user.id + '/' + hash
     await sendEmail(email, 'Verify Your Email', `Verify your email at ${link}`)
     return res.json({
@@ -359,22 +378,27 @@ exports.edit = async (req, res) => {
           message: 'User does not exist'
         })
       }
+      // check for if file is uploaded
       if (name || bio || req.file) {
         if (name) {
           user.name = name
+          logger.info(NAMESPACE, 'Name update requested')
         }
         if (bio) {
           user.bio = bio
+          logger.info(NAMESPACE, 'Bio update requested')
         }
         if (req.file) {
+          logger.info(NAMESPACE, 'Avatar update requested')
           const { originalname, buffer } = req.file
           const data = await s3Upload(req.user.id, buffer, originalname)
           if (!data) {
-            console.log('Some Error occurred here')
+            logger.error(NAMESPACE, 'S3 Upload failed')
           }
           user.avatar = data.Location
         }
         await user.save()
+        logger.info(NAMESPACE, 'Edit successful [NAME OR BIO OR AVATAR]')
         return res.status(200).json({
           success: true,
           message: 'User updated',
@@ -383,6 +407,12 @@ exports.edit = async (req, res) => {
             avatar: user.avatar,
             bio: user.bio
           }
+        })
+      }
+      if (!(oldPass && newPass && confirmPass)) {
+        return res.status(400).json({
+          success: false,
+          message: 'Please fill all the fields'
         })
       }
       const isMatch = await bcrypt.compare(oldPass, user.password)
@@ -403,6 +433,7 @@ exports.edit = async (req, res) => {
         user.password = await bcrypt.hash(newPass, salt)
       }
       await user.save()
+      logger.info(NAMESPACE, 'Edit successful [PASSWORD]')
       return res.json({
         success: true,
         message: 'Password updated',
@@ -433,6 +464,7 @@ exports.edit = async (req, res) => {
 */
 
 exports.get = async (req, res) => {
+  logger.info(NAMESPACE, 'Get User data request recieved')
   try {
     const user = await User.findById(req.user.id)
     if (!user) {
@@ -442,6 +474,7 @@ exports.get = async (req, res) => {
       })
     }
     const { password, hash, __v, ...data } = user._doc
+    logger.info(NAMESPACE, 'Get User data successful')
     return res.status(200).json({
       success: true,
       data
@@ -454,5 +487,3 @@ exports.get = async (req, res) => {
     })
   }
 }
-
-// ! TO DO reset password

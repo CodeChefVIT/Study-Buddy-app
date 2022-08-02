@@ -898,6 +898,26 @@ describe('/POST /api/v1/user/reset/:id/:hash', () => {
         done()
       })
   })
+  it('login', done => {
+    chai.request(server)
+      .post('/api/v1/user/login')
+      .send({ email: 'studybuddycc2@gmail.com', password: 'test' })
+      .end((err, res) => {
+        if (err) {
+          console.log(err.stack)
+        }
+        res.should.have.status(200)
+        res.body.should.be.a('object')
+        res.body.should.have.property('message')
+        res.body.should.have.property('success')
+        res.body.should.have.property('token')
+        res.body.message.should.be.a('string')
+        res.body.success.should.be.a('boolean')
+        res.body.success.should.equal(true)
+        res.body.message.should.equal('Login successful')
+        done()
+      })
+  })
 })
 
 /*
