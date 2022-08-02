@@ -34,7 +34,10 @@ const CreateGrp = (props) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(modules);
+
     setFormFields({ ...formFields, modules: [...modules] });
+
+    console.log(formFields);
 
     const response = await fetch(`${process.env.REACT_APP_URL}/groups/new`, {
       method: "POST",
@@ -64,7 +67,8 @@ const CreateGrp = (props) => {
       return [modules, ...prevModules];
     });
 
-    setFormFields({ ...formFields, modules: [...modules] });
+    // console.log(modules);
+    // setFormFields({ ...formFields, modules: [...modules] });
   };
 
   const errorHandler = () => {
