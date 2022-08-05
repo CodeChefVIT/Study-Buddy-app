@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 const ViewQuizesCard = ({ quiz }) => {
-  const Grppath = `/groups/quiz/attempt/${quiz._id}`;
+  const Grppath = `/groups/quiz/attempt/${quiz.id}`;
 
   return (
     <div className="quiz-box">

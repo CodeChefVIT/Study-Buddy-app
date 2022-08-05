@@ -1,96 +1,117 @@
-import Image1 from "./../../assets/img.svg";
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useState, useEffect } from "react";
+import React from "react";
 
 import "./account-settings.styles.css";
-import axios from "axios";
+import ErrorModal from "../error/error.component";
 
-let defaultForm = new FormData();
 const AccSet = () => {
-  // const resetFormFields = () => {
-  //   setFormFields(defaultForm);
-  // };
+  const [name, setName] = useState("");
+  const [bio, setBio] = useState("");
+  let defaultForm = new FormData();
+  const [url, setUrl] = useState();
+  const [error, setError] = useState();
+
+  useEffect(() => {
+    const getProfileDet = async () => {
+      const responseGet = await fetch(`${process.env.REACT_APP_URL}/user/`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+        .then((response) => response.json())
+        .then(({ data }) => {
+          setUrl(data.avatar);
+          setName(data.name);
+        });
+    };
+    getProfileDet();
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    console.log(defaultForm);
+    defaultForm.append("name", name);
+    defaultForm.append("bio", bio);
 
-    const response = await axios
-      .patch(
-        `https://study-buddy-app-production.up.railway.app/api/v1/user/edit`,
-        defaultForm,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      )
-      .then((res) => res.json());
+    for (var key of defaultForm.entries()) {
+      console.log(key[0] + ", " + key[1]);
+    }
+
+    const response = await fetch(`${process.env.REACT_APP_URL}/user/edit`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: defaultForm,
+    });
     console.log(response);
 
-    if (response.success) {
-      localStorage.setItem("token", response.token);
-      alert("User Updated Sucessfully!");
-      // resetFormFields();
+    if (response.status === 200) {
+      setError({
+        message: "Profile Updated Successfully",
+      });
     } else {
-      alert("User Updation Failed");
+      setError({
+        message: "Profile Updation Failed. Please Try Again",
+      });
     }
   };
 
   const handleFileChange = (event) => {
-    console.log(event);
-
-    const { value } = event.target;
-
-    defaultForm.append("avatar", value);
+    event.preventDefault();
+    defaultForm.append("avatar", event.target.files[0]);
   };
   const handleBioChange = (event) => {
-    const { value } = event.target.files[0];
-
-    defaultForm.append("bio", value);
-    console.log(defaultForm);
+    event.preventDefault();
+    setBio(event.target.value);
   };
   const handleNameChange = (event) => {
-    const { value } = event.target;
+    event.preventDefault();
+    setName(event.target.value);
+  };
 
-    defaultForm.append("name", value);
-    console.log(defaultForm);
+  const errorHandler = () => {
+    setError(null);
   };
 
   return (
-    <form className="form-account" onSubmit={handleSubmit}>
-      <div className="heading-primary">Your Account Settings</div>
+    <React.Fragment>
+      {error && <ErrorModal message={error.message} onConfirm={errorHandler} />}
+      <form
+        className="form-account"
+        encType="multipart/form-data"
+        onSubmit={handleSubmit}
+      >
+        <div className="heading-primary">Your Account Settings</div>
 
-      <div className="pic-cha">
-        <img className="prof-pic" src={Image1} alt="profile pic" />
+        <div className="pic-cha">
+          <img className="prof-pic-up mar-r" src={url} alt="profile pic" />
+          <input
+            type="file"
+            accept="image/png"
+            onChange={handleFileChange}
+            id="avatar"
+          />
+        </div>
+
+        <div className="heading-secondary-sm-2 mar-t">{name}</div>
+
+        <label htmlFor="bio">Bio</label>
         <input
-          // placeholder="Change Profile Picture"
-          type="file"
-          onChange={handleFileChange}
-          id="avatar"
+          placeholder="Bio"
+          type="text"
+          onChange={handleBioChange}
+          id="bio"
         />
-      </div>
 
-      <label htmlFor="username">Name</label>
-      <input
-        placeholder="Name"
-        type="text"
-        onChange={handleNameChange}
-        id="username"
-      />
-
-      <label htmlFor="bio">Bio</label>
-      <input
-        placeholder="Bio"
-        type="text"
-        onChange={handleBioChange}
-        id="bio"
-      />
-
-      <button to="/" className="button mar-t">
-        Save Changes
-      </button>
-    </form>
+        <button to="/" className="button mar-t">
+          Save Changes
+        </button>
+      </form>
+    </React.Fragment>
   );
 };
 

@@ -4,6 +4,8 @@ const { Groups } = require(join(__dirname, '..', 'models', 'Groups.model'))
 const User = require(join(__dirname, '..', 'models', 'User.model'))
 const RandExp = require('randexp')
 const sendEmail = require(join(__dirname, '..', 'workers', 'sendEmail.worker'))
+const logger = require(join(__dirname, '..', '..', 'config', 'logger'))
+const NAMESPACE = 'GROUPS CONTROLLER'
 
 /*
   Type: GET
@@ -17,6 +19,7 @@ exports.getAllGroups = async (req, res) => {
   const { subject } = req.query
   const limit = parseInt(req.query.limit) || 10
   const page = parseInt(req.query.page) || 1
+  logger.info(NAMESPACE, 'Getting all groups')
   try {
     let groups
     if (subject) {
@@ -39,10 +42,10 @@ exports.getAllGroups = async (req, res) => {
         groups[i].members = undefined
       }
     }
-
+    logger.info(NAMESPACE, 'Groups retrieved and sent')
     return res.status(200).json({ success: true, groups })
   } catch (err) {
-    console.log(err)
+    logger.error(NAMESPACE, err.message)
     return res.status(500).json({ success: false, error: 'Server Error' })
   }
 }
@@ -57,7 +60,7 @@ exports.getAllGroups = async (req, res) => {
 */
 exports.requestGroup = async (req, res) => {
   const { inviteCode } = req.params
-
+  logger.info(NAMESPACE, 'Requesting to join group')
   try {
     // add user to requests array
     // if (!inviteCode) { return res.status(400).json({ message: 'No Invite Code Provided' }) }
@@ -70,12 +73,13 @@ exports.requestGroup = async (req, res) => {
 
     group.requests.push(user.id)
     await group.save()
+    logger.info(NAMESPACE, 'Request sent')
 
     const admin = await User.findById(group.admin)
     await sendEmail(admin.email, 'Group Request', `${user.name} has requested to join the group ${group.name}`)
     return res.status(200).json({ success: true, message: 'Request sent' })
   } catch (err) {
-    console.log(err)
+    logger.error(NAMESPACE, err.message)
     return res.status(500).json({ success: false, error: 'Internal Error Occured' })
   }
 }
@@ -90,6 +94,7 @@ exports.requestGroup = async (req, res) => {
 */
 exports.getUserGroups = async (req, res) => {
   const id = req.query.id || req.user.id
+  logger.info(NAMESPACE, 'Getting groups of user')
   try {
     const groups = await Groups.find({ members: id })
     for (let i = 0; i < groups.length; i++) {
@@ -103,13 +108,14 @@ exports.getUserGroups = async (req, res) => {
       }
       groups[i].membersLength = groups[i].members.length
     }
+    logger.info(NAMESPACE, 'Groups retrieved and sent')
     return res.status(200).json({
       success: true,
       groups
     })
   } catch (err) {
-    console.log(err)
-    return res.status(500).json({ success: false, message: err.message })
+    logger.error(NAMESPACE, err)
+    return res.status(500).json({ success: false, message: 'Some Internal Error Occurred' })
   }
 }
 
@@ -124,6 +130,7 @@ exports.getUserGroups = async (req, res) => {
 */
 exports.createGroup = async (req, res) => {
   const { name, description, subject, modules } = req.body
+  logger.info(NAMESPACE, 'Creating group')
   try {
     // if (!name && !description && !subject && !modules) { return res.status(400).json({ message: 'Invalid Data Provided' }) }
     // const subject = await Subject.findById(subjectID)
@@ -160,13 +167,14 @@ exports.createGroup = async (req, res) => {
     await group.save()
     // subject.groups.push(group._id)
     // await subject.save()
+    logger.info(NAMESPACE, 'Group created')
     return res.status(200).json({
       success: true,
       group
     })
   } catch (err) {
-    console.log(err)
-    return res.status(500).json({ success: false, message: err.message })
+    logger.error(NAMESPACE, err)
+    return res.status(500).json({ success: false, message: 'Some Internal Error Occurred' })
   }
 }
 
@@ -179,6 +187,7 @@ exports.createGroup = async (req, res) => {
   Returns: Group
 */
 exports.getGroup = async (req, res) => {
+  logger.info(NAMESPACE, 'Getting group By Parameter ID')
   try {
     let group = await Groups.findById(req.params.id)
     if (!group) {
@@ -225,14 +234,14 @@ exports.getGroup = async (req, res) => {
         }
       }
     }
-
+    logger.info(NAMESPACE, 'Group retrieved and sent')
     return res.status(200).json({
       success: true,
       group
     })
   } catch (err) {
-    console.log(err)
-    return res.status(500).json({ success: false, err: err.message })
+    logger.error(NAMESPACE, err)
+    return res.status(500).json({ success: false, err: 'Some Internal Error Occurred' })
   }
 }
 
@@ -248,6 +257,7 @@ exports.getGroup = async (req, res) => {
 
 exports.acceptRequest = async (req, res) => {
   const { group, user } = req.params
+  logger.info(NAMESPACE, 'Accepting Request')
   try {
     const groupObj = await Groups.findById(group)
     if (!groupObj) {
@@ -268,13 +278,14 @@ exports.acceptRequest = async (req, res) => {
     groupObj.members.push(userObj._id)
     groupObj.requests = groupObj.requests.filter(id => id.toString() !== userObj._id.toString())
     await groupObj.save()
+    logger.info(NAMESPACE, 'Request accepted')
     await sendEmail(userObj.email, 'Group Request Accepted', `Your request to join the group ${groupObj.name} has been accepted`)
     return res.status(200).json({
       success: true,
       message: 'User added to group'
     })
   } catch (err) {
-    console.log(err)
+    logger.error(NAMESPACE, err)
     return res.status(500).json({ success: false, error: 'Some Internal Error Occurred' })
   }
 }
@@ -290,6 +301,7 @@ exports.acceptRequest = async (req, res) => {
 */
 exports.rejectRequest = async (req, res) => {
   const { group, user } = req.params
+  logger.info(NAMESPACE, 'Rejecting Request')
   try {
     const groupObj = await Groups.findById(group)
     if (!groupObj) {
@@ -319,13 +331,14 @@ exports.rejectRequest = async (req, res) => {
     }
     groupObj.requests = groupObj.requests.filter(request => request.toString() !== userObj._id.toString())
     await groupObj.save()
+    logger.info(NAMESPACE, 'Request rejected')
     await sendEmail(userObj.email, 'Group Request Deleted', `Your request to join the group ${groupObj.name} has been rejected`)
     return res.status(200).json({
       success: true,
       message: 'User request deleted'
     })
   } catch (err) {
-    console.log(err)
+    logger.error(NAMESPACE, err)
     return res.status(500).json({ success: false, error: 'Some Internal Error Occurred' })
   }
 }
@@ -340,6 +353,7 @@ exports.rejectRequest = async (req, res) => {
 */
 exports.getRequests = async (req, res) => {
   const { group } = req.params
+  logger.info(NAMESPACE, 'Getting Requests')
   try {
     const groupObj = await Groups.findById(group)
     if (!groupObj) {
@@ -365,12 +379,13 @@ exports.getRequests = async (req, res) => {
         regno: user.regno
       })
     }
+    logger.info(NAMESPACE, 'Requests retrieved')
     return res.status(200).json({
       success: true,
       requests: arr
     })
   } catch (err) {
-    console.log(err)
+    logger.error(NAMESPACE, err)
     return res.status(500).json({ success: false, error: 'Some internal error occurred' })
   }
 }
