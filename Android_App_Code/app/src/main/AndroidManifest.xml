@@ -14,7 +14,7 @@
         android:theme="@style/Theme.StudyBuddy"
         tools:targetApi="31">
         <activity
-            android:name=".Dashboard"
+            android:name=".activities.Dashboard"
             android:exported="false" />
         <activity
             android:name=".activities.SignUp"

@@ -55,7 +55,6 @@ public class LogIn extends AppCompatActivity {
         loading();
         logInUser(loginRequest);
 
-
     }
 
     private void logInUser(LoginRequest loginRequest) {
