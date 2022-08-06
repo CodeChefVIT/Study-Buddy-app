@@ -1,0 +1,12 @@
+.search-box {
+  width: 60%;
+  border-radius: 10px;
+  float: right;
+  border: none;
+  color: white;
+}
+
+.search-box:focus {
+  border: none;
+  outline: none;
+}

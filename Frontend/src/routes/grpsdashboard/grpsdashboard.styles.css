@@ -1,0 +1,62 @@
+.groups-in {
+  background-color: #101010;
+  padding-top: 4rem;
+  padding-bottom: 5.2rem;
+  padding-left: 5.2rem;
+  padding-right: 5.2rem;
+  margin: 0 15rem;
+}
+
+.group-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.btn-sp {
+  display: flex;
+  justify-content: space-between;
+}
+
+.button-grps {
+  background-color: #292929;
+  border: none;
+  width: 48%;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 30px;
+  padding: 20px 30px;
+  transition: all 1s;
+}
+
+.button-grps:hover {
+  background-color: #202020;
+}
+
+.long {
+  width: 100%;
+}
+
+.grp-btn-img {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.button-grp-in {
+  background-color: #292929;
+  border: none;
+  width: 48%;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 500;
+  margin-top: 30px;
+  padding: 20px 30px;
+  transition: all 1s;
+}

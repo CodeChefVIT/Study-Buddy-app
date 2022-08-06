@@ -1,0 +1,30 @@
+.login-background .shape {
+  background: linear-gradient(#ff5b7e, #9b0022);
+  height: 200px;
+  width: 200px;
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(50px);
+}
+
+.shape:first-child {
+  left: 32rem;
+  top: 14rem;
+}
+
+.shape:last-child {
+  background: linear-gradient(to right, #80fff6, #02ccc0);
+
+  right: 26rem;
+  bottom: 4rem;
+}
+
+.form-signin {
+  margin: 0 35rem;
+  background-color: rgba(255, 255, 255, 0.13);
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  border: 2px solid #cf894b;
+  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+  padding: 50px 35px;
+}

@@ -1,0 +1,100 @@
+.create-background {
+  width: 500px;
+  height: 520px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+}
+
+.create-background .shape-c {
+  background: linear-gradient(to right, #80fff6, #02ccc0);
+  height: 200px;
+  width: 200px;
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(50px);
+}
+.shape-c:first-child {
+  right: -10rem;
+  bottom: 10rem;
+}
+
+.shape-c:last-child {
+  background: linear-gradient(#ff5b7e, #9b0022);
+
+  right: -10rem;
+  bottom: -55rem;
+}
+
+.pad-t2 {
+  padding-top: 4rem;
+}
+
+.mar-r {
+  margin-right: 2rem;
+}
+
+.form-create {
+  margin: 30px 60px;
+  background-color: rgba(255, 255, 255, 0.13);
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  border: 2px solid #cf894b;
+  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+  padding: 50px 35px;
+}
+
+form * {
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  outline: none;
+  border: none;
+}
+
+.heading-primary-sm-mod {
+  font-size: 3.6rem;
+  font-weight: 500;
+  line-height: 1.05;
+  color: #fff;
+  letter-spacing: -0.5px;
+  margin-bottom: 2.4rem;
+}
+
+label {
+  display: block;
+  margin-top: 30px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+input {
+  display: block;
+  height: 50px;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.07);
+  border-radius: 3px;
+  padding: 0 10px;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 300;
+}
+::placeholder {
+  color: #e5e5e5;
+}
+
+.log-nav-link:link,
+.log-nav-link:visited {
+  display: inline-block;
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+  font-size: 1.6rem;
+  transition: all 1s;
+  color: #ff5b7e;
+}
+
+.log-nav-link:hover,
+.log-nav-link:active {
+  color: #e67e22;
+}

@@ -1,0 +1,73 @@
+.quizes {
+  background-color: #101010;
+  padding-top: 4rem;
+  padding-bottom: 5.2rem;
+  padding-left: 5.2rem;
+  padding-right: 5.2rem;
+}
+
+.groups-nav-list {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 3.2rem;
+}
+
+.btn-pri:link,
+.btn-pri:visited {
+  display: inline-block;
+  background-color: #313131;
+  color: #fff;
+  font-size: 1.8rem;
+  font-weight: 600;
+
+  padding: 1.6rem 3.2rem;
+  border-radius: 9px;
+  text-decoration: none;
+  transition: all 1s;
+}
+
+.btn-pri:hover,
+.btn-pri:active {
+  background-color: #595959;
+  color: #fff;
+}
+
+.quizes-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.find-grp {
+  border-radius: 5px;
+  float: right;
+  padding: 6px;
+  border: none;
+  margin-top: 8px;
+  margin-right: 16px;
+  font-size: 17px;
+  width: 30%;
+  color: #fff;
+  caret-color: #e67e22;
+}
+
+.quiz-container {
+  margin-top: 3.2rem;
+  align-items: center;
+}
+
+.quiz-box {
+  width: 100%;
+  background-color: #313131;
+  border-radius: 1rem;
+  padding: 2.4rem;
+  margin-bottom: 3.2rem;
+  text-align: center;
+  box-shadow: 0px 3px 5px rgba(196, 196, 196, 0.3);
+}
+
+.quiz-con {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

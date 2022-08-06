@@ -1,0 +1,70 @@
+.groups-member {
+  background-color: #101010;
+  padding-top: 4rem;
+  padding-bottom: 5.2rem;
+  padding-left: 13rem;
+  padding-right: 13rem;
+}
+
+.grps-mem-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.find-grp {
+  border-radius: 5px;
+  float: right;
+  padding: 6px;
+  border: none;
+  margin-top: 8px;
+  margin-right: 16px;
+  font-size: 17px;
+  width: 30%;
+  color: #fff;
+  caret-color: #e67e22;
+}
+
+.grp-mem-container {
+  margin: 0 auto;
+  margin-top: 4.8rem;
+  width: 60%;
+}
+
+.mem-box {
+  width: 100%;
+  background-color: #313131;
+  border-radius: 1rem;
+  padding: 2.4rem;
+  text-align: center;
+  box-shadow: 0px 3px 5px rgba(196, 196, 196, 0.3);
+}
+
+.mem-img {
+  width: 86px;
+  height: 86px;
+  border-radius: 100px;
+}
+
+.mem-con {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.heading-name {
+  font-size: 3.6rem;
+  font-weight: 500;
+  color: #fff;
+  margin-left: 5.6rem;
+}
+
+.heading-name-2 {
+  font-size: 2.4rem;
+  font-weight: 500;
+  color: rgba(160, 160, 160, 0.684);
+  margin-left: 5.6rem;
+}
+
+.pad-m {
+  padding-top: 1.6rem;
+}

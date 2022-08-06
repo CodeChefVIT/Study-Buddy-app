@@ -57,6 +57,8 @@ router.post('/new', validate(schema.createGroup, 'body'), authorise, groups.crea
 router.get('/', validate(schema.getAllGroups, 'query'), authorise, groups.getAllGroups)
 router.get('/request/:inviteCode', validate(schema.requestGroup, 'params'), authorise, groups.requestGroup)
 
+router.patch('/:group/picture', validate(schema.id, 'params', 'Invalid Group ID') , authorise, groups.editPicture)
+
 router.get('/user', authorise, groups.getUserGroups)
 router.get('/:id', validate(schema.getQuiz, 'params'), authorise, groups.getGroup)
 
