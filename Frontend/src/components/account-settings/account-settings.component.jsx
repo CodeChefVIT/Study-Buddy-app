@@ -6,12 +6,16 @@ import React from "react";
 import "./account-settings.styles.css";
 import ErrorModal from "../error/error.component";
 
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
+
 const AccSet = () => {
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
   let defaultForm = new FormData();
   const [url, setUrl] = useState();
   const [error, setError] = useState();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getProfileDet = async () => {
@@ -26,6 +30,7 @@ const AccSet = () => {
           setUrl(data.avatar);
           setName(data.name);
         });
+      setLoading(false);
     };
     getProfileDet();
   }, []);
@@ -46,7 +51,7 @@ const AccSet = () => {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: defaultForm,
-    });
+    }).then(setLoading(false));
     console.log(response);
 
     if (response.status === 200) {
@@ -78,40 +83,57 @@ const AccSet = () => {
   };
 
   return (
-    <React.Fragment>
-      {error && <ErrorModal message={error.message} onConfirm={errorHandler} />}
-      <form
-        className="form-account"
-        encType="multipart/form-data"
-        onSubmit={handleSubmit}
-      >
-        <div className="heading-primary">Your Account Settings</div>
+    <div>
+      {loading ? (
+        <Box
+          sx={{
+            display: "flex",
+            paddingBottom: "40vh",
+            justifyContent: "center",
+            paddingTop: "20vh",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      ) : (
+        <React.Fragment>
+          {error && (
+            <ErrorModal message={error.message} onConfirm={errorHandler} />
+          )}
+          <form
+            className="form-account"
+            encType="multipart/form-data"
+            onSubmit={handleSubmit}
+          >
+            <div className="heading-primary">Your Account Settings</div>
 
-        <div className="pic-cha">
-          <img className="prof-pic-up mar-r" src={url} alt="profile pic" />
-          <input
-            type="file"
-            accept="image/png"
-            onChange={handleFileChange}
-            id="avatar"
-          />
-        </div>
+            <div className="pic-cha">
+              <img className="prof-pic-up mar-r" src={url} alt="profile pic" />
+              <input
+                type="file"
+                accept="image/png"
+                onChange={handleFileChange}
+                id="avatar"
+              />
+            </div>
 
-        <div className="heading-secondary-sm-2 mar-t">{name}</div>
+            <div className="heading-secondary-sm-2 mar-t">{name}</div>
 
-        <label htmlFor="bio">Bio</label>
-        <input
-          placeholder="Bio"
-          type="text"
-          onChange={handleBioChange}
-          id="bio"
-        />
+            <label htmlFor="bio">Bio</label>
+            <input
+              placeholder="Bio"
+              type="text"
+              onChange={handleBioChange}
+              id="bio"
+            />
 
-        <button to="/" className="button mar-t">
-          Save Changes
-        </button>
-      </form>
-    </React.Fragment>
+            <button to="/" className="button mar-t">
+              Save Changes
+            </button>
+          </form>
+        </React.Fragment>
+      )}
+    </div>
   );
 };
 

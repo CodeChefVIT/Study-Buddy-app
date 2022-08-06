@@ -392,3 +392,21 @@ input {
   height: 3.6rem;
   width: 3.6rem;
 }
+
+::-webkit-scrollbar {
+  width: 0.7rem;
+  background: #121212;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: black;
+  border-radius: 0.6rem;
+  z-index: -99;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #ff9447;
+  border-radius: 1rem;
+}

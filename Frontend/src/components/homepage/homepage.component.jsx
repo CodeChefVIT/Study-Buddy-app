@@ -10,11 +10,11 @@ const Homepage = () => {
         <div className="hero">
           <div className="hero-text-box">
             <h1 className="heading-primary">
-              Want to increase productivity and achieve goals?
+              Lets save food by reducing its wastage.
             </h1>
             <p className="hero-description">
-              Want to get increase productivity? Find buddies and join study
-              groups to help each other meet your academic goals with StudyBuddy
+              Lorem ipsum dolor sit amet, consectetur adipiscing. Lorem Ipsjkmek
+              srfrfs sgksoefen e fjs oefaedae aeo e foekfoaea foaefj eofaefm e
             </p>
             <Link
               to={localStorage.getItem("token") ? "/dashboard" : "/signup"}
