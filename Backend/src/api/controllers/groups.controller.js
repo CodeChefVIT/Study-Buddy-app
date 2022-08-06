@@ -3,6 +3,8 @@ const { Groups } = require(join(__dirname, '..', 'models', 'Groups.model'))
 // const Subject = require(join(__dirname, '..', 'models', 'Subjects.model'))
 const User = require(join(__dirname, '..', 'models', 'User.model'))
 const RandExp = require('randexp')
+const multer = require('multer')
+const s3Upload = require(join(__dirname, '..', 'workers', 's3BucketUpload.worker'))
 const sendEmail = require(join(__dirname, '..', 'workers', 'sendEmail.worker'))
 const logger = require(join(__dirname, '..', '..', 'config', 'logger'))
 const NAMESPACE = 'GROUPS CONTROLLER'
@@ -388,4 +390,55 @@ exports.getRequests = async (req, res) => {
     logger.error(NAMESPACE, err)
     return res.status(500).json({ success: false, error: 'Some internal error occurred' })
   }
+}
+
+
+exports.editPicture = async (req, res) => {
+  multer({
+    storage: multer.memoryStorage()
+  }).single('picture')(req, res, async (err) => {
+    const { group } = req.params
+    try {
+      logger.error(NAMESPACE, 'Editing Picture')
+      const groupObj = await Groups.findById(group)
+      if (!groupObj) {
+        return res.status(404).json({
+          success: false,
+          error: 'Group does not exist'
+        })
+      }
+      if (groupObj.admin.toString() !== req.user.id) { return res.status(401).json({ success: false, error: 'User is not admin' }) }
+
+      if (err) {
+        return res.status(500).json({
+          success: false,
+          error: 'Some internal error occurred'
+        })
+      }
+      if (!req.file) {
+        return res.status(400).json({
+          success: false,
+          error: 'No file provided'
+        })
+      }
+      const { originalname, buffer } = req.file
+      const data = await s3Upload(req.user.id, buffer, originalname)
+      if (!data) {
+        logger.error(NAMESPACE, 'S3 Upload failed')
+      }
+      groupObj.picture = data.Location
+      await groupObj.save()
+      logger.info(NAMESPACE, 'Picture updated')
+      return res.status(200).json({
+        success: true,
+        message: 'Picture updated'
+      })
+    } catch (error) {
+      console.log(error)
+      return res.status(500).json({
+        success: false,
+        message: 'Server error'
+      })
+    }
+  })
 }
