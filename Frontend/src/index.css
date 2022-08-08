@@ -319,6 +319,10 @@ input {
   height: 3.6rem;
 }
 
+.logo-container {
+  width: 60%;
+}
+
 /****************************/
 /* NAVIGATION */
 /****************************/
@@ -376,6 +380,41 @@ input {
   padding-top: 5.2rem;
 }
 
+@media only screen and (max-width: 1100px) {
+  .footer {
+    background-color: #101010;
+    display: block;
+    max-width: 1250px;
+    margin: auto;
+    bottom: 0;
+
+    height: 2.4rem;
+    padding-top: 5.2rem;
+  }
+
+  .top {
+    padding-left: 40px;
+    padding-top: 20px;
+  }
+
+  .social-links {
+    padding-left: 40px;
+    padding-top: 0px;
+  }
+
+  .heading-secondary {
+    margin-bottom: 0px;
+  }
+  .media-icons {
+    padding-top: 2rem;
+  }
+
+  .social-icon {
+    height: 36px;
+    width: 36px;
+  }
+}
+
 .media-icons a {
   display: flex;
   align-items: center;
@@ -389,8 +428,8 @@ input {
 }
 
 .social-icon {
-  height: 3.6rem;
-  width: 3.6rem;
+  height: 36px;
+  width: 36px;
 }
 
 ::-webkit-scrollbar {

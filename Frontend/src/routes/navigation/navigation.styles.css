@@ -1,0 +1,12 @@
+@media only screen and (max-width: 768px) {
+  nav ul {
+    visibility: hidden;
+  }
+
+  .logo {
+    width: 100%;
+    position: absolute;
+    z-index: 2;
+    right: 20px;
+  }
+}

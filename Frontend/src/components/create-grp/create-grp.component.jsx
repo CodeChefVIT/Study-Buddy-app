@@ -17,6 +17,12 @@ const defaultFormFields = {
 const CreateGrp = (props) => {
   const navigate = useNavigate();
   const [formFields, setFormFields] = useState(defaultFormFields);
+
+  // const [url, setUrl] = useState(
+  //   "https://t3.ftcdn.net/jpg/03/46/83/96/240_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"
+  // );
+  // let defaultForm = new FormData();
+
   const { name, subject, description } = formFields;
   const [modules, setModules] = useState([]);
   const [error, setError] = useState();
@@ -46,7 +52,12 @@ const CreateGrp = (props) => {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify(formFields),
-    }).then((res) => res.json());
+    })
+      .then((res) => res.json())
+      .then((response) => response.json());
+    // .then(({ data }) => {
+    // setUrl(data.avatar);
+    // });
     console.log(response);
 
     try {
@@ -66,14 +77,16 @@ const CreateGrp = (props) => {
     setModules((prevModules) => {
       return [modules, ...prevModules];
     });
-
-    // console.log(modules);
-    // setFormFields({ ...formFields, modules: [...modules] });
   };
 
   const errorHandler = () => {
     setError(null);
   };
+
+  // const handleFileChange = (event) => {
+  //   event.preventDefault();
+  //   defaultForm.append("avatar", event.target.files[0]);
+  // };
 
   return (
     <div>
@@ -88,6 +101,20 @@ const CreateGrp = (props) => {
             </div>
             <form className="form-create" onSubmit={handleSubmit}>
               <div className="heading-primary">Create Study Group</div>
+
+              {/* <div className="pic-cha">
+                <img
+                  className="prof-pic-up mar-r"
+                  src={url}
+                  alt="profile pic"
+                />
+                <input
+                  type="file"
+                  accept="image/png"
+                  onChange={handleFileChange}
+                  id="avatar"
+                />
+        </div>*/}
               <label htmlFor="coursename">Course Name</label>
               <input
                 name="name"

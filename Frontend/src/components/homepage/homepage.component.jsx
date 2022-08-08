@@ -10,17 +10,23 @@ const Homepage = () => {
         <div className="hero">
           <div className="hero-text-box">
             <h1 className="heading-primary">
-              Lets save food by reducing its wastage.
+              <p className="small-hero">
+                Want to increase productivity and achieve goals?
+              </p>
             </h1>
             <p className="hero-description">
-              Lorem ipsum dolor sit amet, consectetur adipiscing. Lorem Ipsjkmek
-              srfrfs sgksoefen e fjs oefaedae aeo e foekfoaea foaefj eofaefm e
+              Find buddies and join study groups to help each other meet
+              deadlines.
             </p>
             <Link
               to={localStorage.getItem("token") ? "/dashboard" : "/signup"}
-              className="btn"
+              className="btn btn-web"
             >
               Get started now
+            </Link>
+
+            <Link to="/" className="btn btn-app">
+              Install our App
             </Link>
           </div>
           <div className="hero-img-box">
