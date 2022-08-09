@@ -68,7 +68,7 @@ html {
 }
 
 body {
-  font-family: IBM Plex Sans, serif;
+  font-family: Montserrat, IBM Plex Sans, serif;
   line-height: 1;
   font-weight: 400;
   color: #555;
@@ -138,6 +138,14 @@ body {
   color: #fff;
 }
 
+.heading-secondary-sm-2 {
+  font-size: 3.6rem;
+  line-height: 1.6;
+  margin-bottom: 2.4rem;
+  font-weight: 500;
+  color: #fff;
+}
+
 .heading-tertiary {
   font-size: 2rem;
   line-height: 1.6;
@@ -196,8 +204,16 @@ body {
   margin-bottom: 0rem;
 }
 
+.mar-f {
+  margin-top: 0.71rem;
+}
+
 .mar-l {
   margin-left: 6rem;
+}
+
+.mar-l-3 {
+  margin-left: 15rem;
 }
 
 .mar-t {
@@ -214,6 +230,15 @@ body {
 
 .mar-b {
   margin-bottom: 2rem;
+}
+
+.mar-b-2 {
+  margin-bottom: 3rem;
+}
+
+.mar-b-h {
+  margin-top: 5vh;
+  margin-bottom: 40vh;
 }
 
 .button {
@@ -286,8 +311,6 @@ input {
   justify-content: space-between;
   align-items: center;
 
-  background-color: #101010;
-
   height: 9.6rem;
   padding: 0 4.8rem;
 }
@@ -324,7 +347,7 @@ input {
 
 .main-nav-link.nav-cta:link,
 .main-nav-link.nav-cta:visited {
-  padding: 1.2rem 2.4rem;
+  padding: 1.2rem 2.8rem;
   border-radius: 9px;
   color: #fff;
   background-color: #e67e22;
@@ -341,14 +364,15 @@ input {
 .footer {
   display: flex;
   justify-content: space-between;
-
   background-color: #101010;
 
   max-width: 1250px;
   margin: auto;
   font-size: 2rem;
 
-  height: 9.6rem;
+  bottom: 0;
+
+  height: 2.4rem;
   padding-top: 5.2rem;
 }
 

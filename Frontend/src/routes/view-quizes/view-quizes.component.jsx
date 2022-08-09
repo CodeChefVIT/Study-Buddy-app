@@ -11,16 +11,19 @@ import SearchBox from "../../components/search-box/search-box.component";
 
 import "./view-quizes.styles.css";
 
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
+
 const ViewQuiz = () => {
   const navigate = useNavigate();
   const [quizes, setQuizes] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const usePathname = () => {
     const location = useLocation();
     return location.pathname;
   };
   const path = usePathname();
-  // console.log(path);
 
   useEffect(() => {
     if (!localStorage.getItem("token")) {
@@ -29,7 +32,7 @@ const ViewQuiz = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`https://study-buddy-app-production.up.railway.app/api/v1${path}`, {
+    fetch(`${process.env.REACT_APP_URL}${path}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -37,8 +40,15 @@ const ViewQuiz = () => {
       },
     })
       .then((response) => response.json())
-      .then(({ data }) => setQuizes(data));
+      .then(({ data }) => {
+        setQuizes(data);
+        console.log(data);
+      });
+    setLoading(false);
   }, []);
+
+  console.log(quizes.questions);
+  console.log(quizes.time);
 
   return (
     <div>
@@ -48,10 +58,27 @@ const ViewQuiz = () => {
           <h1 className="heading-primary-sm">Find Quizes</h1>
         </div>
         <div className="quiz-container">
-          {quizes &&
-            quizes.map((quiz) => {
-              return <ViewQuizesCard key={quiz.id} quiz={quiz} />;
-            })}
+          {loading || quizes.length === 0 ? (
+            <Box
+              sx={{
+                display: "flex",
+                paddingBottom: "10.8rem",
+                justifyContent: "center",
+                paddingTop: "20vh",
+              }}
+            >
+              <CircularProgress />
+            </Box>
+          ) : (
+            // quizes.map((quiz) => {
+            //   return <ViewQuizesCard key={quiz.id} quiz={quiz} />;
+            // })
+            <div>
+              {quizes.map((quiz) => {
+                return <ViewQuizesCard key={quiz.id} quiz={quiz} />;
+              })}
+            </div>
+          )}
         </div>
       </section>
       <Footer />

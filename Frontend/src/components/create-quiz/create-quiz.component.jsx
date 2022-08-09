@@ -14,7 +14,7 @@ const defaultFormFields = {
 const CreateQuiz = (props) => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { time } = formFields;
-  const [questions, setQuestions] = useState(defaultFormFields.questions);
+  const [questions, setQuestions] = useState([]);
 
   const usePathname = () => {
     const location = useLocation();
@@ -37,17 +37,16 @@ const CreateQuiz = (props) => {
     event.preventDefault();
     console.log(formFields);
 
-    const response = await fetch(
-      `https://study-buddy-app-production.up.railway.app/api/v1${path}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(formFields),
-      }
-    ).then((res) => res.json());
+    setFormFields({ ...formFields, questions: [...questions] });
+
+    const response = await fetch(`${process.env.REACT_APP_URL}${path}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(formFields),
+    }).then((res) => res.json());
     console.log(response);
 
     try {
@@ -57,10 +56,13 @@ const CreateQuiz = (props) => {
     }
   };
 
-  const addQuestion = (question) => {
-    console.log(question);
-    setQuestions(questions.concat(question));
+  const addQuestion = (questions) => {
+    setQuestions((prevQuestions) => {
+      return [questions, ...prevQuestions];
+    });
+
     console.log(questions);
+
     setFormFields({ ...formFields, questions: [...questions] });
   };
 
@@ -73,7 +75,7 @@ const CreateQuiz = (props) => {
         <label htmlFor="modulename">Time </label>
         <input
           name="time"
-          type="text"
+          type="time"
           required
           onChange={handleQuizChange}
           value={time}

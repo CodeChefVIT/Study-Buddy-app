@@ -4,8 +4,8 @@ const AddQuestions = (props) => {
   const saveQuestionArray = (enteredQuestion) => {
     const questions = {
       ...enteredQuestion,
+      id: Math.random().toString(),
     };
-
     props.onAddQuestion(questions);
   };
 
@@ -40,7 +40,7 @@ const AddQuestions = (props) => {
 
   const handleSubmitModule = (event) => {
     event.preventDefault();
-    setOption([]);
+    setOption([option1, option2, option3, option4]);
 
     const questions = {
       question: question,

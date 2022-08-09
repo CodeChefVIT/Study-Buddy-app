@@ -1,5 +1,8 @@
 require('dotenv').config()
 const AWS = require('aws-sdk')
+const { join } = require('path')
+const logger = require(join(__dirname, '..', '..', 'config', 'logger'))
+const NAMESPACE = 'S3 UPLOAD WORKER'
 
 const upload = async (id, buffer, originalname) => {
   if (process.env.NODE_ENV === 'test') {
@@ -7,8 +10,10 @@ const upload = async (id, buffer, originalname) => {
       Location: 'this worked',
       name: originalname
     }
+    logger.debug(NAMESPACE, 'Uploaded file', data)
     return data
   }
+  logger.info(NAMESPACE, 'Uploading file Request')
   try {
     const s3 = new AWS.S3({
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -17,6 +22,7 @@ const upload = async (id, buffer, originalname) => {
     // check if image
     const fileType = buffer.toString('hex', 0, 4).toLowerCase()
     if (fileType !== '89504e47') {
+      logger.error(NAMESPACE, 'File is not an image')
       return false
     }
     const fileExtension = originalname.split('.').pop()
@@ -26,10 +32,12 @@ const upload = async (id, buffer, originalname) => {
       Key: `${Date.now()}-${id}.${fileExtension}`,
       Body: buffer
     }
+    logger.info(NAMESPACE, 'Uploading file to S3')
     const data = await s3.upload(params).promise()
+    logger.debug(NAMESPACE, 'Uploaded file')
     return data
   } catch (err) {
-    console.log(err)
+    logger.error(NAMESPACE, 'Error uploading file', err)
     return false
   }
 }

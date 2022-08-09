@@ -9,6 +9,9 @@ import JoinGrpCard from "../../components/join-grp-card/join-grp-card.component"
 import Footer from "./../footer/footer.component";
 import SearchBox from "../../components/search-box/search-box.component";
 
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
+
 import "./joinstudygrp.styles.css";
 
 const JoinStudyGrp = () => {
@@ -16,6 +19,7 @@ const JoinStudyGrp = () => {
   const [searchField, setSearchField] = useState("");
   const [groups, setGroups] = useState([]);
   const [filteredGroups, setFilteredGroups] = useState(groups);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!localStorage.getItem("token")) {
@@ -23,24 +27,22 @@ const JoinStudyGrp = () => {
     }
   }, []);
 
-  useEffect(() => {
-    fetch(
-      `https://study-buddy-app-production.up.railway.app/api/v1/groups?limit=5000`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    )
-      .then((response) => response.json())
+  const response = useEffect(() => {
+    fetch(`${process.env.REACT_APP_URL}/groups?limit=5000`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((res) => res.json())
       .then(({ groups }) => setGroups(groups));
+    setLoading(false);
   }, []);
 
   useEffect(() => {
     const newFilteredGroups = groups.filter((group) => {
-      return group.inviteCode.includes(searchField);
+      return group.inviteCode.toLowerCase().includes(searchField.toLowerCase());
     });
     setFilteredGroups(newFilteredGroups);
   }, [groups, searchField]);
@@ -64,10 +66,22 @@ const JoinStudyGrp = () => {
           />
         </div>
         <div className="grp-container">
-          {filteredGroups &&
+          {loading || filteredGroups.length === 0 ? (
+            <Box
+              sx={{
+                display: "flex",
+                paddingBottom: "40vh",
+                justifyContent: "center",
+                paddingTop: "20vh",
+              }}
+            >
+              <CircularProgress />
+            </Box>
+          ) : (
             filteredGroups.map((group) => {
               return <JoinGrpCard key={group.id} group={group} />;
-            })}
+            })
+          )}
         </div>
       </section>
       <Footer />
