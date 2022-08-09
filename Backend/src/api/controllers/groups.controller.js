@@ -425,6 +425,10 @@ exports.editPicture = async (req, res) => {
       const data = await s3Upload(req.user.id, buffer, originalname)
       if (!data) {
         logger.error(NAMESPACE, 'S3 Upload failed')
+        return res.status(500).json({
+          success: false,
+          error: 'S3 Upload failed'
+        })
       }
       groupObj.image = data.Location
       await groupObj.save()
