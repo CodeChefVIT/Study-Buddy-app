@@ -1,9 +1,11 @@
 package com.example.studybuddy.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -27,6 +29,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class LogIn extends AppCompatActivity {
 
     private Dialog dialog;
+    private static final String SHARED_PREFS = "sharedPrefs";
+    private static final String TEXT = "token";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,13 +65,16 @@ public class LogIn extends AppCompatActivity {
         Call<LogInResponse> logInResponseCall = getAPIService().userLogin(loginRequest);
         logInResponseCall.enqueue(new Callback<LogInResponse>() {
             @Override
-            public void onResponse(Call<LogInResponse> call, Response<LogInResponse> response) {
+            public void onResponse(@NonNull Call<LogInResponse> call, @NonNull Response<LogInResponse> response) {
                 LogInResponse lr = new LogInResponse();
                 int code = response.code();
                 lr.setCode(code);
                 dialog.dismiss();
                 if (response.isSuccessful()){
-                    makeToast(code + " "+ response.body().getToken() + " Login Success");
+//                    makeToast(code + " "+ response.body().getToken() + " Login Success");
+                    assert response.body() != null;
+                    String token = response.body().getToken();
+                    saveData(token);
                 }
                 else {
                     String message = code + " -1 " + ((code == 401) ? "Not Verified" : "User doesn't exist");
@@ -82,6 +89,13 @@ public class LogIn extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void saveData(String token) {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(TEXT, token);
+        editor.apply();
     }
 
     private static Retrofit getRetrofit(){
