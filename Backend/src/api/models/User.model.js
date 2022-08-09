@@ -9,7 +9,7 @@ const UserSchema = new mongoose.Schema(
     isVerified: { type: Boolean, default: false },
     graduatingYear: { type: Number, default: null },
     major: { type: String, default: null },
-    avatar: { type: String, default: 'https://raw.githubusercontent.com/CodeChefVIT/Study-Buddy-app/1d70ea3029c39d5ec4fee3508423ef0e5d2d9ed9/Frontend/src/assets/img.svg?token=APRMGDUAKNNXHZE6TCBK6MLCZ2JSU' },
+    avatar: { type: String, default: 'https://st3.depositphotos.com/6672868/13701/v/600/depositphotos_137014128-stock-illustration-user-profile-icon.jpg' },
     bio: { type: String, default: null },
     hash: { type: String }
   },
