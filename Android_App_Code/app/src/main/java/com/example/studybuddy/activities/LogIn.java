@@ -66,7 +66,6 @@ public class LogIn extends AppCompatActivity {
             loading();
             logInUser(loginRequest);
         }
-
         else {
             show_err_snackBar(fieldsValidated);
         }
@@ -76,7 +75,7 @@ public class LogIn extends AppCompatActivity {
         Call<LogInResponse> logInResponseCall = getAPIService().userLogin(loginRequest);
         logInResponseCall.enqueue(new Callback<LogInResponse>() {
             @Override
-            public void onResponse(@NonNull Call<LogInResponse> call, @NonNull Response<LogInResponse> response) {
+            public void onResponse(Call<LogInResponse> call, Response<LogInResponse> response) {
                 LogInResponse lr = new LogInResponse();
                 int code = response.code();
                 lr.setCode(code);
@@ -95,7 +94,7 @@ public class LogIn extends AppCompatActivity {
             @Override
             public void onFailure(Call<LogInResponse> call, Throwable t) {
                 dialog.dismiss();
-                makeToast("null");
+                makeToast(call.toString());
             }
         });
 

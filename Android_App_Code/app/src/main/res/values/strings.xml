@@ -6,7 +6,7 @@
     <string name="sign_in">Sign In</string>
     <string name="login_txt">Welcome back you\'ve been missed!</string>
     <string name="email">Email</string>
-    <string name="sample_email">jondoe@gmail.com</string>
+    <string name="sample_email">jon.doe2021@vitstudent.ac.in</string>
     <string name="password_hint">******************</string>
     <string name="password">Password</string>
     <string name="f_pass_pre_text">trouble getting in?</string>
@@ -30,6 +30,9 @@
     <string name="wrong_details">wrong</string>
     <string name="email_regex" tools:ignore="TypographyDashes"><![CDATA[^[a-zA-Z0-9_!#$%&\'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$]]></string>
     <string name="phone_no_regex">^(\\+91[\\-\\s]?)?[0]?(91)?[789]\\d{9}$</string>
+    <string name="reg_no_regex" tools:ignore="TypographyDashes">^[0-9]{2}[A-Z]{3}[0-9]{4}$</string>
 
     <string name="empty_fields">All fields are necessary!</string>
+    <string name="vit_domain">vitstudent.ac.in</string>
+    <string name="account_creation_text">Account created successfully check your email to get verified!</string>
 </resources>
