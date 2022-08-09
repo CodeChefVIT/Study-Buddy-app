@@ -11,6 +11,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.studybuddy.R;
@@ -18,6 +20,8 @@ import com.example.studybuddy.model.BASE_URL;
 import com.example.studybuddy.model.LogInResponse;
 import com.example.studybuddy.model.LoginRequest;
 import com.example.studybuddy.network.APIService;
+import com.google.android.material.snackbar.Snackbar;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -32,6 +36,7 @@ public class LogIn extends AppCompatActivity {
     private static final String SHARED_PREFS = "sharedPrefs";
     private static final String TEXT = "token";
 
+    RelativeLayout loginLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,13 +57,19 @@ public class LogIn extends AppCompatActivity {
         String email_str = email.getText().toString();
         String password_str = password.getText().toString();
 
-        LoginRequest loginRequest = new LoginRequest(email_str, password_str);
-        loginRequest.setEmail(email_str);
-        loginRequest.setPassword(password_str);
+        String fieldsValidated = validateFields(email_str, password_str);
 
-        loading();
-        logInUser(loginRequest);
+        if (fieldsValidated.equals("OK")){
+            LoginRequest loginRequest = new LoginRequest(email_str, password_str);
+            loginRequest.setEmail(email_str);
+            loginRequest.setPassword(password_str);
+            loading();
+            logInUser(loginRequest);
+        }
 
+        else {
+            show_err_snackBar(fieldsValidated);
+        }
     }
 
     private void logInUser(LoginRequest loginRequest) {
@@ -71,7 +82,6 @@ public class LogIn extends AppCompatActivity {
                 lr.setCode(code);
                 dialog.dismiss();
                 if (response.isSuccessful()){
-//                    makeToast(code + " "+ response.body().getToken() + " Login Success");
                     assert response.body() != null;
                     String token = response.body().getToken();
                     saveData(token);
@@ -128,5 +138,33 @@ public class LogIn extends AppCompatActivity {
         dialog.setContentView(R.layout.loading_message_layout);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
+    }
+
+    void show_err_snackBar(String err_message){
+        loginLayout = findViewById(R.id.login_layout);
+
+        Snackbar err_snackbar = Snackbar.make(loginLayout, "", Snackbar.LENGTH_INDEFINITE);
+        View custom_snackbar_view = getLayoutInflater().inflate(R.layout.err_snackbar, null);
+        err_snackbar.getView().setBackgroundColor(Color.TRANSPARENT);
+        Snackbar.SnackbarLayout snackbarLayout =(Snackbar.SnackbarLayout) err_snackbar.getView();
+        snackbarLayout.setPadding(0,0,0,0);
+        TextView errText = custom_snackbar_view.findViewById(R.id.sb_error_text);
+        errText.setText(err_message);
+        (custom_snackbar_view.findViewById(R.id.submit_sb)).setOnClickListener(view -> err_snackbar.dismiss());
+        snackbarLayout.addView(custom_snackbar_view,0);
+        err_snackbar.show();
+
+    }
+
+    private String validateFields(String email, String password){
+        String output = "OK";
+        if (!(email.isEmpty() && password.isEmpty())){
+            loading();
+            dialog.dismiss();
+        }
+        else {
+            output = getString(R.string.empty_fields);
+        }
+        return output;
     }
 }

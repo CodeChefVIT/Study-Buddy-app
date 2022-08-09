@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">StudyBuddy</string>
     <string name="welcome_text">Experience a whole new way of doing group study!</string>
     <string name="sup">Sign Up</string>
@@ -11,7 +11,7 @@
     <string name="password">Password</string>
     <string name="f_pass_pre_text">trouble getting in?</string>
     <string name="f_pass">Forgot Password</string>
-    <string name="sup_pre_text">don\'t have an account?</string>
+    <string name="sup_pre_text">Don\'t have an account?</string>
     <string name="sup_screen_text">Hello there, create an account it\'s free!</string>
     <string name="sample_name">Jon Doe</string>
     <string name="sample_phn">7007004000</string>
@@ -27,4 +27,9 @@
     <string name="sample_bio">Hello everyone I am Jon Doe i am currently a fresher in VIT Vellore.</string>
     <string name="app_logo">App Logo</string>
     <string name="sign_up">Sign Up</string>
+    <string name="wrong_details">wrong</string>
+    <string name="email_regex" tools:ignore="TypographyDashes"><![CDATA[^[a-zA-Z0-9_!#$%&\'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$]]></string>
+    <string name="phone_no_regex">^(\\+91[\\-\\s]?)?[0]?(91)?[789]\\d{9}$</string>
+
+    <string name="empty_fields">All fields are necessary!</string>
 </resources>
