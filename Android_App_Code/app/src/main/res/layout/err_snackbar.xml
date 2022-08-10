@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10sp"
+        app:cardBackgroundColor="@color/primary"
+        app:cardCornerRadius="@dimen/corner_radius"
+        app:cardElevation="1dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="60sp"
+                android:layout_height="60sp"
+                app:lottie_rawRes="@raw/error"
+                app:lottie_autoPlay="true"
+                android:layout_gravity="center_vertical"
+                app:lottie_loop="true"/>
+            <TextView
+                android:id="@+id/sb_error_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/wrong_details"
+                android:fontFamily="@font/ibmplexsansitalic"
+                android:textColor="@color/primaryOpposite"
+                android:layout_gravity="center_vertical"
+                android:textSize="17sp"
+                android:layout_margin="10dp"
+                android:layout_weight="3"/>
+            <Button
+                android:id="@+id/submit_sb"
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                android:text="Okay"
+                android:textAllCaps="false"
+                android:fontFamily="@font/ibmplexsanssemibold"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/buttonbg_small"
+                android:textColor="@color/primary"
+                android:layout_weight="1"
+                android:textSize="17dp"/>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</LinearLayout>

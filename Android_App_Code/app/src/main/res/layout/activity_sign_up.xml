@@ -126,30 +126,6 @@
                 android:textColorHint="@color/textSecondary"
                 android:textSize="20sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15sp"
-                android:layout_marginTop="10sp"
-                android:layout_marginBottom="7sp"
-                android:fontFamily="@font/ibmplexsanssemibold"
-                android:text="@string/phn"
-                android:textColor="@color/textSecondary" />
-
-            <EditText
-                android:id="@+id/phone_sup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints="phone"
-                android:background="@drawable/edit_text_background"
-                android:fontFamily="@font/ibmplexsansregular"
-                android:hint="@string/sample_phn"
-                android:inputType="phone"
-                android:maxLength="10"
-                android:padding="@dimen/edit_text_padding"
-                android:textColor="@color/primary"
-                android:textColorHint="@color/textSecondary"
-                android:textSize="20sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -201,54 +177,6 @@
                 android:textColorHint="@color/textSecondary"
                 android:textSize="20sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15sp"
-                android:layout_marginTop="10sp"
-                android:layout_marginBottom="7sp"
-                android:fontFamily="@font/ibmplexsanssemibold"
-                android:text="@string/batch"
-                android:textColor="@color/textSecondary" />
-
-            <EditText
-                android:id="@+id/batch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/edit_text_background"
-                android:drawablePadding="15sp"
-                android:fontFamily="@font/ibmplexsansregular"
-                android:hint="@string/sample_batch"
-                android:inputType="number"
-                android:maxLength="4"
-                android:padding="@dimen/edit_text_padding"
-                android:textColor="@color/primary"
-                android:textColorHint="@color/textSecondary"
-                android:textSize="20sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15sp"
-                android:layout_marginTop="10sp"
-                android:layout_marginBottom="7sp"
-                android:fontFamily="@font/ibmplexsanssemibold"
-                android:text="@string/bio"
-                android:textColor="@color/textSecondary" />
-
-            <EditText
-                android:id="@+id/Bio"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/edit_text_background"
-                android:drawablePadding="15sp"
-                android:fontFamily="@font/ibmplexsansregular"
-                android:hint="@string/sample_bio"
-                android:inputType="textMultiLine"
-                android:padding="20sp"
-                android:textColor="@color/primary"
-                android:textColorHint="@color/textSecondary"
-                android:textSize="20sp" />
 
 
             <!--Submit Button-->
