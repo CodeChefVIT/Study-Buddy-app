@@ -11,12 +11,12 @@ const defaultFormFields = {
   name: "",
   subject: "",
   description: "",
-  modules: [],
 };
 
 const CreateGrp = (props) => {
   const navigate = useNavigate();
   const [formFields, setFormFields] = useState(defaultFormFields);
+
   const { name, subject, description } = formFields;
   const [modules, setModules] = useState([]);
   const [error, setError] = useState();
@@ -35,7 +35,12 @@ const CreateGrp = (props) => {
     event.preventDefault();
     console.log(modules);
 
-    setFormFields({ ...formFields, modules: [...modules] });
+    const temp = formFields;
+    temp.modules = modules;
+
+    console.log(temp);
+
+    setFormFields(temp);
 
     console.log(formFields);
 
@@ -47,7 +52,7 @@ const CreateGrp = (props) => {
       },
       body: JSON.stringify(formFields),
     }).then((res) => res.json());
-    console.log(response);
+    // console.log(response);
 
     try {
       setError({
@@ -62,18 +67,18 @@ const CreateGrp = (props) => {
     }
   };
 
-  const addModule = (modules) => {
-    setModules((prevModules) => {
-      return [modules, ...prevModules];
-    });
-
-    // console.log(modules);
-    // setFormFields({ ...formFields, modules: [...modules] });
+  const addModule = (newModule) => {
+    setModules([newModule, ...modules]);
   };
 
   const errorHandler = () => {
     setError(null);
   };
+
+  // const handleFileChange = (event) => {
+  //   event.preventDefault();
+  //   defaultForm.append("avatar", event.target.files[0]);
+  // };
 
   return (
     <div>
@@ -88,6 +93,20 @@ const CreateGrp = (props) => {
             </div>
             <form className="form-create" onSubmit={handleSubmit}>
               <div className="heading-primary">Create Study Group</div>
+
+              {/* <div className="pic-cha">
+                <img
+                  className="prof-pic-up mar-r"
+                  src={url}
+                  alt="profile pic"
+                />
+                <input
+                  type="file"
+                  accept="image/png"
+                  onChange={handleFileChange}
+                  id="avatar"
+                />
+        </div>*/}
               <label htmlFor="coursename">Course Name</label>
               <input
                 name="name"

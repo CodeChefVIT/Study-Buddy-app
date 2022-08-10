@@ -31,3 +31,38 @@
 .hero-img {
   width: 110%;
 }
+
+.btn-web {
+  visibility: visible;
+}
+
+.btn-app {
+  visibility: hidden;
+}
+
+@media only screen and (max-width: 1100px) {
+  .hero-description {
+    font-size: 20px;
+    margin-bottom: 0rem;
+    color: #02ccc0;
+  }
+
+  .small-hero {
+    font-size: 45px;
+  }
+
+  .section-hero {
+    background-color: #101010;
+    padding-left: 2rem;
+    padding-top: 2rem;
+    padding-bottom: 0;
+  }
+
+  .btn-app {
+    visibility: visible;
+  }
+
+  .btn-web {
+    visibility: hidden;
+  }
+}

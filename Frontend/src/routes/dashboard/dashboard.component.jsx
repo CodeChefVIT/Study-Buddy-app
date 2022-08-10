@@ -39,7 +39,7 @@ const Dashboard = () => {
       {localStorage.getItem("token") ? <NavigationAuth /> : <Navigation />}
       <section className="dashboard">
         <h1 className="heading-primary-sm-2 mar-b">My Groups</h1>
-        {loading || groups.length === 0 ? (
+        {loading ? (
           <Box
             sx={{
               display: "flex",
@@ -50,6 +50,10 @@ const Dashboard = () => {
           >
             <CircularProgress />
           </Box>
+        ) : groups.length === 0 ? (
+          <h1 className="heading-primary mar-t-3">
+            Please join groups to display them here.{" "}
+          </h1>
         ) : (
           <div className="grpsv-container">
             {groups.map((group) => {
