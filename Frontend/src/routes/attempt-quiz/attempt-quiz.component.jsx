@@ -85,6 +85,7 @@ const AttemptQuiz = () => {
           {showScore ? (
             <div className="heading-primary-z answer">
               You scored {score} out of {questions.length}
+              {localStorage.setItem(`score${QuizId}`, score)}
             </div>
           ) : (
             <div>

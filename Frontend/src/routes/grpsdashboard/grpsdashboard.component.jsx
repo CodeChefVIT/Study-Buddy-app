@@ -66,6 +66,13 @@ const GrpDet = (props) => {
         <p>Attempt Quiz</p>
       </button>
 
+      <button
+        className="button-grps long "
+        onClick={() => navigate(`${path}/set`)}
+      >
+        <p>Edit Group Info</p>
+      </button>
+
       <h1 className="heading-primary-sm-2 mar-t-3">Modules</h1>
 
       <div className="grp-container">

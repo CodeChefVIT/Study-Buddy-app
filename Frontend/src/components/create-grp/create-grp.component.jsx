@@ -11,17 +11,11 @@ const defaultFormFields = {
   name: "",
   subject: "",
   description: "",
-  modules: [],
 };
 
 const CreateGrp = (props) => {
   const navigate = useNavigate();
   const [formFields, setFormFields] = useState(defaultFormFields);
-
-  // const [url, setUrl] = useState(
-  //   "https://t3.ftcdn.net/jpg/03/46/83/96/240_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"
-  // );
-  // let defaultForm = new FormData();
 
   const { name, subject, description } = formFields;
   const [modules, setModules] = useState([]);
@@ -41,7 +35,12 @@ const CreateGrp = (props) => {
     event.preventDefault();
     console.log(modules);
 
-    setFormFields({ ...formFields, modules: [...modules] });
+    const temp = formFields;
+    temp.modules = modules;
+
+    console.log(temp);
+
+    setFormFields(temp);
 
     console.log(formFields);
 
@@ -52,13 +51,8 @@ const CreateGrp = (props) => {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify(formFields),
-    })
-      .then((res) => res.json())
-      .then((response) => response.json());
-    // .then(({ data }) => {
-    // setUrl(data.avatar);
-    // });
-    console.log(response);
+    }).then((res) => res.json());
+    // console.log(response);
 
     try {
       setError({
@@ -73,10 +67,8 @@ const CreateGrp = (props) => {
     }
   };
 
-  const addModule = (modules) => {
-    setModules((prevModules) => {
-      return [modules, ...prevModules];
-    });
+  const addModule = (newModule) => {
+    setModules([newModule, ...modules]);
   };
 
   const errorHandler = () => {

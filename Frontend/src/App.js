@@ -8,6 +8,7 @@ import Dashboard from "./routes/dashboard/dashboard.component";
 import CreateStudyGrp from "./routes/createstudygrp/createstudygrp.component";
 import JoinStudyGrp from "./routes/joinstudygrp/joinstudygrp.component";
 import Profile from "./routes/profile/profile.component";
+import Group from "./routes/group/group.component";
 import GrpDash from "./routes/grpsdashboard/grpsdashboard.component";
 import GrpInvites from "./routes/grpinvites/grpinvites.component";
 import GrpMembers from "./routes/grpmember/grpmember.component";
@@ -31,6 +32,7 @@ function App() {
       <Route path="create-study-grp" element={<CreateStudyGrp />} />
       <Route path="join-study-grp" element={<JoinStudyGrp />} />
       <Route path="profile" element={<Profile />} />
+      <Route path="groups/:id/set" element={<Group />} />
       <Route path="groups/:id" element={<GrpDash />} />
       <Route path="groups/:id/request" element={<GrpInvites />} />
       <Route path="groups/:id/members" element={<GrpMembers />} />
