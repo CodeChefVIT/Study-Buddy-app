@@ -22,7 +22,31 @@
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
-    <style name="TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
+    <style name="outline_button_text">
+        <item name="fontFamily">@font/ibmplexsansregular</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">20sp</item>
     </style>
+
+    <style name="text_heading">
+        <item name="fontFamily">@font/ibmplexsanssemibold</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">40sp</item>
+    </style>
+
+    <style name="sub_heading">
+        <item name="fontFamily">@font/ibmplexsansregular</item>
+        <item name="android:textColor">@color/textSecondary</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="editText" parent="Widget.AppCompat.EditText">
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textColorHint">@color/textSecondary</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:padding">@dimen/edit_text_padding</item>
+        <item name="android:background">@drawable/edit_text_background</item>
+        <item name="fontFamily">@font/ibmplexsansregular</item>
+    </style>
+
 </resources>
