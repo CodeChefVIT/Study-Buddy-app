@@ -1,9 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import { ReactComponent as ProfPic } from "./../../assets/img.svg";
 import "./dashboard-card.styles.css";
 
 const DashCard = ({ group }) => {
-  const { name, subject, membersLength } = group;
+  const { name, subject, membersLength, image } = group;
   const navigate = useNavigate();
 
   const navigateGrpsDash = () => {
@@ -13,7 +12,9 @@ const DashCard = ({ group }) => {
   return (
     <div className="grpsv-card">
       <div>
-        <ProfPic className="prof-pic" src="img/img.svg" alt="group image" />
+        <div className="pic-cha">
+          <img className="prof-pic-up mar-r" src={image} alt="profile pic" />
+        </div>
         <h2 className="heading-primary-sm-3 pad-t">{subject}</h2>
       </div>
       <div className="mar-l">

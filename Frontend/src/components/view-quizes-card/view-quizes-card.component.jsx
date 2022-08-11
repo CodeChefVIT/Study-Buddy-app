@@ -16,7 +16,9 @@ const ViewQuizesCard = ({ quiz }) => {
       <div className="mar">
         <h2 className="heading-tertiary-sm align-l">
           Number of questions:{quiz.questions.length}{" "}
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Time Alotted: {quiz.time}
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Time Alotted: {quiz.time}{" "}
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Last Score:{" "}
+          {localStorage.getItem(`score${quiz.id}`) || 0}
         </h2>
       </div>
     </div>

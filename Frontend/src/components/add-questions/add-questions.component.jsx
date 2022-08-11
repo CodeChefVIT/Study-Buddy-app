@@ -1,16 +1,17 @@
+/* eslint-disable no-unused-vars */
+
 import { useState } from "react";
 
 const AddQuestions = (props) => {
   const saveQuestionArray = (enteredQuestion) => {
     const questions = {
       ...enteredQuestion,
-      id: Math.random().toString(),
     };
     props.onAddQuestion(questions);
   };
 
   const [question, setQuestion] = useState([]);
-  const [options, setOption] = useState([]);
+  const [options, setOptions] = useState([]);
   const [answer, setAnswer] = useState("");
   const [option1, setOption1] = useState("");
   const [option2, setOption2] = useState("");
@@ -40,13 +41,17 @@ const AddQuestions = (props) => {
 
   const handleSubmitModule = (event) => {
     event.preventDefault();
-    setOption([option1, option2, option3, option4]);
+
+    let temp = [];
+    temp.push(option1, option2, option3, option4);
+    console.log(temp);
 
     const questions = {
       question: question,
-      options: options,
-      answer: options[answer - 1],
     };
+
+    questions.options = temp;
+    questions.answer = temp[answer - 1];
 
     console.log(questions);
 
@@ -57,6 +62,7 @@ const AddQuestions = (props) => {
     setOption3("");
     setOption4("");
     setQuestion("");
+    setAnswer("");
   };
 
   return (
