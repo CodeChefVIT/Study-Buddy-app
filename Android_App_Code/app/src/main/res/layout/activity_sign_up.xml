@@ -10,16 +10,20 @@
     <!--Logo-->
 
     <LinearLayout
-        android:layout_marginTop="25sp"
+
         android:id="@+id/logoLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:gravity="center"
         android:orientation="horizontal"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:paddingTop="25sp"
+        android:paddingBottom="10sp"
+        android:background="@color/opaque_background">
 
         <ImageView
+
             android:layout_width="@dimen/logo_w"
             android:layout_height="@dimen/logo_h"
             android:contentDescription="@string/app_logo"
@@ -156,17 +160,18 @@
                 android:id="@+id/sin_lS"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20sp"
+                android:layout_marginTop="30sp"
                 android:background="@drawable/button_background"
                 android:fontFamily="@font/ibmplexsanssemibold"
                 android:onClick="signUp_supS"
-                android:padding="20sp"
-                android:text="SignUp"
+                android:padding="15sp"
+                android:text="@string/sign_up"
                 android:textAllCaps="false"
                 android:textColor="@color/primaryOpposite"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                tools:ignore="UsingOnClickInXml" />
 
-            <!--Forgot Password-->
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

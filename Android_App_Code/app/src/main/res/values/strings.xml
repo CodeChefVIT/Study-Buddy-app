@@ -35,4 +35,9 @@
     <string name="empty_fields">All fields are necessary!</string>
     <string name="vit_domain">vitstudent.ac.in</string>
     <string name="account_creation_text">Account created successfully check your email to get verified!</string>
+    <string name="create_group">Create Group</string>
+    <string name="join_group">Join Group</string>
+    <string name="your_groups">Your Groups</string>
+    <string name="your_groups_will_show_here">Your Groups will show here</string>
+    <string name="profile">Profile</string>
 </resources>
