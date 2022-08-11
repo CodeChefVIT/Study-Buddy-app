@@ -3,6 +3,7 @@ import { Outlet, Link } from "react-router-dom";
 import { ReactComponent as Logo } from "./../../assets/Logo-Main.svg";
 
 import Footer from "./../footer/footer.component";
+import "./navigation.styles.css";
 
 const Navigation = () => {
   return (
@@ -15,7 +16,7 @@ const Navigation = () => {
           <ul className="main-nav-list">
             <li>
               <Link to="/login" className="main-nav-link">
-                Sign in
+                <p className="small">Sign in</p>
               </Link>
             </li>
             <li>
