@@ -48,32 +48,23 @@ public class SignUp extends AppCompatActivity {
 
         HashMap<String,String> data = getData();
 
-        System.out.println(" HASH: " + data.toString());
+        if (!data.isEmpty()){
+            String email_str = data.get("email");
+            String name_str = data.get("name");
+            String password_str = data.get("password");
+            String registration_number_str = data.get("registration_number");
+            String major_str = data.get("major");
 
-        String email_str = data.get("email");
-        String name_str = data.get("name");
-        String password_str = data.get("password");
-        String registration_number_str = data.get("registration_number");
-        String major_str = data.get("major");
-
-        /*
-        String batch_str = data.get("batch");
-        String bio_str = data.get("bio");
-        String phone_number_str = data.get("phone_number");
-*/
-
-        SignupRequest signupRequest = new SignupRequest(name_str, email_str, registration_number_str, password_str, password_str, major_str);
-        signupRequest.setEmail(email_str);
-        signupRequest.setName(name_str);
-        signupRequest.setPassword(password_str);
-        signupRequest.setConfirm(password_str);
-        signupRequest.setRegno(registration_number_str);
-        signupRequest.setMajor(major_str);
-
-        loading();
-        createUser(signupRequest);
-
-
+            SignupRequest signupRequest = new SignupRequest(name_str, email_str, registration_number_str, password_str, password_str, major_str);
+            signupRequest.setEmail(email_str);
+            signupRequest.setName(name_str);
+            signupRequest.setPassword(password_str);
+            signupRequest.setConfirm(password_str);
+            signupRequest.setRegno(registration_number_str);
+            signupRequest.setMajor(major_str);
+            loading();
+            createUser(signupRequest);
+        }
     }
 
     private void createUser(SignupRequest signupRequest) {
@@ -136,11 +127,8 @@ public class SignUp extends AppCompatActivity {
         String registration_number_str = registration_number.getText().toString();
         String major_str = major.getText().toString();
 
-        if(email_str.isEmpty() || name_str.isEmpty() || password_str.isEmpty() ||
-                registration_number_str.isEmpty() ||
+        if (email_str.isEmpty() || name_str.isEmpty() || password_str.isEmpty() || registration_number_str.isEmpty() ||
                 major_str.isEmpty()) {
-
-
             show_err_snackBar(getString(R.string.empty_fields));
         }
         else {

@@ -18,7 +18,7 @@
     <color name="background_secondary">#E9E9E9</color>
 
     <color name="accent_primary">#f60</color>
-    <color name="accent_secondary">#1F80FF</color>
+    <color name="accent_secondary">#0983FE</color>
 
     <color name="editTextColorOnFocus">#ffff</color>
     <color name="editTextColorNotOnFocus">#ffff</color>
@@ -37,6 +37,8 @@
     <color name="dashBoardTextColor">#000</color>
 
     <color name="err">#FF0000</color>
+
+    <color name="opaque_background">#99FFFFFF</color>
 
     <color name="default_box_stroke_color" tools:overrise ="true">#707070</color>
 

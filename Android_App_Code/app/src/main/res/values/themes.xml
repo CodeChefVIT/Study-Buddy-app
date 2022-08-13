@@ -22,7 +22,47 @@
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
-    <style name="TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
+    <style name="button_dashboard_primary_text_style" parent="TextAppearance.AppCompat.Button">
+        <item name="fontFamily">@font/ibmplexsanssemibold</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textAllCaps">false</item>
     </style>
+
+    <style name="button_dashboard_secondary_text_style" parent="TextAppearance.AppCompat.Button">
+        <item name="fontFamily">@font/ibmplexsanssemibold</item>
+        <item name="android:textColor">@color/background</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+
+
+    <style name="text_heading">
+        <item name="fontFamily">@font/ibmplexsanssemibold</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">40sp</item>
+    </style>
+
+    <style name="text_heading_2">
+        <item name="fontFamily">@font/ibmplexsanssemibold</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="sub_heading">
+        <item name="fontFamily">@font/ibmplexsansregular</item>
+        <item name="android:textColor">@color/textSecondary</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="editText" parent="Widget.AppCompat.EditText">
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textColorHint">@color/textSecondary</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:padding">@dimen/edit_text_padding</item>
+        <item name="android:background">@drawable/edit_text_background</item>
+        <item name="fontFamily">@font/ibmplexsansregular</item>
+    </style>
+
 </resources>

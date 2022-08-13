@@ -84,6 +84,9 @@ public class LogIn extends AppCompatActivity {
                     assert response.body() != null;
                     String token = response.body().getToken();
                     saveData(token);
+                    Intent intent = new Intent(LogIn.this, Dashboard.class);
+                    LogIn.this.finish();
+                    startActivity(intent);
                 }
                 else {
                     String message = code + " -1 " + ((code == 401) ? "Not Verified" : "User doesn't exist");
