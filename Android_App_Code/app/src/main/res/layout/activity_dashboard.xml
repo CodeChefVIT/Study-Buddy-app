@@ -29,10 +29,10 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@id/logoLayout">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/button_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -75,14 +75,16 @@
                 android:layout_marginTop="10sp"
                 android:background="@drawable/button_background"
                 style="@style/button_dashboard_secondary_text_style"
-                android:text="@string/profile"/>
+                android:text="@string/profile"
+                android:layout_below="@id/button_layout_first"/>
 
             <LinearLayout
                 android:id="@+id/text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20sp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_below="@+id/profile_button">
 
                 <TextView
                     android:id="@+id/heading"
@@ -99,7 +101,15 @@
 
             </LinearLayout>
 
-        </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
+                android:layout_below="@id/text"/>
+
+
+        </RelativeLayout>
 
 
 
