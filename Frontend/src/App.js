@@ -4,6 +4,7 @@ import Signup from "./routes/signup/signup.component";
 import Signin from "./routes/signin/signin.component";
 import Navigation from "./routes/navigation/navigation.component";
 import Home from "./routes/home/home.component";
+import Verified from "./routes/verified/verified.component";
 import Dashboard from "./routes/dashboard/dashboard.component";
 import CreateStudyGrp from "./routes/createstudygrp/createstudygrp.component";
 import JoinStudyGrp from "./routes/joinstudygrp/joinstudygrp.component";
@@ -25,6 +26,7 @@ function App() {
         <Route index element={<Home />} />
         <Route path="signup" element={<Signup />} />
         <Route path="login" element={<Signin />} />
+        <Route path="verified" element={<Verified />} />
         <Route path="user/forgotPassword" element={<ForgotPass />} />
         <Route path="user/reset/:id/:id" element={<ResetPassEmail />} />
       </Route>

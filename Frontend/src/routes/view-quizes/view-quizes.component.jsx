@@ -47,9 +47,6 @@ const ViewQuiz = () => {
     setLoading(false);
   }, []);
 
-  console.log(quizes.questions);
-  console.log(quizes.time);
-
   return (
     <div>
       {localStorage.getItem("token") ? <NavigationAuth /> : <Navigation />}
@@ -57,22 +54,24 @@ const ViewQuiz = () => {
         <div className="quizes-title">
           <h1 className="heading-primary-sm">Find Quizes</h1>
         </div>
+
         <div className="quiz-container">
-          {loading || quizes.length === 0 ? (
+          {loading ? (
             <Box
               sx={{
                 display: "flex",
-                paddingBottom: "10.8rem",
+                paddingBottom: "40vh",
                 justifyContent: "center",
                 paddingTop: "20vh",
               }}
             >
               <CircularProgress />
             </Box>
+          ) : quizes === undefined || quizes.length === 0 ? (
+            <div>
+              <h1 className="heading-primary-sm pad-b4  ">No Quizes Found</h1>
+            </div>
           ) : (
-            // quizes.map((quiz) => {
-            //   return <ViewQuizesCard key={quiz.id} quiz={quiz} />;
-            // })
             <div>
               {quizes.map((quiz) => {
                 return <ViewQuizesCard key={quiz.id} quiz={quiz} />;

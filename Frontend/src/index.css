@@ -198,6 +198,10 @@ body {
   padding-bottom: 4rem;
 }
 
+.pad-b4 {
+  padding-bottom: 20rem;
+}
+
 .mar {
   margin: 2rem;
   margin-left: 0rem;
@@ -234,6 +238,10 @@ body {
 
 .mar-b-2 {
   margin-bottom: 3rem;
+}
+
+.mr-b-4 {
+  margin-bottom: 4rem;
 }
 
 .mar-b-h {
