@@ -47,4 +47,5 @@
     <string name="_10">10</string>
     <string name="proceed">Proceed</string>
     <string name="members_present">Members Present:</string>
+    <string name="sign_out">Sign Out</string>
 </resources>

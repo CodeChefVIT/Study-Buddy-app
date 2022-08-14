@@ -8,14 +8,18 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.studybuddy.R;
 import com.example.studybuddy.adapter.UserGroupListAdapter;
 import com.example.studybuddy.model.GroupInfo;
 import com.example.studybuddy.viewModel.GroupListViewModel;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +32,8 @@ public class Dashboard extends AppCompatActivity {
     private static final String SHARED_PREFS = "sharedPrefs";
     private static final String DEFAULT_VAL = "-1";
     private static final String TEXT = "token";
+    private static final String NAME = "FullName";
+    private static final String DEFAULT_VAL_NAME = "-1";
 
 
     @Override
@@ -35,6 +41,7 @@ public class Dashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
+        setName();
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //  recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
@@ -57,9 +64,25 @@ public class Dashboard extends AppCompatActivity {
         groupListViewModel.makeApiCall(token);
     }
 
+    private void setName() {
+        TextView textView = findViewById(R.id.name);
+        textView.setText(MessageFormat.format("Hello {0}!", getName()));
+    }
+
     private String getToken(){
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         return sharedPreferences.getString(TEXT, DEFAULT_VAL);
     }
+    private String getName(){
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        return sharedPreferences.getString(NAME, DEFAULT_VAL_NAME);
+    }
 
+
+
+    public void profile(View view) {
+        Intent intent = new Intent(Dashboard.this, Profile.class);
+        Dashboard.this.finish();
+        startActivity(intent);
+    }
 }

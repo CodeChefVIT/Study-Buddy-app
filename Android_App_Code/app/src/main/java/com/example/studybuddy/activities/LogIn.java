@@ -35,7 +35,9 @@ public class LogIn extends AppCompatActivity {
     private Dialog dialog;
     private static final String SHARED_PREFS = "sharedPrefs";
     private static final String TEXT = "token";
+    private static final String NAME = "FullName";
 
+    String name;
     RelativeLayout loginLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,7 @@ public class LogIn extends AppCompatActivity {
         String fieldsValidated = validateFields(email_str, password_str);
 
         if (fieldsValidated.equals("OK")){
+            name = getFirstName(email_str);
             LoginRequest loginRequest = new LoginRequest(email_str, password_str);
             loginRequest.setEmail(email_str);
             loginRequest.setPassword(password_str);
@@ -69,6 +72,12 @@ public class LogIn extends AppCompatActivity {
         else {
             show_err_snackBar(fieldsValidated);
         }
+    }
+
+    private String getFirstName(String email_str) {
+        String[] split = email_str.split("\\.");
+        String name = (split[0].charAt(0)+ "").toUpperCase() + split[0].substring(1);
+        return name;
     }
 
     private void logInUser(LoginRequest loginRequest) {
@@ -83,7 +92,7 @@ public class LogIn extends AppCompatActivity {
                 if (response.isSuccessful()){
                     assert response.body() != null;
                     String token = response.body().getToken();
-                    saveData(token);
+                    saveData(token, name);
                     Intent intent = new Intent(LogIn.this, Dashboard.class);
                     LogIn.this.finish();
                     startActivity(intent);
@@ -103,10 +112,11 @@ public class LogIn extends AppCompatActivity {
 
     }
 
-    private void saveData(String token) {
+    private void saveData(String token, String name) {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(TEXT, token);
+        editor.putString(NAME, name);
         editor.apply();
     }
 
