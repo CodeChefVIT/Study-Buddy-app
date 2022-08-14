@@ -295,7 +295,7 @@ exports.verify = async (req, res) => {
       //   error: 'User is already verified'
       // })
       logger.info(NAMESPACE, 'User Redirected to login page')
-      return res.redirect(frontendURL + '/login')
+      return res.redirect(frontendURL + '/verified')
     }
     user.isVerified = true
     if (user.hash !== hash) { return res.status(401).json({ success: false, error: "Hash doesn't match" }) }
@@ -303,7 +303,7 @@ exports.verify = async (req, res) => {
     await user.save()
     logger.info(NAMESPACE, 'Verify successful')
     // redirect
-    return res.redirect(frontendURL + '/login')
+    return res.redirect(frontendURL + '/verified')
   } catch (error) {
     logger.error(NAMESPACE, 'Verify failed', error)
     return res.status(500).json({
