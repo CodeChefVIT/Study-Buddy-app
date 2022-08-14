@@ -66,7 +66,7 @@ public class Dashboard extends AppCompatActivity {
 
     private void setName() {
         TextView textView = findViewById(R.id.name);
-        textView.setText(MessageFormat.format("Hello {0}!", getName()));
+        textView.setText(MessageFormat.format("Hello, {0}!", getName()));
     }
 
     private String getToken(){
