@@ -32,8 +32,6 @@ const Dashboard = () => {
     setLoading(false);
   }, []);
 
-  console.log(groups);
-
   return (
     <div>
       {localStorage.getItem("token") ? <NavigationAuth /> : <Navigation />}
