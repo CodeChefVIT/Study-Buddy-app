@@ -2,9 +2,7 @@ package com.example.studybuddy.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,7 +21,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Dashboard extends AppCompatActivity {
+public class Dashboard extends AppCompatActivity implements UserGroupListAdapter.OnGroupClickListener {
 
     RecyclerView recyclerView;
     List<GroupInfo> groupInfoList;
@@ -46,7 +44,7 @@ public class Dashboard extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //  recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-        userGroupListAdapter = new UserGroupListAdapter(groupInfoList);
+        userGroupListAdapter = new UserGroupListAdapter(groupInfoList, this);
         recyclerView.setAdapter(userGroupListAdapter);
 
         String token = getToken();
@@ -83,6 +81,22 @@ public class Dashboard extends AppCompatActivity {
     public void profile(View view) {
         Intent intent = new Intent(Dashboard.this, Profile.class);
         Dashboard.this.finish();
+        startActivity(intent);
+    }
+
+    @Override
+    public void onGroupClick(int position) {
+        Intent intent = new Intent(Dashboard.this, GroupDetails.class);
+        ArrayList<GroupInfo> groupInfo = new ArrayList<>();
+        groupInfo.add(groupInfoList.get(position));
+        // intent.putExtra("groupInfo", groupInfo);
+        intent.putExtra("id", groupInfo.get(0).get_id());
+        intent.putExtra("name", groupInfo.get(0).getName());
+        intent.putExtra("description", groupInfo.get(0).getDescription());
+        intent.putExtra("inviteCode", groupInfo.get(0).getInviteCode());
+        intent.putExtra("admin", groupInfo.get(0).getAdmin());
+        intent.putExtra("subject", groupInfo.get(0).getSubject());
+
         startActivity(intent);
     }
 }
