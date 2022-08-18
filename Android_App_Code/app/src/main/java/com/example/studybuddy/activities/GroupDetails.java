@@ -29,10 +29,11 @@ public class GroupDetails extends AppCompatActivity {
 //
 //        String finalText = MessageFormat.format("Name: {0}\nDescription: {1}\nAdmin: {2}\nSubject: {3}\nInvite Code: {4}", groupName, groupDescription, groupAdmin, groupSubject, inviteCode);
 
-        HashMap<String, GroupInfo> groupInfoHashMap = (HashMap<String, GroupInfo>) intent.getSerializableExtra("groupInfo");
+//        HashMap<String, GroupInfo> groupInfoHashMap = (HashMap<String, GroupInfo>) intent.getSerializableExtra("groupInfo");
 
+        GroupInfo groupInfo = (GroupInfo) intent.getSerializableExtra("groupInfo");
         TextView textView = findViewById(R.id.text_heading);
-        textView.setText(groupInfoHashMap.toString());
+        textView.setText(groupInfo.getName());
 
 
     }

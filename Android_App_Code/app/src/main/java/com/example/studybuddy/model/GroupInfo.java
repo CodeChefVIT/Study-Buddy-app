@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GroupInfo  {
+public class GroupInfo implements Serializable {
     private String _id;
     private String name;
     private String description;
