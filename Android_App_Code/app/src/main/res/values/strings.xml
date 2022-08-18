@@ -48,4 +48,14 @@
     <string name="proceed">Proceed</string>
     <string name="members_present">Members Present:</string>
     <string name="sign_out">Sign Out</string>
+    <string name="back_button">Back</string>
+    <string name="members">Members</string>
+    <string name="sample_group_name">1000101</string>
+    <string name="sample_subject_name">BMAT101L</string>
+    <string name="button">Button</string>
+    <string name="quizzes">Quizzes</string>
+    <string name="sample_quizzes">1</string>
+    <string name="send_invite">Send Invite</string>
+    <string name="create_quiz">Create Quiz</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nunc mattis enim ut tellus elementum sagittis. Ullamcorper morbi tincidunt ornare massa eget. Etiam sit amet nisl purus in mollis. In nibh mauris cursus mattis molestie. Magna fringilla urna porttitor rhoncus dolor.</string>
 </resources>

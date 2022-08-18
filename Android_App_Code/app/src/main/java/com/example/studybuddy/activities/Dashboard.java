@@ -89,17 +89,6 @@ public class Dashboard extends AppCompatActivity implements UserGroupListAdapter
 
     @Override
     public void onGroupClick(int position) {
-//        HashMap<String, GroupInfo> groupInfoHashMap = new HashMap<>();
-//        groupInfoHashMap.put("gi", groupInfoList.get(position));
-//      intent.putParcelableArrayListExtra("groupInfo", groupInfo);
-
-//        Log.d("fff: ", groupInfo.get(0).toString());
-//        intent.putExtra("id", groupInfo.get(0).get_id());
-//        intent.putExtra("name", groupInfo.get(0).getName());
-//        intent.putExtra("description", groupInfo.get(0).getDescription());
-//        intent.putExtra("inviteCode", groupInfo.get(0).getInviteCode());
-//        intent.putExtra("admin", groupInfo.get(0).getAdmin());
-//        intent.putExtra("subject", groupInfo.get(0).getSubject());
 
         Intent intent = new Intent(Dashboard.this, GroupDetails.class);
         intent.putExtra("groupInfo", groupInfoList.get(position));

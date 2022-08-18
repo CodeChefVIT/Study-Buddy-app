@@ -26,6 +26,7 @@
 
     <color name="textPrimary">#000000</color>
     <color name="textSecondary">#3D3D3D</color>
+    <color name="textTertiary">#AAAAAA</color>
 
     <color name="button">#000000</color>
     <color name="button_secondary">#ffff</color>
@@ -41,5 +42,7 @@
     <color name="opaque_background">#99FFFFFF</color>
 
     <color name="default_box_stroke_color" tools:overrise ="true">#707070</color>
+
+    <color name="rippleColor">#99171717</color>
 
 </resources>

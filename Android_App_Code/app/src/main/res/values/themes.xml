@@ -37,6 +37,11 @@
     </style>
 
 
+    <style name="page_heading">
+        <item name="fontFamily">@font/ibmplexsanssemibold</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 
     <style name="text_heading">
         <item name="fontFamily">@font/ibmplexsanssemibold</item>
@@ -48,6 +53,13 @@
         <item name="fontFamily">@font/ibmplexsanssemibold</item>
         <item name="android:textColor">@color/textPrimary</item>
         <item name="android:textSize">30sp</item>
+
+    </style>
+
+    <style name="text_heading_3">
+        <item name="fontFamily">@font/ibmplexsansmedium</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="sub_heading">
@@ -59,6 +71,18 @@
     <style name="sub_heading_2">
         <item name="fontFamily">@font/ibmplexsansregular</item>
         <item name="android:textColor">@color/textSecondary</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="text_body">
+        <item name="fontFamily">@font/ibmplexsanslight</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="group_button">
+        <item name="fontFamily">@font/ibmplexsansmedium</item>
+        <item name="android:textColor">@color/textPrimary</item>
         <item name="android:textSize">18sp</item>
     </style>
 
