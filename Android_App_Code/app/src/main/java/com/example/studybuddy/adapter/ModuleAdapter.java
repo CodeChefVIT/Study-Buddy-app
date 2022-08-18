@@ -1,0 +1,50 @@
+package com.example.studybuddy.adapter;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.studybuddy.R;
+import com.example.studybuddy.model.Module;
+
+import java.util.List;
+
+public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.myViewHolder> {
+
+    List<Module> moduleList;
+
+    public ModuleAdapter(List<Module> moduleList) {
+        this.moduleList = moduleList;
+    }
+
+    @NonNull
+    @Override
+    public myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_module, parent, false);
+        return new myViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
+        Module module = moduleList.get(position);
+        holder.moduleName.setText(module.getName());
+    }
+
+    @Override
+    public int getItemCount() {
+        return (moduleList == null) ? 0 : moduleList.size();
+    }
+
+    public class myViewHolder extends RecyclerView.ViewHolder {
+        TextView moduleName;
+        public myViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            moduleName = itemView.findViewById(R.id.moduleName);
+        }
+    }
+}

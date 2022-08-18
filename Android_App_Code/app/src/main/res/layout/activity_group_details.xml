@@ -20,7 +20,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center">
+            android:gravity="center"
+            android:onClick="back">
             <ImageView
                 android:layout_width="@dimen/back_button_w"
                 android:layout_height="@dimen/back_button_h"
@@ -32,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:layout_marginStart="5sp"
-                android:text="Dashboard"
+                android:text="@string/dashboard"
                 android:fontFamily="@font/ibmplexsanssemibold"
                 android:textColor="@color/accent_secondary"/>
         </LinearLayout>
@@ -68,7 +69,7 @@
 
                 <TextView
                     android:id="@+id/group_name"
-                    style="@style/text_heading_2"
+                    style="@style/text_heading"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/sample_group_name" />
@@ -263,17 +264,25 @@
             </RelativeLayout>
 
 
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/quiz"
+                android:layout_marginTop="20sp"
+                style="@style/text_heading_2"
+                android:text="@string/module"/>
+
+
             <!-- Group modules List | id - modules_list -->
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/quiz"
-                android:layout_marginTop="15sp"
+                android:layout_below="@id/text"
+                android:layout_marginTop="20sp"
                 android:background="@drawable/background_recyclerview"/>
-
-
 
 
         </RelativeLayout>

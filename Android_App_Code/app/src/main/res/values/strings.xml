@@ -58,4 +58,6 @@
     <string name="send_invite">Send Invite</string>
     <string name="create_quiz">Create Quiz</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nunc mattis enim ut tellus elementum sagittis. Ullamcorper morbi tincidunt ornare massa eget. Etiam sit amet nisl purus in mollis. In nibh mauris cursus mattis molestie. Magna fringilla urna porttitor rhoncus dolor.</string>
+    <string name="module">Modules</string>
+    <string name="dashboard">Dashboard</string>
 </resources>
