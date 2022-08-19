@@ -94,4 +94,7 @@ public class Dashboard extends AppCompatActivity implements UserGroupListAdapter
         intent.putExtra("groupInfo", groupInfoList.get(position));
         startActivity(intent);
     }
+
+    public void footer(View view) {
+    }
 }

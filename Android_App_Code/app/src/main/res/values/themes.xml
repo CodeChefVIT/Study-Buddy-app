@@ -57,10 +57,53 @@
     </style>
 
     <style name="text_heading_3">
+        <item name="fontFamily">@font/ibmplexsanssemibold</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="medium_text_heading">
+        <item name="fontFamily">@font/ibmplexsansmedium</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">40sp</item>
+    </style>
+
+    <style name="medium_text_heading_2">
+        <item name="fontFamily">@font/ibmplexsansmedium</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">30sp</item>
+
+    </style>
+
+    <style name="medium_text_heading_3">
         <item name="fontFamily">@font/ibmplexsansmedium</item>
         <item name="android:textColor">@color/textPrimary</item>
         <item name="android:textSize">18sp</item>
     </style>
+
+
+    <style name="regular_text_heading">
+        <item name="fontFamily">@font/ibmplexsansregular</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">40sp</item>
+    </style>
+
+    <style name="regular_text_heading_2">
+        <item name="fontFamily">@font/ibmplexsansregular</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">30sp</item>
+
+    </style>
+
+    <style name="regular_text_heading_3">
+        <item name="fontFamily">@font/ibmplexsansregular</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+
+
+
 
     <style name="sub_heading">
         <item name="fontFamily">@font/ibmplexsansregular</item>

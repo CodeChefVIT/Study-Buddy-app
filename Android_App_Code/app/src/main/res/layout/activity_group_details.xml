@@ -266,12 +266,12 @@
 
             <TextView
                 android:id="@+id/text"
+                style="@style/medium_text_heading_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/quiz"
                 android:layout_marginTop="20sp"
-                style="@style/text_heading_2"
-                android:text="@string/module"/>
+                android:text="@string/module" />
 
 
             <!-- Group modules List | id - modules_list -->
@@ -285,6 +285,7 @@
                 android:background="@drawable/background_recyclerview"
                 android:layout_marginBottom="10sp"
                 android:paddingStart="15sp"
+                android:overScrollMode="never"
                 android:paddingEnd="15sp"
                 android:paddingBottom="5sp"
                 android:paddingTop="10sp"/>

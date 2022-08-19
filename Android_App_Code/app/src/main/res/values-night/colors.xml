@@ -32,7 +32,7 @@
 
     <color name="default_box_stroke_color" tools:overrise ="true">#707070</color>
 
-    <color name="opaque_background">#80000000</color>
+    <color name="opaque_background">#80FFFFFF</color>
 
     <color name="rippleColor">#99DFDFDF</color>
 </resources>

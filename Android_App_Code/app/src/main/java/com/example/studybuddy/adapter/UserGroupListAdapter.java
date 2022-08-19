@@ -43,7 +43,7 @@ public class UserGroupListAdapter extends RecyclerView.Adapter<UserGroupListAdap
         GroupInfo groupInfo = groupInfoList.get(position);
         holder.groupName.setText(groupInfo.getName());
         holder.groupSubject.setText(groupInfo.getSubject());
-        holder.groupMembersLength.setText(groupInfo.getMembersLength() + "");
+        holder.groupMembersLength.setText((int) groupInfo.getMembersLength() + "");
         holder.modules.setText(groupInfo.getModules().size() + "");
         // holder.index.setText((position + 1) + "");
     }

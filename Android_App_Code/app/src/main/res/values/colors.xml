@@ -39,7 +39,7 @@
 
     <color name="err">#FF0000</color>
 
-    <color name="opaque_background">#99FFFFFF</color>
+    <color name="opaque_background">#75000000</color>
 
     <color name="default_box_stroke_color" tools:overrise ="true">#707070</color>
 
