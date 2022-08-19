@@ -59,7 +59,7 @@ public class GroupDetails extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+//        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         moduleAdapter = new ModuleAdapter(moduleList);
         recyclerView.setAdapter(moduleAdapter);
@@ -73,5 +73,8 @@ public class GroupDetails extends AppCompatActivity {
         Intent intent = new Intent(this, Dashboard.class);
         GroupDetails.this.finish();
         startActivity(intent);
+    }
+
+    public void footer(View view) {
     }
 }

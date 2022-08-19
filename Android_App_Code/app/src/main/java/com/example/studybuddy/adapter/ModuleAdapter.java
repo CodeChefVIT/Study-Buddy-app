@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.studybuddy.R;
 import com.example.studybuddy.model.Module;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.myViewHolder> {
@@ -32,6 +33,10 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.myViewHold
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
         Module module = moduleList.get(position);
         holder.moduleName.setText(module.getName());
+        holder.number.setText(MessageFormat.format("{0}. ", position + 1));
+        if (position == getItemCount() - 1){
+            holder.divider.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -40,11 +45,14 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.myViewHold
     }
 
     public class myViewHolder extends RecyclerView.ViewHolder {
-        TextView moduleName;
+        TextView moduleName, number;
+        View divider;
         public myViewHolder(@NonNull View itemView) {
             super(itemView);
 
             moduleName = itemView.findViewById(R.id.moduleName);
+            divider = itemView.findViewById(R.id.view);
+            number = itemView.findViewById(R.id.number);
         }
     }
 }

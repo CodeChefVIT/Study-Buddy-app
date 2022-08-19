@@ -217,15 +217,15 @@
                 android:layout_below="@+id/group_button_container"
                 android:layout_marginTop="15sp"
                 android:background="@drawable/button_group"
-                android:orientation="horizontal"
+                android:clickable="true"
 
+                android:foreground="?attr/selectableItemBackground"
+                android:orientation="horizontal"
                 android:paddingStart="20sp"
                 android:paddingTop="15sp"
-                android:paddingEnd="20sp"
-                android:paddingBottom="15sp"
 
-                android:clickable="true"
-                android:foreground="?attr/selectableItemBackground">
+                android:paddingEnd="20sp"
+                android:paddingBottom="15sp">
 
                 <TextView
                     style="@style/group_button"
@@ -282,8 +282,24 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text"
                 android:layout_marginTop="20sp"
-                android:background="@drawable/background_recyclerview"/>
+                android:background="@drawable/background_recyclerview"
+                android:layout_marginBottom="10sp"
+                android:paddingStart="15sp"
+                android:paddingEnd="15sp"
+                android:paddingBottom="5sp"
+                android:paddingTop="10sp"/>
 
+            <TextView
+                android:id="@+id/footer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/recycler_view"
+                android:layout_marginTop="10sp"
+                style="@style/sub_heading_2"
+                android:textAlignment="center"
+                android:text="@string/footer"
+                android:onClick="footer"
+                tools:ignore="UsingOnClickInXml" />
 
         </RelativeLayout>
 
