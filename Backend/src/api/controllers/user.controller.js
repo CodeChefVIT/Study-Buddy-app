@@ -465,8 +465,9 @@ exports.edit = async (req, res) => {
 
 exports.get = async (req, res) => {
   logger.info(NAMESPACE, 'Get User data request recieved')
+  let id = req.query.id || req.user.id
   try {
-    const user = await User.findById(req.user.id)
+    const user = await User.findById(id)
     if (!user) {
       return res.status(400).json({
         success: false,

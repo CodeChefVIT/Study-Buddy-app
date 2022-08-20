@@ -41,6 +41,9 @@ const schema = {
   reset: Joi.object({
     password: Joi.string().required(),
     confirm: Joi.string().required()
+  }),
+  id: Joi.object({
+    id: Joi.string().required().regex(/^[0-9a-fA-F]{24}$/),
   })
 }
 
@@ -54,7 +57,7 @@ router.post('/resend', validate(schema.resend, 'body'), user.resend)
 
 router.get('/verify/:id/:hash', validate(schema.verify, 'params', 'Invalid verification link'), user.verify)
 
-router.get('/', authorise, user.get)
+router.get('/', authorise, validate(schema.id, 'query'), user.get)
 
 router.post('/forgotPassword', validate(schema.resend, 'body'), user.forgotPassword)
 
