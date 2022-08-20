@@ -53,7 +53,7 @@
                     android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/text_heading_2"
+                    style="@style/text_heading"
                     android:text="Hello Aryaman 👋"/>
 
                 <TextView
@@ -124,14 +124,8 @@
                     android:id="@+id/heading"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/text_heading_2"
+                    style="@style/medium_text_heading_2"
                     android:text="@string/your_groups"/>
-                <TextView
-                    android:id="@+id/sub_head"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/sub_heading"
-                    android:text="@string/your_groups_will_show_here"/>
 
             </LinearLayout>
 

@@ -58,7 +58,6 @@ public class Dashboard extends AppCompatActivity implements UserGroupListAdapter
                 if (groupInfo != null){
                     groupInfoList = groupInfo;
                     userGroupListAdapter.updateGroupInfoList(groupInfo);
-
                 }
             }
         });

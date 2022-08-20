@@ -61,4 +61,8 @@
     <string name="module">Modules</string>
     <string name="dashboard">Dashboard</string>
     <string name="footer">Made with ❤ by CodeChef-VIT!</string>
+    <string name="group">Group</string>
+    <string name="sample_invite_code">6jg-f9o-ghr</string>
+    <string name="sub_heading_invite">Add people to group using invite code or by scanning QR Code!</string>
+    <string name="heading_group_invite">Send Invite</string>
 </resources>

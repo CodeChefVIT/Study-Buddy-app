@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -21,7 +20,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:onClick="back">
+            android:onClick="back"
+            tools:ignore="UsingOnClickInXml">
             <ImageView
                 android:layout_width="@dimen/back_button_w"
                 android:layout_height="@dimen/back_button_h"
@@ -49,7 +49,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/detailsLayout">
+        android:layout_below="@+id/detailsLayout"
+        android:layout_marginTop="10sp">
 
         <RelativeLayout
             android:id="@+id/group"
@@ -189,7 +190,8 @@
                     android:gravity="center"
                     android:clickable="true"
                     android:foreground="?attr/selectableItemBackground"
-                    tools:ignore="KeyboardInaccessibleWidget,UnusedAttribute">
+                    tools:ignore="KeyboardInaccessibleWidget,UnusedAttribute"
+                    android:onClick="sendInvite">
 
                     <ImageView
                         android:layout_width="@dimen/group_button_w"

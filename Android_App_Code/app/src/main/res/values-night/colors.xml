@@ -25,7 +25,7 @@
     <color name="button_accent">#f60</color>
     <color name="roundButton">#2EFFFFFF</color>
 
-    <color name="dashBoardButtonColor">#1D1D1D</color>
+    <color name="dashBoardButtonColor">#1B1B1B</color>
     <color name="dashBoardTextColor">#ffffff</color>
 
     <color name="err">#FF0000</color>

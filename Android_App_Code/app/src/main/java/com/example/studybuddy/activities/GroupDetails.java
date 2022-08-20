@@ -27,6 +27,7 @@ public class GroupDetails extends AppCompatActivity {
     RecyclerView recyclerView;
     List<Module> moduleList;
     ModuleAdapter moduleAdapter;
+    GroupInfo groupInfo;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -35,7 +36,7 @@ public class GroupDetails extends AppCompatActivity {
         setContentView(R.layout.activity_group_details);
 
         Intent intent = getIntent();
-        GroupInfo groupInfo = (GroupInfo) intent.getSerializableExtra("groupInfo");
+        groupInfo = (GroupInfo) intent.getSerializableExtra("groupInfo");
 
         String groupNameStr = groupInfo.getName();
         TextView groupName = findViewById(R.id.group_name);
@@ -73,8 +74,16 @@ public class GroupDetails extends AppCompatActivity {
         Intent intent = new Intent(this, Dashboard.class);
         GroupDetails.this.finish();
         startActivity(intent);
+
     }
 
     public void footer(View view) {
+    }
+
+    public void sendInvite(View view) {
+        Intent intent = new Intent(this, GroupInvitation.class);
+        intent.putExtra("groupInfo", groupInfo);
+        GroupDetails.this.finish();
+        startActivity(intent);
     }
 }
