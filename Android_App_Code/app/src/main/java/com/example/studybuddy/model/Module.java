@@ -1,8 +1,9 @@
 package com.example.studybuddy.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Module {
+public class Module implements Serializable {
     private String name;
     private float daysToComplete;
     ArrayList < String > completedUsers = new ArrayList< String >();

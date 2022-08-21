@@ -23,4 +23,6 @@ public interface APIService {
 
     @GET("/api/v1/groups/user")
     Call<GroupUserResponse> getUserGroups(@Header("Authorization") String authToken);
+
+
 }

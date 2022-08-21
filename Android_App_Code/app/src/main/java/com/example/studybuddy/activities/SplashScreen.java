@@ -35,7 +35,7 @@ public class SplashScreen extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        }, 5000);
+        }, 3000);
 
     }
     boolean loginStatus(){

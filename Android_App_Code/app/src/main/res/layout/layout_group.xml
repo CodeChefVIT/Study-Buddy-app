@@ -6,9 +6,9 @@
     android:orientation="vertical">
 
     <com.google.android.material.card.MaterialCardView
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10sp"
         app:cardBackgroundColor="@color/dashBoardButtonColor"
         app:cardCornerRadius="10sp"
         app:cardElevation="1dp"

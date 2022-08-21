@@ -19,8 +19,7 @@
         android:orientation="horizontal"
         android:layout_alignParentTop="true"
         android:paddingTop="25sp"
-        android:paddingBottom="10sp"
-        android:background="@color/opaque_background">
+        android:paddingBottom="10sp">
 
         <ImageView
 
