@@ -1,12 +1,12 @@
 package com.example.studybuddy.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -15,22 +15,27 @@ import android.widget.TextView;
 
 import com.example.studybuddy.R;
 import com.example.studybuddy.adapter.ModuleAdapter;
+import com.example.studybuddy.model.Data;
 import com.example.studybuddy.model.GroupInfo;
 import com.example.studybuddy.model.Module;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class GroupDetails extends AppCompatActivity {
 
     RecyclerView recyclerView;
     List<Module> moduleList;
+    ArrayList<String> members;
     ModuleAdapter moduleAdapter;
     GroupInfo groupInfo;
+    ArrayList<Data> userData;
+    List<Data> rUserData;
 
-    @SuppressLint("SetTextI18n")
+    private static final String SHARED_PREFS = "sharedPrefs";
+    private static final String DEFAULT_VAL = "-1";
+    private static final String TEXT = "token";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,9 +44,13 @@ public class GroupDetails extends AppCompatActivity {
         Intent intent = getIntent();
         groupInfo = (GroupInfo) intent.getSerializableExtra("groupInfo");
 
+
+        userData = new ArrayList<>();
         String groupNameStr = groupInfo.getName();
         TextView groupName = findViewById(R.id.group_name);
         groupName.setText(groupNameStr);
+
+        members = groupInfo.getMembers();
 
         String bio = groupInfo.getDescription();
         if (bio == null){
@@ -103,4 +112,26 @@ public class GroupDetails extends AppCompatActivity {
         GroupDetails.this.finish();
         startActivity(intent);
     }
+
+    public void getMembers(View view) {
+        Intent intent = new Intent(GroupDetails.this, Members.class);
+        intent.putExtra("memberList", members);
+        startActivity(intent);
+    }
+
+    public void getRequests(View view) {
+    }
+
+    public void createQuiz(View view) {
+    }
+
+    public void quizzes(View view) {
+    }
+
+
+    private String getToken(){
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        return sharedPreferences.getString(TEXT, DEFAULT_VAL);
+    }
+
 }

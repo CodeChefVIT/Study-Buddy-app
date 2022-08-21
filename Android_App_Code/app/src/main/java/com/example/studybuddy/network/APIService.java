@@ -5,6 +5,7 @@ import com.example.studybuddy.model.LogInResponse;
 import com.example.studybuddy.model.LoginRequest;
 import com.example.studybuddy.model.SignUpResponse;
 import com.example.studybuddy.model.SignupRequest;
+import com.example.studybuddy.model.User;
 
 import java.util.List;
 
@@ -13,6 +14,8 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface APIService {
     @POST("/api/v1/user/login")
@@ -24,5 +27,10 @@ public interface APIService {
     @GET("/api/v1/groups/user")
     Call<GroupUserResponse> getUserGroups(@Header("Authorization") String authToken);
 
+    @GET("/api/v1/user")
+    Call<User> getUser(@Header("Authorization") String authToken);
+
+    @GET("/api/v1/user")
+    Call<User> getUser(@Header("Authorization") String authToken, @Query("id") String userID);
 
 }

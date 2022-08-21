@@ -127,7 +127,8 @@
                 android:paddingStart="20sp"
                 android:paddingTop="15sp"
                 android:paddingEnd="20sp"
-                android:paddingBottom="15sp">
+                android:paddingBottom="15sp"
+                android:onClick="getMembers">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -144,12 +145,12 @@
                         android:src="@drawable/ic_members" />
 
                     <TextView
+                        style="@style/group_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/members"
                         android:layout_marginStart="15sp"
-                        style="@style/group_button"
-                        android:textColor="@color/textTertiary"/>
+                        android:text="@string/members"
+                        android:textColor="@color/textTertiary" />
                 </LinearLayout>
 
 
@@ -196,7 +197,8 @@
                 android:paddingStart="20sp"
                 android:paddingTop="15sp"
                 android:paddingEnd="20sp"
-                android:paddingBottom="15sp">
+                android:paddingBottom="15sp"
+                android:onClick="getRequests">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -273,7 +275,8 @@
                     android:gravity="center"
                     android:clickable="true"
                     android:foreground="?attr/selectableItemBackground"
-                    tools:ignore="KeyboardInaccessibleWidget,UnusedAttribute">
+                    tools:ignore="KeyboardInaccessibleWidget,UnusedAttribute"
+                    android:onClick="createQuiz">
 
                     <ImageView
                         android:layout_width="@dimen/group_button_w"
@@ -338,7 +341,8 @@
                 android:paddingStart="20sp"
                 android:paddingTop="15sp"
                 android:paddingEnd="20sp"
-                android:paddingBottom="15sp">
+                android:paddingBottom="15sp"
+                android:onClick="quizzes">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
