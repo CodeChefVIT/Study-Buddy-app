@@ -117,6 +117,12 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="sub_heading_3">
+        <item name="fontFamily">@font/ibmplexsansregular</item>
+        <item name="android:textColor">@color/textSecondary</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
     <style name="text_body">
         <item name="fontFamily">@font/ibmplexsanslight</item>
         <item name="android:textColor">@color/textPrimary</item>

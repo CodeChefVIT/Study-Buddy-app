@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.studybuddy.R;
@@ -52,19 +53,35 @@ public class GroupDetails extends AppCompatActivity {
             groupDescription.setText(bio);
         }
 
-        int quizCount = groupInfo.getQuizzes().size();
-        TextView quizCountText = findViewById(R.id.quizzes);
-        quizCountText.setText(quizCount + "");
-
         moduleList = groupInfo.getModules();
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         moduleAdapter = new ModuleAdapter(moduleList);
         recyclerView.setAdapter(moduleAdapter);
 
+        setRequestsVisibility(groupInfo.getIsAdmin());
+        setCountTexts(groupInfo.getMembers().size(), groupInfo.getRequests().size(), groupInfo.getQuizzes().size());
+
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void setCountTexts(int members_size, int requests_size, int quizzes_size) {
+
+        TextView members = findViewById(R.id.members_count);
+        TextView requests = findViewById(R.id.requests_count);
+        TextView quizzes = findViewById(R.id.quizzes_count);
+
+        members.setText(members_size + "");
+        requests.setText(requests_size + "");
+        quizzes.setText(quizzes_size + "");
+    }
+
+    private void setRequestsVisibility(boolean isAdmin) {
+        RelativeLayout requestsLayout = findViewById(R.id.requests);
+        if (isAdmin)
+            requestsLayout.setVisibility(View.VISIBLE);
     }
 
     public void memberList(View view) {

@@ -113,31 +113,143 @@
             </LinearLayout>
 
             <!-- Group Members | id - members -->
-            <Button
+
+            <RelativeLayout
                 android:id="@+id/members"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/group_description_container"
-                android:layout_marginTop="20sp"
-
+                android:layout_marginTop="15sp"
                 android:background="@drawable/button_background"
-                android:fontFamily="@font/ibmplexsansregular"
-                android:onClick="memberList"
-                android:textAlignment="textStart"
-
-                android:drawableEnd="@drawable/ic_arrow_right"
-
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:orientation="horizontal"
                 android:paddingStart="20sp"
+                android:paddingTop="15sp"
                 android:paddingEnd="20sp"
-                android:paddingBottom="10sp"
-                android:paddingTop="10sp"
+                android:paddingBottom="15sp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_gravity="end"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="26sp"
+                        android:layout_height="26sp"
+                        android:contentDescription="@string/back_button"
+                        android:src="@drawable/ic_members" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/members"
+                        android:layout_marginStart="15sp"
+                        style="@style/group_button"
+                        android:textColor="@color/textTertiary"/>
+                </LinearLayout>
 
 
-                android:text="@string/members"
-                android:textAllCaps="false"
-                android:textColor="@color/textTertiary"
-                android:textSize="18sp"
-                tools:ignore="UsingOnClickInXml" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/members_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5sp"
+                        android:fontFamily="@font/ibmplexsanssemibold"
+                        android:text="@string/sample_quizzes"
+                        android:textColor="@color/accent_secondary"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:layout_width="@dimen/back_button_w"
+                        android:layout_height="@dimen/back_button_h"
+                        android:layout_marginStart="5sp"
+                        android:contentDescription="@string/back_button"
+                        android:src="@drawable/ic_arrow_right" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <!-- Group Requests | id - requests -->
+
+            <RelativeLayout
+                android:id="@+id/requests"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/members"
+                android:layout_marginTop="15sp"
+                android:background="@drawable/button_outline"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:orientation="horizontal"
+                android:paddingStart="20sp"
+                android:paddingTop="15sp"
+                android:paddingEnd="20sp"
+                android:paddingBottom="15sp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_gravity="end"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                        android:layout_width="26sp"
+                        android:layout_height="26sp"
+                        android:contentDescription="@string/back_button"
+                        android:src="@drawable/ic_requests" />
+
+                    <TextView
+                        style="@style/group_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15sp"
+                        android:text="Approve requests" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/request_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    tools:ignore="RelativeOverlap,UseCompoundDrawables">
+
+                    <TextView
+                        android:id="@+id/requests_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5sp"
+                        android:fontFamily="@font/ibmplexsanssemibold"
+                        android:text="@string/sample_quizzes"
+                        android:textColor="@color/accent_secondary"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:layout_width="@dimen/back_button_w"
+                        android:layout_height="@dimen/back_button_h"
+                        android:layout_marginStart="5sp"
+                        android:contentDescription="@string/back_button"
+                        android:src="@drawable/ic_arrow_right" />
+                </LinearLayout>
+
+            </RelativeLayout>
 
             <!-- Create Quiz and Send Invite | id - group_button_container -->
             <LinearLayout
@@ -145,8 +257,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_below="@+id/members"
-                android:layout_marginTop="15sp">
+                android:layout_below="@+id/requests"
+                android:layout_marginTop="15sp"
+                android:baselineAligned="false">
 
                 <LinearLayout
                     android:id="@+id/create_quiz"
@@ -220,21 +333,35 @@
                 android:layout_marginTop="15sp"
                 android:background="@drawable/button_group"
                 android:clickable="true"
-
                 android:foreground="?attr/selectableItemBackground"
                 android:orientation="horizontal"
                 android:paddingStart="20sp"
                 android:paddingTop="15sp"
-
                 android:paddingEnd="20sp"
                 android:paddingBottom="15sp">
 
-                <TextView
-                    style="@style/group_button"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/quizzes"
-                    android:textAlignment="center" />
+                    android:layout_alignParentStart="true"
+                    android:layout_gravity="end"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                        android:layout_width="26sp"
+                        android:layout_height="26sp"
+                        android:contentDescription="@string/back_button"
+                        android:src="@drawable/ic_quizzes" />
+
+                    <TextView
+                        style="@style/group_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15sp"
+                        android:text="@string/quizzes" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/quiz_button"
@@ -246,7 +373,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/quizzes"
+                        android:id="@+id/quizzes_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5sp"
@@ -265,7 +392,6 @@
 
             </RelativeLayout>
 
-
             <TextView
                 android:id="@+id/text"
                 style="@style/medium_text_heading_2"
@@ -274,7 +400,6 @@
                 android:layout_below="@+id/quiz"
                 android:layout_marginTop="20sp"
                 android:text="@string/module" />
-
 
             <!-- Group modules List | id - modules_list -->
 
