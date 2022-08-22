@@ -116,6 +116,8 @@ public class GroupDetails extends AppCompatActivity {
     public void getMembers(View view) {
         Intent intent = new Intent(GroupDetails.this, Members.class);
         intent.putExtra("memberList", members);
+        intent.putExtra("groupInfo", groupInfo);
+        GroupDetails.this.finish();
         startActivity(intent);
     }
 

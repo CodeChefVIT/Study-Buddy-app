@@ -7,9 +7,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.studybuddy.R;
 import com.example.studybuddy.adapter.MembersAdapter;
+import com.example.studybuddy.model.GroupInfo;
 
 import java.util.ArrayList;
 
@@ -21,6 +23,7 @@ public class Members extends AppCompatActivity {
     private static final String SHARED_PREFS = "sharedPrefs";
     private static final String DEFAULT_VAL = "-1";
     private static final String TEXT = "token";
+    GroupInfo groupInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +31,7 @@ public class Members extends AppCompatActivity {
         setContentView(R.layout.activity_members);
         Intent intent = getIntent();
         members = (ArrayList<String>) intent.getSerializableExtra("memberList");
+        groupInfo = (GroupInfo) intent.getSerializableExtra("groupInfo");
 
         setUpRecyclerView();
     }
@@ -35,7 +39,7 @@ public class Members extends AppCompatActivity {
     private void setUpRecyclerView() {
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        membersAdapter = new MembersAdapter(members, getToken());
+        membersAdapter = new MembersAdapter(members, getToken(), "Members");
         recyclerView.setAdapter(membersAdapter);
 
     }
@@ -43,5 +47,21 @@ public class Members extends AppCompatActivity {
     private String getToken(){
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         return sharedPreferences.getString(TEXT, DEFAULT_VAL);
+    }
+
+    public void back(View view) {
+        Intent intent = new Intent(this, GroupDetails.class);
+        intent.putExtra("groupInfo", groupInfo);
+        Members.this.finish();
+        startActivity(intent);
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent intent = new Intent(this, GroupDetails.class);
+        intent.putExtra("groupInfo", groupInfo);
+        Members.this.finish();
+        startActivity(intent);
     }
 }
