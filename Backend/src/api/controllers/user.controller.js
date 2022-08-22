@@ -391,6 +391,15 @@ exports.edit = async (req, res) => {
         if (req.file) {
           logger.info(NAMESPACE, 'Avatar update requested')
           const { originalname, buffer } = req.file
+          const allowedExtensions = /(jpg|jpeg|png|gif|webp)$/i;
+          const fileExtension = originalname.split('.').pop()
+          if (!allowedExtensions.test(fileExtension)) 
+          {
+            return res.status(401).json({
+            success: false,
+            error: 'Not an image'
+          })
+        }
           const data = await s3Upload(req.user.id, buffer, originalname)
           if (!data) {
             logger.error(NAMESPACE, 'S3 Upload failed')
