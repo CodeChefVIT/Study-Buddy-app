@@ -422,11 +422,24 @@ exports.editPicture = async (req, res) => {
         })
       }
       const { originalname, buffer } = req.file
+      const allowedExtensions = /(jpg|jpeg|png|gif|webp)$/i;
+      const fileExtension = originalname.split('.').pop()
+      if (!allowedExtensions.test(fileExtension)) 
+      {
+        return res.status(401).json({
+        success: false,
+        error: 'Not an image'
+      })
+    }
       const data = await s3Upload(req.user.id, buffer, originalname)
       if (!data) {
         logger.error(NAMESPACE, 'S3 Upload failed')
+        return res.status(500).json({
+          success: false,
+          error: 'S3 Upload failed'
+        })
       }
-      groupObj.picture = data.Location
+      groupObj.image = data.Location
       await groupObj.save()
       logger.info(NAMESPACE, 'Picture updated')
       return res.status(200).json({

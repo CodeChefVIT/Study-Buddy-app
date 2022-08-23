@@ -295,7 +295,7 @@ exports.verify = async (req, res) => {
       //   error: 'User is already verified'
       // })
       logger.info(NAMESPACE, 'User Redirected to login page')
-      return res.redirect(frontendURL + '/login')
+      return res.redirect(frontendURL + '/verified')
     }
     user.isVerified = true
     if (user.hash !== hash) { return res.status(401).json({ success: false, error: "Hash doesn't match" }) }
@@ -303,7 +303,7 @@ exports.verify = async (req, res) => {
     await user.save()
     logger.info(NAMESPACE, 'Verify successful')
     // redirect
-    return res.redirect(frontendURL + '/login')
+    return res.redirect(frontendURL + '/verified')
   } catch (error) {
     logger.error(NAMESPACE, 'Verify failed', error)
     return res.status(500).json({
@@ -391,6 +391,15 @@ exports.edit = async (req, res) => {
         if (req.file) {
           logger.info(NAMESPACE, 'Avatar update requested')
           const { originalname, buffer } = req.file
+          const allowedExtensions = /(jpg|jpeg|png|gif|webp)$/i;
+          const fileExtension = originalname.split('.').pop()
+          if (!allowedExtensions.test(fileExtension)) 
+          {
+            return res.status(401).json({
+            success: false,
+            error: 'Not an image'
+          })
+        }
           const data = await s3Upload(req.user.id, buffer, originalname)
           if (!data) {
             logger.error(NAMESPACE, 'S3 Upload failed')
@@ -465,8 +474,9 @@ exports.edit = async (req, res) => {
 
 exports.get = async (req, res) => {
   logger.info(NAMESPACE, 'Get User data request recieved')
+  let id = req.query.id || req.user.id
   try {
-    const user = await User.findById(req.user.id)
+    const user = await User.findById(id)
     if (!user) {
       return res.status(400).json({
         success: false,

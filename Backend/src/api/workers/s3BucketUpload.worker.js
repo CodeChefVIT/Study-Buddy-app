@@ -19,12 +19,7 @@ const upload = async (id, buffer, originalname) => {
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
     })
-    // check if image
-    const fileType = buffer.toString('hex', 0, 4).toLowerCase()
-    if (fileType !== '89504e47') {
-      logger.error(NAMESPACE, 'File is not an image')
-      return false
-    }
+
     const fileExtension = originalname.split('.').pop()
     // upload image to s3
     const params = {
