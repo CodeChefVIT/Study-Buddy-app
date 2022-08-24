@@ -124,8 +124,7 @@ public class GroupDetails extends AppCompatActivity {
 
     }
 
-    public void memberList(View view) {
-    }
+
 
     public void back(View view) {
         Intent intent = new Intent(this, Dashboard.class);
