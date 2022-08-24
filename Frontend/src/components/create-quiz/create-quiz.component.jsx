@@ -37,7 +37,7 @@ const CreateQuiz = (props) => {
   const handleQuizSubmit = async (event) => {
     event.preventDefault();
 
-    const temp = formFields;
+    let temp = formFields;
     temp.questions = questions;
 
     console.log(formFields);
@@ -51,6 +51,8 @@ const CreateQuiz = (props) => {
       },
       body: JSON.stringify(formFields),
     }).then((res) => res.json());
+
+    temp = [];
     console.log(response);
 
     try {

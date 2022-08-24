@@ -63,6 +63,7 @@ const GrpSet = (props) => {
       setError({
         message: "Profile Updated Successfully",
       });
+      window.location.reload();
     } else {
       setError({
         message: "Profile Updation Failed. Please Try Again",

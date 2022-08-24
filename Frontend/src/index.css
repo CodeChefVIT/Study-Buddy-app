@@ -376,7 +376,6 @@ input {
 .footer {
   display: flex;
   justify-content: space-between;
-  background-color: #101010;
 
   max-width: 1250px;
   margin: auto;
@@ -395,6 +394,7 @@ input {
     max-width: 1250px;
     margin: auto;
     bottom: 0;
+    position: absolute;
 
     height: 2.4rem;
     padding-top: 5.2rem;

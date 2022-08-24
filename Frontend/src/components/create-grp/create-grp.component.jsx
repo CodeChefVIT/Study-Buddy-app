@@ -75,11 +75,6 @@ const CreateGrp = (props) => {
     setError(null);
   };
 
-  // const handleFileChange = (event) => {
-  //   event.preventDefault();
-  //   defaultForm.append("avatar", event.target.files[0]);
-  // };
-
   return (
     <div>
       {error && <ErrorModal message={error.message} onConfirm={errorHandler} />}
@@ -94,19 +89,6 @@ const CreateGrp = (props) => {
             <form className="form-create" onSubmit={handleSubmit}>
               <div className="heading-primary">Create Study Group</div>
 
-              {/* <div className="pic-cha">
-                <img
-                  className="prof-pic-up mar-r"
-                  src={url}
-                  alt="profile pic"
-                />
-                <input
-                  type="file"
-                  accept="image/png"
-                  onChange={handleFileChange}
-                  id="avatar"
-                />
-        </div>*/}
               <label htmlFor="coursename">Course Name</label>
               <input
                 name="name"

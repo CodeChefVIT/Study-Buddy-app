@@ -135,7 +135,9 @@ const GrpDash = () => {
         )}
       </div>
 
-      <Footer />
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 };

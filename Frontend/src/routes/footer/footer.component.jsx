@@ -2,7 +2,7 @@ import { Fragment } from "react";
 
 const Navigation = () => {
   return (
-    <Fragment>
+    <>
       <footer className="footer">
         <div className="top">
           <div className="heading-secondary">Made with 💓 by Codechef-VIT</div>
@@ -59,7 +59,7 @@ const Navigation = () => {
           </ul>
         </div>
       </footer>
-    </Fragment>
+    </>
   );
 };
 

@@ -26,9 +26,10 @@ const AccSet = () => {
         },
       })
         .then((response) => response.json())
-        .then(({ data }) => {
-          setUrl(data.avatar);
-          setName(data.name);
+        .then((data) => {
+          console.log(data);
+          // setUrl(data.avatar);
+          // setName(data.name);
         });
       setLoading(false);
     };
@@ -58,6 +59,7 @@ const AccSet = () => {
       setError({
         message: "Profile Updated Successfully",
       });
+      window.location.reload();
     } else {
       setError({
         message: "Profile Updation Failed. Please Try Again",
