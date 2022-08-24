@@ -69,8 +69,8 @@ exports.signup = async (req, res) => {
     const salt = await bcrypt.genSalt(10)
     newUser.password = await bcrypt.hash(newUser.password, salt)
     const link = 'http://' + req.get('host') + '/api/v1/user/verify/' + newUser.id + '/' + hash
-    await sendEmail(email, 'Verify Your Email', `Verify your email at ${link}`)
     await newUser.save()
+    await sendEmail(email, 'Verify Your Email', `Verify your email at ${link}`)
     logger.info(NAMESPACE, 'Signup successful')
     return res.status(200).json({
       success: true,
