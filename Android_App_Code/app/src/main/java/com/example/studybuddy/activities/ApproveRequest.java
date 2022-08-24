@@ -15,7 +15,7 @@ import com.example.studybuddy.model.GroupInfo;
 
 import java.util.ArrayList;
 
-public class Members extends AppCompatActivity {
+public class ApproveRequest extends AppCompatActivity {
 
     RecyclerView recyclerView;
     ArrayList<String> members;
@@ -28,9 +28,9 @@ public class Members extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_members);
+        setContentView(R.layout.activity_approve_request);
+
         Intent intent = getIntent();
-        members = (ArrayList<String>) intent.getSerializableExtra("memberList");
         groupInfo = (GroupInfo) intent.getSerializableExtra("groupInfo");
 
         setUpRecyclerView();
@@ -39,7 +39,7 @@ public class Members extends AppCompatActivity {
     private void setUpRecyclerView() {
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        membersAdapter = new MembersAdapter(members, getToken(), "Members");
+        membersAdapter = new MembersAdapter(groupInfo.getRequests(), getToken(), "R");
         recyclerView.setAdapter(membersAdapter);
 
     }
@@ -52,7 +52,7 @@ public class Members extends AppCompatActivity {
     public void back(View view) {
         Intent intent = new Intent(this, GroupDetails.class);
         intent.putExtra("groupInfo", groupInfo);
-        Members.this.finish();
+        ApproveRequest.this.finish();
         startActivity(intent);
     }
     @Override
@@ -61,9 +61,7 @@ public class Members extends AppCompatActivity {
 
         Intent intent = new Intent(this, GroupDetails.class);
         intent.putExtra("groupInfo", groupInfo);
-        Members.this.finish();
+        ApproveRequest.this.finish();
         startActivity(intent);
     }
-
-
 }

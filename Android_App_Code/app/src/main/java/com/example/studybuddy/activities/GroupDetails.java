@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -18,6 +19,7 @@ import com.example.studybuddy.adapter.ModuleAdapter;
 import com.example.studybuddy.model.Data;
 import com.example.studybuddy.model.GroupInfo;
 import com.example.studybuddy.model.Module;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +33,7 @@ public class GroupDetails extends AppCompatActivity {
     GroupInfo groupInfo;
     ArrayList<Data> userData;
     List<Data> rUserData;
-
+    RelativeLayout rel;
     private static final String SHARED_PREFS = "sharedPrefs";
     private static final String DEFAULT_VAL = "-1";
     private static final String TEXT = "token";
@@ -122,6 +124,16 @@ public class GroupDetails extends AppCompatActivity {
     }
 
     public void getRequests(View view) {
+        if (!(groupInfo.getRequests().size() == 0)) {
+            Intent intent = new Intent(GroupDetails.this, ApproveRequest.class);
+            intent.putExtra("groupInfo", groupInfo);
+            GroupDetails.this.finish();
+            startActivity(intent);
+        }
+        else {
+            show_err_snackBar("Sorry no requests!");
+        }
+
     }
 
     public void createQuiz(View view) {
@@ -134,6 +146,22 @@ public class GroupDetails extends AppCompatActivity {
     private String getToken(){
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         return sharedPreferences.getString(TEXT, DEFAULT_VAL);
+    }
+
+    void show_err_snackBar(String err_message){
+        rel = findViewById(R.id.parentRelative);
+
+        Snackbar err_snackbar = Snackbar.make(rel, "", Snackbar.LENGTH_INDEFINITE);
+        View custom_snackbar_view = getLayoutInflater().inflate(R.layout.err_snackbar, null);
+        err_snackbar.getView().setBackgroundColor(Color.TRANSPARENT);
+        Snackbar.SnackbarLayout snackbarLayout =(Snackbar.SnackbarLayout) err_snackbar.getView();
+        snackbarLayout.setPadding(0,0,0,0);
+        TextView errText = custom_snackbar_view.findViewById(R.id.sb_error_text);
+        errText.setText(err_message);
+        (custom_snackbar_view.findViewById(R.id.submit_sb)).setOnClickListener(view -> err_snackbar.dismiss());
+        snackbarLayout.addView(custom_snackbar_view,0);
+        err_snackbar.show();
+
     }
 
 }
