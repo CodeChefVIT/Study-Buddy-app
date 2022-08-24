@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import com.example.studybuddy.model.Data;
 import com.example.studybuddy.model.GroupInfo;
 import com.example.studybuddy.model.Module;
 import com.google.android.material.snackbar.Snackbar;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +74,7 @@ public class GroupDetails extends AppCompatActivity {
         moduleAdapter = new ModuleAdapter(moduleList);
         recyclerView.setAdapter(moduleAdapter);
 
-        setRequestsVisibility(groupInfo.getIsAdmin());
+        setVisibility(groupInfo.getIsAdmin(), groupInfo.getImage());
         setCountTexts(groupInfo.getMembers().size(), groupInfo.getRequests().size(), groupInfo.getQuizzes().size());
 
     }
@@ -89,10 +91,37 @@ public class GroupDetails extends AppCompatActivity {
         quizzes.setText(quizzes_size + "");
     }
 
-    private void setRequestsVisibility(boolean isAdmin) {
+    private void setVisibility(boolean isAdmin, String URL) {
         RelativeLayout requestsLayout = findViewById(R.id.requests);
-        if (isAdmin)
-            requestsLayout.setVisibility(View.VISIBLE);
+        RelativeLayout editLayout = findViewById(R.id.edit_group);
+        ImageView groupImage = findViewById(R.id.group_icon);
+        if (!isAdmin){
+            requestsLayout.setVisibility(View.GONE);
+            editLayout.setVisibility(View.GONE);
+        }
+        if (URL.equals("https://st3.depositphotos.com/6672868/13701/v/600/depositphotos_137014128-stock-illustration-user-profile-icon.jpg") || URL.isEmpty())
+        {
+            groupImage.setVisibility(View.GONE);
+        }
+        else {
+            setImageView(URL);
+        }
+    }
+
+    private void setImageView(String URL) {
+        ImageView groupImage = findViewById(R.id.group_icon);
+        Picasso.get().load(URL).placeholder(R.drawable.sampleimg).fit().centerCrop().into(groupImage, new com.squareup.picasso.Callback() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onError(Exception e) {
+                groupImage.setVisibility(View.GONE);
+            }
+        });
+
     }
 
     public void memberList(View view) {

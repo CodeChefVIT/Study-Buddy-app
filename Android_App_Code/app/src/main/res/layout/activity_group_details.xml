@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activities.GroupDetails"
     android:background="@color/background"
     android:id="@+id/parentRelative">
@@ -61,13 +62,21 @@
             android:orientation="vertical"
             android:padding="15sp">
 
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/group_icon"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_marginTop="20sp"
+                app:shapeAppearanceOverlay="@style/roundedImageView"
+                />
             <!-- Group Name | id - group_name_container -->
             <LinearLayout
                 android:id="@+id/group_name_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20sp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_below="@id/group_icon">
 
                 <TextView
                     android:id="@+id/group_name"
@@ -94,15 +103,15 @@
                 android:layout_below="@id/group_name_container"
                 android:layout_marginTop="15sp"
                 android:background="@drawable/button_dashboard"
-                android:padding="15sp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="15sp">
 
                 <TextView
+                    style="@style/text_heading_3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10sp"
-                    style="@style/text_heading_3"
-                    android:text="Group Description"/>
+                    android:text="Group Description" />
 
                 <TextView
                     android:id="@+id/group_description"
@@ -113,13 +122,63 @@
 
             </LinearLayout>
 
+            <RelativeLayout
+                android:id="@+id/edit_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/group_description_container"
+                android:layout_marginTop="15sp"
+                android:background="@drawable/button_group"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:onClick="quizzes"
+                android:orientation="horizontal"
+                android:paddingStart="20sp"
+                android:paddingTop="15sp"
+                android:paddingEnd="20sp"
+                android:paddingBottom="15sp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_gravity="end"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                        android:layout_width="26sp"
+                        android:layout_height="26sp"
+                        android:contentDescription="@string/back_button"
+                        android:src="@drawable/ic_edit" />
+
+                    <TextView
+                        style="@style/group_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15sp"
+                        android:text="Edit Group Details" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="@dimen/back_button_w"
+                    android:layout_height="@dimen/back_button_h"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="5sp"
+                    android:contentDescription="@string/back_button"
+                    android:src="@drawable/ic_arrow_right" />
+
+            </RelativeLayout>
+
             <!-- Group Members | id - members -->
 
             <RelativeLayout
                 android:id="@+id/members"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/group_description_container"
+                android:layout_below="@+id/edit_group"
                 android:layout_marginTop="15sp"
                 android:background="@drawable/button_background"
                 android:clickable="true"
@@ -194,12 +253,12 @@
                 android:background="@drawable/button_outline"
                 android:clickable="true"
                 android:foreground="?attr/selectableItemBackground"
+                android:onClick="getRequests"
                 android:orientation="horizontal"
                 android:paddingStart="20sp"
                 android:paddingTop="15sp"
                 android:paddingEnd="20sp"
-                android:paddingBottom="15sp"
-                android:onClick="getRequests">
+                android:paddingBottom="15sp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -253,6 +312,7 @@
                 </LinearLayout>
 
             </RelativeLayout>
+
 
             <!-- Create Quiz and Send Invite | id - group_button_container -->
             <LinearLayout
@@ -338,12 +398,12 @@
                 android:background="@drawable/button_group"
                 android:clickable="true"
                 android:foreground="?attr/selectableItemBackground"
+                android:onClick="quizzes"
                 android:orientation="horizontal"
                 android:paddingStart="20sp"
                 android:paddingTop="15sp"
                 android:paddingEnd="20sp"
-                android:paddingBottom="15sp"
-                android:onClick="quizzes">
+                android:paddingBottom="15sp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
