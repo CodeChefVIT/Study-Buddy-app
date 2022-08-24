@@ -35,7 +35,7 @@ const Dashboard = () => {
   return (
     <div>
       {localStorage.getItem("token") ? <NavigationAuth /> : <Navigation />}
-      <section className="dashboard">
+      <section className="dashboard h-3">
         <h1 className="heading-primary-sm-2 mar-b">My Groups</h1>
         {loading ? (
           <Box
@@ -49,7 +49,7 @@ const Dashboard = () => {
             <CircularProgress />
           </Box>
         ) : groups.length === 0 ? (
-          <h1 className="heading-primary mar-t-3">
+          <h1 className="heading-primary mar-t-3 mr-b-4 pad-b4">
             Please join groups to display them here.{" "}
           </h1>
         ) : (

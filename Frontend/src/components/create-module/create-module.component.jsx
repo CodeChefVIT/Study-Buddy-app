@@ -1,8 +1,11 @@
 import { useState } from "react";
 
+import ErrorModal from "../../components/error/error.component";
+
 const AddModule = (props) => {
   const [modulesName, setModulesName] = useState("");
   const [modulesDatesToComp, setModulesDatesToComp] = useState("");
+  const [error, setError] = useState();
 
   const handleModuleChange = (event) => {
     setModulesName(event.target.value);
@@ -15,6 +18,14 @@ const AddModule = (props) => {
   const handleSubmitModule = (event) => {
     event.preventDefault();
 
+    if (modulesDatesToComp < 0) {
+      setError({
+        message: "Please enter a valid number of days to complete",
+      });
+      setModulesDatesToComp("");
+      return;
+    }
+
     const modules = {
       name: modulesName,
       daysToComplete: modulesDatesToComp,
@@ -26,8 +37,13 @@ const AddModule = (props) => {
     props.onSaveModule(modules);
   };
 
+  const errorHandler = () => {
+    setError(null);
+  };
+
   return (
     <div>
+      {error && <ErrorModal message={error.message} onConfirm={errorHandler} />}
       <form className="form-create" onSubmit={handleSubmitModule}>
         <div className="heading-primary">Add Modules</div>
         <div>

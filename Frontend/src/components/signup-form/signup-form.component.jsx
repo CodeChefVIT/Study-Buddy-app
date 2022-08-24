@@ -27,7 +27,20 @@ const SignUpForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (password !== confirm) {
+    function passcheck(str) {
+      return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,100}$/.test(
+        str
+      );
+    }
+
+    if (!passcheck(password)) {
+      setError({
+        message:
+          "Password must contain min 1 uppercase letter, 1 lowercase letter, 1 special character, 1 number, 8 characters.",
+      });
+
+      return;
+    } else if (password !== confirm) {
       setError({
         message: "Password and Confirm Password do not match",
       });
@@ -51,16 +64,23 @@ const SignUpForm = () => {
     if (response.success) {
       localStorage.setItem("token", response.token);
       setError({
-        message: "User Created",
+        message:
+          "Congratulations your account has been created. Check email for verification",
       });
+      resetFormFields();
     } else {
-      const { error } = response;
-      setError({
-        message: error,
-      });
-    }
+      let { error } = response;
 
-    resetFormFields();
+      if (error[1] === "r" && error[2] === "e") {
+        setError({
+          message: "Registration Number is invalid",
+        });
+      } else {
+        setError({
+          message: error,
+        });
+      }
+    }
   };
 
   const handleChange = (event) => {

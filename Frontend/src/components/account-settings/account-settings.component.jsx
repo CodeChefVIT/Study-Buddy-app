@@ -27,9 +27,8 @@ const AccSet = () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
-          // setUrl(data.avatar);
-          // setName(data.name);
+          setUrl(data.data.avatar);
+          // setName(data.data.name);
         });
       setLoading(false);
     };

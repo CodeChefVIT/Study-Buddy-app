@@ -5,12 +5,27 @@ const Navigation = () => {
     <>
       <footer className="footer">
         <div className="top">
-          <div className="heading-secondary">Made with 💓 by Codechef-VIT</div>
+          <div className="heading-secondary">
+            Made with{" "}
+            <div className="colour-red">
+              <ion-icon name="heart" className="social-icon"></ion-icon>{" "}
+            </div>
+            by Codechef-VIT
+          </div>
         </div>
         <div className="media-icons">
           <ul className="social-links">
             <li className="heading-secondary">Follow us on</li>
 
+            <li className="mar-f">
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href="https://www.github.com/codechefvit/"
+              >
+                <ion-icon name="logo-github" className="social-icon"></ion-icon>
+              </a>
+            </li>
             <li className="mar-f">
               <a
                 target="_blank"

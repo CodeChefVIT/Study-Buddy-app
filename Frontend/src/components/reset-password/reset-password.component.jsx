@@ -41,14 +41,13 @@ const ResetPass = () => {
 
     if (response.success) {
       setError({
-        message: "User Updated Sucessfully!",
+        message: "Password Updated Sucessfully!",
       });
 
       resetFormFields();
     } else {
-      const { error } = response;
       setError({
-        message: error,
+        message: "Old Password is Wrong",
       });
     }
   };

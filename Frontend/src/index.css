@@ -202,6 +202,10 @@ body {
   padding-bottom: 20rem;
 }
 
+.h-3 {
+  height: 70vh;
+}
+
 .mar {
   margin: 2rem;
   margin-left: 0rem;
@@ -372,7 +376,6 @@ input {
 /*******************/
 /* FOOTER */
 /*******************/
-
 .footer {
   display: flex;
   justify-content: space-between;
@@ -427,6 +430,11 @@ input {
   display: flex;
   align-items: center;
   color: #ff5b7e;
+}
+
+.colour-red {
+  color: #ff0000;
+  display: inline;
 }
 
 .social-links {
