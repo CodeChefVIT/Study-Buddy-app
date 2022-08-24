@@ -43,7 +43,7 @@ const schema = {
     confirm: Joi.string().required()
   }),
   id: Joi.object({
-    id: Joi.string().required().regex(/^[0-9a-fA-F]{24}$/)
+    id: Joi.string().regex(/^[0-9a-fA-F]{24}$/)
   })
 }
 
