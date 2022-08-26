@@ -10,6 +10,8 @@ import android.os.Handler;
 
 import com.example.studybuddy.R;
 
+// TODO: Add network check
+
 @SuppressLint("CustomSplashScreen")
 public class SplashScreen extends AppCompatActivity {
 

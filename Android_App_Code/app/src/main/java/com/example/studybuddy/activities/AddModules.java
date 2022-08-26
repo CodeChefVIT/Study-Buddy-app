@@ -89,6 +89,7 @@ public class AddModules extends AppCompatActivity {
         newGroup.setSubject(courseCode);
         newGroup.setModules(modules);
 
+
         APIService apiService = RetroInstance.getRetrofit().create(APIService.class);
 
         Call<GroupUserResponse> call = apiService.createGroup(getToken(), newGroup);
@@ -120,24 +121,30 @@ public class AddModules extends AppCompatActivity {
     }
 
     public void addModule(View view) {
-        if (counter < mods){
-            subAddModule();
+        if (counter < mods - 1){
+            subAddModule(0);
         }
         else {
-            cG.setVisibility(View.VISIBLE);
+            if (counter == mods - 1){
+                subAddModule(-1);
+                cG.setVisibility(View.VISIBLE);
+            }
+
         }
 
     }
 
-    public void subAddModule(){
+    public void subAddModule(int x){
         String mod = moduleName.getText().toString();
         String day = daysToComplete.getText().toString();
 
 
         if (!mod.isEmpty() && !day.isEmpty())
         {
-            moduleName.setText("");
-            daysToComplete.setText("");
+            if (x == 1){
+                moduleName.setText("");
+                daysToComplete.setText("");
+            }
             Modules e = new Modules();
             e.setName(mod);
             e.setDaysToComplete(day);
