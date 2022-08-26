@@ -98,15 +98,15 @@ public class LogIn extends AppCompatActivity {
                     startActivity(intent);
                 }
                 else {
-                    String message = code + " -1 " + ((code == 401) ? "Not Verified" : "User doesn't exist");
-                    makeToast(message);
+                    String message = ((code == 401) ? "Not Verified" : "User doesn't exist");
+                    show_err_snackBar(message);
                 }
             }
 
             @Override
             public void onFailure(Call<LogInResponse> call, Throwable t) {
                 dialog.dismiss();
-                makeToast(call.toString());
+                show_err_snackBar(getString(R.string.error_text));
             }
         });
 

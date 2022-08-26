@@ -93,6 +93,7 @@
                     android:layout_marginStart="5sp"
                     android:layout_weight="1"
                     android:padding="15sp"
+                    android:onClick="joinGroup"
                     android:background="@drawable/button_dashboard"
                     android:text="@string/join_group" />
 

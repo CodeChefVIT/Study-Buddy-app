@@ -3,6 +3,7 @@ package com.example.studybuddy.network;
 import com.example.studybuddy.model.GroupUserResponse;
 import com.example.studybuddy.model.LogInResponse;
 import com.example.studybuddy.model.LoginRequest;
+import com.example.studybuddy.model.Model;
 import com.example.studybuddy.model.NewGroup;
 import com.example.studybuddy.model.SignUpResponse;
 import com.example.studybuddy.model.SignupRequest;
@@ -36,5 +37,8 @@ public interface APIService {
 
     @POST("/api/v1/groups/new")
     Call<GroupUserResponse> createGroup(@Header("Authorization") String authToken, @Body NewGroup newGroup);
+
+    @GET("/api/v1/groups/request/{id}")
+    Call<Model> sendRequest(@Header("Authorization") String authToken, @Path("id") String code);
 
 }

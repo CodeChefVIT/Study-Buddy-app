@@ -4,7 +4,8 @@
     package="com.example.studybuddy">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -20,7 +21,7 @@
             android:name=".activities.AddModules"
             android:exported="false" />
         <activity
-            android:name=".activities.MakeGroup"
+            android:name=".activities.CreateGroup"
             android:exported="false" />
         <activity
             android:name=".activities.ApproveRequest"
@@ -33,9 +34,6 @@
             android:exported="false" />
         <activity
             android:name=".activities.GroupDetails"
-            android:exported="false" />
-        <activity
-            android:name=".activities.CreateGroup"
             android:exported="false" />
         <activity
             android:name=".activities.JoinGroup"
@@ -67,6 +65,10 @@
         <activity
             android:name=".activities.MainActivity"
             android:exported="false" />
+        <activity android:name=".activities.Capture"
+            android:screenOrientation="fullSensor"
+            android:stateNotNeeded="true"
+            android:theme="@style/zxing_CaptureTheme"/>
     </application>
 
 </manifest>

@@ -10,35 +10,37 @@
     android:id="@+id/parentRelative">
 
     <RelativeLayout
-        android:layout_marginTop="25sp"
         android:id="@+id/detailsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="25sp"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center"
             android:onClick="back"
+            android:orientation="horizontal"
             tools:ignore="UsingOnClickInXml">
+
             <ImageView
                 android:layout_width="@dimen/back_button_w"
                 android:layout_height="@dimen/back_button_h"
+                android:layout_marginStart="20sp"
                 android:contentDescription="@string/back_button"
-                android:src="@drawable/ic_arrow_left"
-                android:layout_marginStart="20sp" />
+                android:src="@drawable/ic_arrow_left" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
                 android:layout_marginStart="5sp"
-                android:text="@string/group"
                 android:fontFamily="@font/ibmplexsanssemibold"
-                android:textColor="@color/accent_secondary"/>
+                android:text="@string/group"
+                android:textColor="@color/accent_secondary"
+                android:textSize="18sp" />
         </LinearLayout>
 
         <TextView
@@ -152,7 +154,7 @@
 
                 </RelativeLayout>
 
-                <!-- Group Requests | id - requests -->
+
 
                 <RelativeLayout
                     android:id="@+id/add_module"
