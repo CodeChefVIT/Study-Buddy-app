@@ -50,7 +50,7 @@
     <string name="sign_out">Sign Out</string>
     <string name="back_button">Back</string>
     <string name="members">Members</string>
-    <string name="sample_group_name">1000101</string>
+    <string name="sample_group_name">Differential Equations</string>
     <string name="sample_subject_name">BMAT101L</string>
     <string name="button">Button</string>
     <string name="quizzes">Quizzes</string>
@@ -65,4 +65,6 @@
     <string name="sample_invite_code">6jg-f9o-ghr</string>
     <string name="sub_heading_invite">Add people to group using invite code or by scanning QR Code!</string>
     <string name="heading_group_invite">Send Invite</string>
+    <string name="samle_module_name">Ordinary Differential Equations</string>
+    <string name="error_text">Some error occured!</string>
 </resources>

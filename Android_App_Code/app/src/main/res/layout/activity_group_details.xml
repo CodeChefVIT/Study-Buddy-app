@@ -184,12 +184,12 @@
                 android:background="@drawable/button_background"
                 android:clickable="true"
                 android:foreground="?attr/selectableItemBackground"
+                android:onClick="getMembers"
                 android:orientation="horizontal"
                 android:paddingStart="20sp"
                 android:paddingTop="15sp"
                 android:paddingEnd="20sp"
-                android:paddingBottom="15sp"
-                android:onClick="getMembers">
+                android:paddingBottom="15sp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"

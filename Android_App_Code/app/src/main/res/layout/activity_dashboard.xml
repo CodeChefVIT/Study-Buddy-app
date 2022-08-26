@@ -53,7 +53,7 @@
                     android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/text_heading"
+                    style="@style/text_heading_2"
                     android:text="Hello Aryaman 👋"/>
 
                 <TextView
@@ -82,7 +82,8 @@
                     android:layout_weight="1"
                     android:padding="15sp"
                     android:background="@drawable/button_dashboard"
-                    android:text="@string/create_group" />
+                    android:text="@string/create_group"
+                    android:onClick="createGroup"/>
 
                 <Button
                     android:id="@+id/join_group_button"

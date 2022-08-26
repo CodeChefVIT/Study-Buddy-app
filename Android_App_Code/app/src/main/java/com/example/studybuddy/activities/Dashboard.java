@@ -96,4 +96,9 @@ public class Dashboard extends AppCompatActivity implements UserGroupListAdapter
 
     public void footer(View view) {
     }
+
+    public void createGroup(View view) {
+        Intent intent = new Intent(this, MakeGroup.class);
+        startActivity(intent);
+    }
 }

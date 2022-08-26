@@ -17,6 +17,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activities.AddModules"
+            android:exported="false" />
+        <activity
+            android:name=".activities.MakeGroup"
+            android:exported="false" />
+        <activity
             android:name=".activities.ApproveRequest"
             android:exported="false" />
         <activity
