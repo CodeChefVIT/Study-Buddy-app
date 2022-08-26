@@ -6,6 +6,7 @@
   "scripts": {
     "test": "mocha --timeout 15000  --recursive ./tests/*.test.js --exit",
     "start": "node src/index.js",
+    "start:docker": "docker-compose up -d --scale app=4",
     "lint": "standard --fix"
   },
   "author": "BearTS <bear@tamako.tech>",

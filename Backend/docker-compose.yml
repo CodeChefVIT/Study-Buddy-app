@@ -8,27 +8,26 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=root
     ports:
       - 25071:25071
-    
+    volumes:
+      - ../../study_buddy_db:/data/db
   app:
     depends_on:
       - mongodb
     build: .
     env_file: ./.env
     restart: unless-stopped
-    ports:
-      - 3000:6520
     environment:
-      - PORT=3000
-      - MONGO_URL=mongodb://root:root@mongodb:27017/
-      - SECRET_JWT=$SECRET_JWT
-      - JWT_EXPIRES_IN=$JWT_EXPIRES_IN
-      - GMAIL_ID=$GMAIL_ID
-      - GMAIL_PASSWORD=$GMAIL_PASSWORD
-      - isProduction=true
-      - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-      - AWS_BUCKET_NAME=$AWS_BUCKET_NAME
-      - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-      - FRONTEND_URL=$FRONTEND_URL
       - NODE_ENV=production
+      - PORT=6530
+      - MONGO_URL=mongodb://root:root@mongodb:27017/
     stdin_open: true
     tty: true
+  
+  nginx:
+    image: nginx:1.17.9
+    ports:
+      - "6530:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - app

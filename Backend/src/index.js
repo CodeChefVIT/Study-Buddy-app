@@ -2,12 +2,11 @@ const { join } = require('path')
 const express = require('express')
 const app = express()
 const helmet = require('helmet')
-const bodyParser = require('body-parser')
-const errorhandler = require('errorhandler')
 const cors = require('cors')
 const morgan = require('morgan')
 const mongoose = require('mongoose')
 const routes = require(join(__dirname, 'api', 'routes', 'v1'))
+
 require(join(__dirname, 'config', 'database'))
 
 // Prevent common security vulnerabilities
@@ -22,38 +21,17 @@ const corsOptions = {
   optionSuccessStatus: 200
 }
 
+app.set('trust proxy', true)
 app.use(cors(corsOptions))
 // Parse json body
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 // app.use(cors());
 
 mongoose.Promise = global.Promise
 
-// development error handler
-// will print stacktrace
-if (!process.env.isProduction) {
-  if (process.env.NODE_ENV !== 'test') {
-    app.use(errorhandler())
-    app.use(function (err, req, res) {
-      console.log(err.stack)
-
-      res.status(err.status || 500)
-
-      res.json({
-        errors: {
-          message: err.message,
-          error: err
-        }
-      })
-    })
-  }
-}
-
-// no stacktraces leaked to users
 app.use(function (err, req, res, next) {
-  res.status(err.status || 500)
-  res.json({
+  res.status(err.status || 500).json({
     errors: {
       message: err.message,
       error: {}
@@ -62,7 +40,6 @@ app.use(function (err, req, res, next) {
 })
 
 app.use('/api/v1/', routes)
-
 // // redirect if no other route is hit
 // app.use((req, res) => {
 //   res.redirect('https://www.google.com')

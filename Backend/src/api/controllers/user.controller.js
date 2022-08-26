@@ -69,8 +69,8 @@ exports.signup = async (req, res) => {
     const salt = await bcrypt.genSalt(10)
     newUser.password = await bcrypt.hash(newUser.password, salt)
     const link = 'http://' + req.get('host') + '/api/v1/user/verify/' + newUser.id + '/' + hash
-    await sendEmail(email, 'Verify Your Email', `Verify your email at ${link}`)
     await newUser.save()
+    await sendEmail(email, 'Verify Your Email', `Verify your email at ${link}`)
     logger.info(NAMESPACE, 'Signup successful')
     return res.status(200).json({
       success: true,
@@ -391,15 +391,14 @@ exports.edit = async (req, res) => {
         if (req.file) {
           logger.info(NAMESPACE, 'Avatar update requested')
           const { originalname, buffer } = req.file
-          const allowedExtensions = /(jpg|jpeg|png|gif|webp)$/i;
+          const allowedExtensions = /(jpg|jpeg|png|gif|webp)$/i
           const fileExtension = originalname.split('.').pop()
-          if (!allowedExtensions.test(fileExtension)) 
-          {
+          if (!allowedExtensions.test(fileExtension)) {
             return res.status(401).json({
-            success: false,
-            error: 'Not an image'
-          })
-        }
+              success: false,
+              error: 'Not an image'
+            })
+          }
           const data = await s3Upload(req.user.id, buffer, originalname)
           if (!data) {
             logger.error(NAMESPACE, 'S3 Upload failed')
@@ -474,7 +473,7 @@ exports.edit = async (req, res) => {
 
 exports.get = async (req, res) => {
   logger.info(NAMESPACE, 'Get User data request recieved')
-  let id = req.query.id || req.user.id
+  const id = req.query.id || req.user.id
   try {
     const user = await User.findById(id)
     if (!user) {

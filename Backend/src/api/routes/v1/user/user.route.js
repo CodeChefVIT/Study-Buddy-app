@@ -12,9 +12,9 @@ const schema = {
     regno: Joi.string().regex(/^[1-9]{1}[0-9]{1}[A-Z]{3}[0-9]{4}/).required(),
     password: Joi.string().required(),
     confirm: Joi.string().required(),
+    major: Joi.string().required(),
     avatar: Joi.string(),
     graduatingYear: Joi.number(),
-    major: Joi.string().required(),
     bio: Joi.string()
   }),
   login: Joi.object({
@@ -43,7 +43,7 @@ const schema = {
     confirm: Joi.string().required()
   }),
   id: Joi.object({
-    id: Joi.string().required().regex(/^[0-9a-fA-F]{24}$/),
+    id: Joi.string().regex(/^[0-9a-fA-F]{24}$/)
   })
 }
 
