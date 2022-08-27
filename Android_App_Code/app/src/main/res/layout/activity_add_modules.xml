@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.AddModules"
+
+    android:background="@color/background"
+    android:id="@+id/parentRelative">
+
+    <RelativeLayout
+        android:id="@+id/detailsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="25sp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:onClick="back"
+            android:orientation="horizontal"
+            tools:ignore="UsingOnClickInXml">
+
+            <ImageView
+                android:layout_width="@dimen/back_button_w"
+                android:layout_height="@dimen/back_button_h"
+                android:layout_marginStart="20sp"
+                android:contentDescription="@string/back_button"
+                android:src="@drawable/ic_arrow_left" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5sp"
+                android:fontFamily="@font/ibmplexsanssemibold"
+                android:text="@string/group"
+                android:textColor="@color/accent_secondary"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/page_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Add Module" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/detailsLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/form"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
+                android:orientation="vertical"
+                android:padding="15sp">
+
+
+                <!--Text Fields-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15sp"
+                    android:layout_marginTop="25sp"
+                    android:layout_marginBottom="7sp"
+                    android:fontFamily="@font/ibmplexsanssemibold"
+                    android:text="Module Name"
+                    android:textColor="@color/textSecondary" />
+
+                <EditText
+                    android:id="@+id/moduleName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_background"
+                    android:hint="@string/samle_module_name"
+                    android:inputType="text"
+                    style="@style/editText"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15sp"
+                    android:layout_marginTop="10sp"
+                    android:layout_marginBottom="7sp"
+                    android:fontFamily="@font/ibmplexsanssemibold"
+                    android:text="Days to complete complete this module"
+                    android:textColor="@color/textSecondary" />
+
+                <EditText
+                    android:id="@+id/days"
+                    style="@style/editText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/_10"
+                    android:inputType="number" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="15sp">
+
+
+                <RelativeLayout
+                    android:id="@+id/create_grp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/edit_group"
+                    android:layout_marginTop="15sp"
+                    android:background="@drawable/button_background"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:onClick="createGroup"
+                    android:orientation="horizontal"
+                    android:paddingStart="20sp"
+                    android:paddingTop="15sp"
+                    android:paddingEnd="20sp"
+                    android:paddingBottom="15sp">
+
+                    <TextView
+                        style="@style/button_dashboard_secondary_text_style"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Create Group"/>
+
+
+                    <ImageView
+                        android:layout_width="25sp"
+                        android:layout_height="25sp"
+                        android:layout_marginStart="5sp"
+                        android:contentDescription="@string/back_button"
+                        android:src="@drawable/ic_right"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"/>
+
+                </RelativeLayout>
+
+
+
+                <RelativeLayout
+                    android:id="@+id/add_module"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/members"
+                    android:layout_marginTop="15sp"
+                    android:background="@drawable/button_outline"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:onClick="addModule"
+                    android:orientation="horizontal"
+                    android:paddingStart="20sp"
+                    android:paddingTop="15sp"
+                    android:paddingEnd="20sp"
+                    android:paddingBottom="15sp">
+
+                    <TextView
+                        style="@style/group_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Add Module" />
+
+                    <ImageView
+                        android:layout_width="25sp"
+                        android:layout_height="25sp"
+                        android:layout_marginStart="5sp"
+                        android:contentDescription="@string/back_button"
+                        android:src="@drawable/ic_addnewone"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        />
+
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

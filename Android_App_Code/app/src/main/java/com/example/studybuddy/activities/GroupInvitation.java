@@ -43,26 +43,18 @@ public class GroupInvitation extends AppCompatActivity {
     }
 
     public void back(View view) {
-        Intent intent = new Intent(this, GroupDetails.class);
-        intent.putExtra("groupInfo", groupInfo);
-        GroupInvitation.this.finish();
-        startActivity(intent);
+        finish();
     }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
-        Intent intent = new Intent(this, GroupDetails.class);
-        intent.putExtra("groupInfo", groupInfo);
-        GroupInvitation.this.finish();
-        startActivity(intent);
+        finish();
     }
 
     public void sendInvite(View view) {
-        Intent intent = new Intent(this, GroupDetails.class);
+        Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_TEXT, "Join my group" + groupInfo.getName() + "in StudyBuddy!\n"
-                + groupInfo.getInviteCode() + "\n\n" + getString(R.string.footer));
+        intent.putExtra(Intent.EXTRA_TEXT, groupInfo.getInviteCode());
         intent.setType("text/plain");
         Intent shareIntent = Intent.createChooser(intent, "Share via");
         startActivity(shareIntent);

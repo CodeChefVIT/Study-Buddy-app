@@ -9,8 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -21,7 +19,6 @@ import com.example.studybuddy.viewModel.GroupListViewModel;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class Dashboard extends AppCompatActivity implements UserGroupListAdapter.OnGroupClickListener {
@@ -36,6 +33,7 @@ public class Dashboard extends AppCompatActivity implements UserGroupListAdapter
     private static final String NAME = "FullName";
     private static final String DEFAULT_VAL_NAME = "-1";
 
+    // TODO: Add shimmer effect
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,5 +93,15 @@ public class Dashboard extends AppCompatActivity implements UserGroupListAdapter
     }
 
     public void footer(View view) {
+    }
+
+    public void createGroup(View view) {
+        Intent intent = new Intent(this, CreateGroup.class);
+        startActivity(intent);
+    }
+
+    public void joinGroup(View view) {
+        Intent intent = new Intent(Dashboard.this, JoinGroup.class);
+        startActivity(intent);
     }
 }

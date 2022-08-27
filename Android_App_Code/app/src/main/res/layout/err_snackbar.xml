@@ -23,6 +23,7 @@
             android:padding="10dp">
 
             <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/logoAnimation"
                 android:layout_width="60sp"
                 android:layout_height="60sp"
                 app:lottie_rawRes="@raw/error"

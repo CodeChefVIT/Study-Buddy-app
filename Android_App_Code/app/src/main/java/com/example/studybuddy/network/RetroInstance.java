@@ -8,7 +8,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetroInstance {
-    private static final String BASE_URL = "http://152.67.22.250:6530";
+    private static final String BASE_URL = "https://codechef-study-buddy.fly.dev";
     private static Retrofit retrofit;
 
     public static Retrofit getRetrofit(){

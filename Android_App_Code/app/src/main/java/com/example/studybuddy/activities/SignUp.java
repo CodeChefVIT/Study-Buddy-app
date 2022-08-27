@@ -76,7 +76,11 @@ public class SignUp extends AppCompatActivity {
                     SignUpResponse signUpResponse = response.body();
                     if (signUpResponse.isSuccess()){
                         dialog.dismiss();
-                        open_success_dialog(getString(R.string.account_creation_text));
+                        Intent intent = new Intent(SignUp.this, Placeholder.class);
+                        intent.putExtra("key", "mail");
+                        intent.putExtra("message", getString(R.string.account_creation_text));
+                        SignUp.this.finish();
+                        startActivity(intent);
                     }
                     else {
                         show_err_snackBar("Signup Failed");
