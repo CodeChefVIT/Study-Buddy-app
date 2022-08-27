@@ -50,7 +50,6 @@ public class CreateGroup extends AppCompatActivity {
             intent.putExtra("courseCode", courseCodeStr);
             intent.putExtra("modules", modulesStr);
             intent.putExtra("des", bio);
-            CreateGroup.this.finish();
             startActivity(intent);
         }
     }

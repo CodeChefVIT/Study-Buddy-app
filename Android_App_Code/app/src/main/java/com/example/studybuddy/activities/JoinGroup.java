@@ -67,13 +67,16 @@ public class JoinGroup extends AppCompatActivity {
             public void onResponse(Call<Model> call, Response<Model> response) {
                 dialog.dismiss();
                 if (response.isSuccessful()){
-                    Intent intent = new Intent(JoinGroup.this, Dashboard.class);
+                    Intent intent = new Intent(JoinGroup.this, Placeholder.class);
+                    intent.putExtra("key", "req");
+                    intent.putExtra("message", "Request sent successfully!");
                     JoinGroup.this.finish();
+
                     startActivity(intent);
                 }
                 else {
-                    if (response.body().getMessage().equals("User already requested to join group"))
-                        show_err_snackBar("You already requested!");
+
+                        show_err_snackBar("Some error occurred or you may have already requested!");
                 }
             }
 

@@ -50,18 +50,12 @@ public class ApproveRequest extends AppCompatActivity {
     }
 
     public void back(View view) {
-        Intent intent = new Intent(this, GroupDetails.class);
-        intent.putExtra("groupInfo", groupInfo);
-        ApproveRequest.this.finish();
-        startActivity(intent);
+        finish();
     }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent intent = new Intent(this, GroupDetails.class);
-        intent.putExtra("groupInfo", groupInfo);
-        ApproveRequest.this.finish();
-        startActivity(intent);
+        finish();
     }
 }

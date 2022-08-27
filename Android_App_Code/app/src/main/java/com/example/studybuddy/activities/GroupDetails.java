@@ -127,9 +127,7 @@ public class GroupDetails extends AppCompatActivity {
 
 
     public void back(View view) {
-        Intent intent = new Intent(this, Dashboard.class);
-        GroupDetails.this.finish();
-        startActivity(intent);
+        finish();
 
     }
 
@@ -139,7 +137,6 @@ public class GroupDetails extends AppCompatActivity {
     public void sendInvite(View view) {
         Intent intent = new Intent(this, GroupInvitation.class);
         intent.putExtra("groupInfo", groupInfo);
-        GroupDetails.this.finish();
         startActivity(intent);
     }
 
@@ -147,7 +144,6 @@ public class GroupDetails extends AppCompatActivity {
         Intent intent = new Intent(GroupDetails.this, Members.class);
         intent.putExtra("memberList", members);
         intent.putExtra("groupInfo", groupInfo);
-        GroupDetails.this.finish();
         startActivity(intent);
     }
 
@@ -155,7 +151,6 @@ public class GroupDetails extends AppCompatActivity {
         if (!(groupInfo.getRequests().size() == 0)) {
             Intent intent = new Intent(GroupDetails.this, ApproveRequest.class);
             intent.putExtra("groupInfo", groupInfo);
-            GroupDetails.this.finish();
             startActivity(intent);
         }
         else {

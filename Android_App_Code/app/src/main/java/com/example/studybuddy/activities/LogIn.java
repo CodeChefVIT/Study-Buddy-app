@@ -98,7 +98,7 @@ public class LogIn extends AppCompatActivity {
                     startActivity(intent);
                 }
                 else {
-                    String message = ((code == 401) ? "Not Verified" : "User doesn't exist");
+                    String message = ((code == 401) ? "Not Verified or wrong password" : "User doesn't exist");
                     show_err_snackBar(message);
                 }
             }

@@ -79,6 +79,7 @@ public class AddModules extends AppCompatActivity {
     }
 
     public void back(View view) {
+        finish();
     }
 
     public void createGroup(View view) {
@@ -101,7 +102,9 @@ public class AddModules extends AppCompatActivity {
                     //TODO : Move user to a new screen then to dashboard
 
 
-                    Intent intent = new Intent(AddModules.this, Dashboard.class);
+                    Intent intent = new Intent(AddModules.this, Placeholder.class);
+                    intent.putExtra("key", "req");
+                    intent.putExtra("message", "Request sent successfully!");
                     AddModules.this.finish();
                     startActivity(intent);
                 }
@@ -121,6 +124,7 @@ public class AddModules extends AppCompatActivity {
     }
 
     public void addModule(View view) {
+        System.out.println("Counter: " + counter);
         if (counter < mods - 1){
             subAddModule(0);
         }
@@ -131,7 +135,6 @@ public class AddModules extends AppCompatActivity {
             }
 
         }
-
     }
 
     public void subAddModule(int x){
@@ -141,7 +144,7 @@ public class AddModules extends AppCompatActivity {
 
         if (!mod.isEmpty() && !day.isEmpty())
         {
-            if (x == 1){
+            if (x == 0){
                 moduleName.setText("");
                 daysToComplete.setText("");
             }

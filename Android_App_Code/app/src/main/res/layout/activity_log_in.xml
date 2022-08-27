@@ -91,10 +91,10 @@
                 android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autofillHints="false"
                 android:hint="@string/password_hint"
                 android:inputType="textPassword"
-                style="@style/editText"/>
+                style="@style/editText"
+                android:autofillHints="password"/>
 
             <!--Forgot Password-->
             <LinearLayout
