@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ApproveRequest">
+    tools:context=".activities.ApproveRequest"
+    android:background="@color/background"
+    android:id="@+id/relLayout">
 
     <RelativeLayout
         android:layout_marginTop="25sp"
@@ -43,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/members" />
+            android:text="Requests" />
     </RelativeLayout>
 
     <ScrollView

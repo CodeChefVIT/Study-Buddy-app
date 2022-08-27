@@ -26,7 +26,7 @@
                 android:id="@+id/logoAnimation"
                 android:layout_width="60sp"
                 android:layout_height="60sp"
-                app:lottie_rawRes="@raw/error"
+                app:lottie_rawRes="@raw/success"
                 app:lottie_autoPlay="true"
                 android:layout_gravity="center_vertical"
                 app:lottie_loop="true"/>
@@ -41,18 +41,18 @@
                 android:textSize="17sp"
                 android:layout_margin="10dp"
                 android:layout_weight="3"/>
-            <Button
-                android:id="@+id/submit_sb"
-                android:layout_width="0sp"
-                android:layout_height="wrap_content"
-                android:text="Okay"
-                android:textAllCaps="false"
-                android:fontFamily="@font/ibmplexsanssemibold"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/buttonbg_small"
-                android:textColor="@color/primary"
-                android:layout_weight="1"
-                android:textSize="17dp"/>
+<!--            <Button-->
+<!--                android:id="@+id/submit_sb"-->
+<!--                android:layout_width="0sp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Okay"-->
+<!--                android:textAllCaps="false"-->
+<!--                android:fontFamily="@font/ibmplexsanssemibold"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:background="@drawable/buttonbg_small"-->
+<!--                android:textColor="@color/primary"-->
+<!--                android:layout_weight="1"-->
+<!--                android:textSize="17dp"/>-->
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

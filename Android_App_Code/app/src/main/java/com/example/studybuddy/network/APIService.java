@@ -41,4 +41,11 @@ public interface APIService {
     @GET("/api/v1/groups/request/{id}")
     Call<Model> sendRequest(@Header("Authorization") String authToken, @Path("id") String code);
 
+    @GET("/api/v1/groups/request/accept/{group}/{user}")
+    Call<Model> acceptRequest(@Header("Authorization") String authToken, @Path("group") String group, @Path("user") String user);
+
+    @GET("/api/v1/groups/request/reject/{group}/{user}")
+    Call<Model> rejectRequest(@Header("Authorization") String authToken, @Path("group") String group, @Path("user") String user);
+
+
 }
