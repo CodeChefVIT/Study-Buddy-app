@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import ErrorModal from "../error/error.component";
 
 const JoinGrpCard = ({ group }) => {
-  const { inviteCode, name, subject, members } = group;
+  const { inviteCode, name, subject, membersLength, members } = group;
   const [data, setData] = useState([]);
   const navigate = useNavigate();
   const [error, setError] = useState();
@@ -31,7 +31,7 @@ const JoinGrpCard = ({ group }) => {
   const errorHandler = () => {
     setError(null);
   };
-
+  // console.log(membersLength);
   return (
     <div>
       {error && <ErrorModal message={error.message} onConfirm={errorHandler} />}
@@ -46,7 +46,7 @@ const JoinGrpCard = ({ group }) => {
           <h2 className="heading-tertiary-sm align-l">
             {inviteCode} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {subject}
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Members:{" "}
-            {members ? members.length : 0}
+            {membersLength ? membersLength : 0}
           </h2>
         </div>
       </div>
