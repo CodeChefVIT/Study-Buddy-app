@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".activities.GroupDetails"
+    android:background="@color/background"
+    android:id="@+id/parentRelative">
+
+    <RelativeLayout
+        android:layout_marginTop="25sp"
+        android:id="@+id/detailsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true">
+
+        <LinearLayout
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:onClick="back"
+            tools:ignore="UsingOnClickInXml">
+            <ImageView
+                android:layout_width="@dimen/back_button_w"
+                android:layout_height="@dimen/back_button_h"
+                android:contentDescription="@string/back_button"
+                android:src="@drawable/ic_arrow_left"
+                android:layout_marginStart="20sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_marginStart="5sp"
+                android:text="@string/dashboard"
+                android:fontFamily="@font/ibmplexsanssemibold"
+                android:textColor="@color/accent_secondary"/>
+        </LinearLayout>
+
+        <TextView
+            style="@style/page_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Group" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/detailsLayout"
+        android:overScrollMode="never"
+        android:layout_marginTop="10sp">
+
+        <RelativeLayout
+            android:id="@+id/group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:orientation="vertical"
+            android:padding="15sp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/group_icon"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_marginTop="20sp"
+                app:shapeAppearanceOverlay="@style/roundedImageView"
+                />
+            <!-- Group Name | id - group_name_container -->
+            <LinearLayout
+                android:id="@+id/group_name_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15sp"
+                android:orientation="vertical"
+                android:layout_below="@id/group_icon">
+
+                <TextView
+                    android:id="@+id/group_name"
+                    style="@style/text_heading_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sample_group_name" />
+
+                <TextView
+                    android:id="@+id/group_subject"
+                    style="@style/sub_heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sample_subject_name" />
+
+            </LinearLayout>
+
+            <!-- Group Description -->
+
+            <LinearLayout
+                android:id="@+id/group_description_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/group_name_container"
+                android:layout_marginTop="15sp"
+                android:background="@drawable/button_dashboard"
+                android:orientation="vertical"
+                android:padding="15sp">
+
+                <TextView
+                    style="@style/text_heading_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10sp"
+                    android:text="Group Description" />
+
+                <TextView
+                    android:id="@+id/group_description"
+                    style="@style/text_body"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lorem_ipsum" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/edit_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/group_description_container"
+                android:layout_marginTop="15sp"
+                android:background="@drawable/button_group"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:onClick="quizzes"
+                android:orientation="horizontal"
+                android:paddingStart="20sp"
+                android:paddingTop="15sp"
+                android:paddingEnd="20sp"
+                android:paddingBottom="15sp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_gravity="end"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                        android:layout_width="26sp"
+                        android:layout_height="26sp"
+                        android:contentDescription="@string/back_button"
+                        android:src="@drawable/ic_edit" />
+
+                    <TextView
+                        style="@style/group_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15sp"
+                        android:text="Edit Group Details" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="@dimen/back_button_w"
+                    android:layout_height="@dimen/back_button_h"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="5sp"
+                    android:contentDescription="@string/back_button"
+                    android:src="@drawable/ic_arrow_right" />
+
+            </RelativeLayout>
+
+            <!-- Group Members | id - members -->
+
+            <RelativeLayout
+                android:id="@+id/members"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edit_group"
+                android:layout_marginTop="15sp"
+                android:background="@drawable/button_background"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:onClick="getMembers"
+                android:orientation="horizontal"
+                android:paddingStart="20sp"
+                android:paddingTop="15sp"
+                android:paddingEnd="20sp"
+                android:paddingBottom="15sp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_gravity="end"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="26sp"
+                        android:layout_height="26sp"
+                        android:contentDescription="@string/back_button"
+                        android:src="@drawable/ic_members" />
+
+                    <TextView
+                        style="@style/group_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15sp"
+                        android:text="@string/members"
+                        android:textColor="@color/textTertiary" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/members_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5sp"
+                        android:fontFamily="@font/ibmplexsanssemibold"
+                        android:text="@string/sample_quizzes"
+                        android:textColor="@color/accent_secondary"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:layout_width="@dimen/back_button_w"
+                        android:layout_height="@dimen/back_button_h"
+                        android:layout_marginStart="5sp"
+                        android:contentDescription="@string/back_button"
+                        android:src="@drawable/ic_arrow_right" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <!-- Group Requests | id - requests -->
+
+            <RelativeLayout
+                android:id="@+id/requests"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/members"
+                android:layout_marginTop="15sp"
+                android:background="@drawable/button_outline"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:onClick="getRequests"
+                android:orientation="horizontal"
+                android:paddingStart="20sp"
+                android:paddingTop="15sp"
+                android:paddingEnd="20sp"
+                android:paddingBottom="15sp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_gravity="end"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                        android:layout_width="26sp"
+                        android:layout_height="26sp"
+                        android:contentDescription="@string/back_button"
+                        android:src="@drawable/ic_requests" />
+
+                    <TextView
+                        style="@style/group_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15sp"
+                        android:text="Approve requests" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/request_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    tools:ignore="RelativeOverlap,UseCompoundDrawables">
+
+                    <TextView
+                        android:id="@+id/requests_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5sp"
+                        android:fontFamily="@font/ibmplexsanssemibold"
+                        android:text="@string/sample_quizzes"
+                        android:textColor="@color/accent_secondary"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:layout_width="@dimen/back_button_w"
+                        android:layout_height="@dimen/back_button_h"
+                        android:layout_marginStart="5sp"
+                        android:contentDescription="@string/back_button"
+                        android:src="@drawable/ic_arrow_right" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+            <!-- Create Quiz and Send Invite | id - group_button_container -->
+            <LinearLayout
+                android:id="@+id/group_button_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/requests"
+                android:layout_marginTop="15sp"
+                android:baselineAligned="false">
+
+                <LinearLayout
+                    android:id="@+id/create_quiz"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_group"
+                    android:padding="15sp"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="5sp"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    tools:ignore="KeyboardInaccessibleWidget,UnusedAttribute"
+                    android:onClick="createQuiz">
+
+                    <ImageView
+                        android:layout_width="@dimen/group_button_w"
+                        android:layout_height="@dimen/group_button_h"
+                        android:src="@drawable/ic_add"
+                        android:contentDescription="@string/button" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/group_button"
+                        android:text="@string/create_quiz"
+                        android:layout_marginTop="5sp"
+                        android:textAlignment="center"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/send_invite"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_group"
+                    android:padding="15sp"
+                    android:orientation="vertical"
+                    android:layout_marginStart="5sp"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    tools:ignore="KeyboardInaccessibleWidget,UnusedAttribute"
+                    android:onClick="sendInvite">
+
+                    <ImageView
+                        android:layout_width="@dimen/group_button_w"
+                        android:layout_height="@dimen/group_button_h"
+                        android:src="@drawable/ic_send"
+                        android:contentDescription="@string/button" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/group_button"
+                        android:text="@string/send_invite"
+                        android:layout_marginTop="5sp"
+                        android:textAlignment="center"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Quizzes | id - quiz -->
+            <RelativeLayout
+                android:id="@+id/quiz"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/group_button_container"
+                android:layout_marginTop="15sp"
+                android:background="@drawable/button_group"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:onClick="quizzes"
+                android:orientation="horizontal"
+                android:paddingStart="20sp"
+                android:paddingTop="15sp"
+                android:paddingEnd="20sp"
+                android:paddingBottom="15sp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_gravity="end"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                        android:layout_width="26sp"
+                        android:layout_height="26sp"
+                        android:contentDescription="@string/back_button"
+                        android:src="@drawable/ic_quizzes" />
+
+                    <TextView
+                        style="@style/group_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15sp"
+                        android:text="@string/quizzes" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/quiz_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/quizzes_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5sp"
+                        android:fontFamily="@font/ibmplexsanssemibold"
+                        android:text="@string/sample_quizzes"
+                        android:textColor="@color/accent_secondary"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:layout_width="@dimen/back_button_w"
+                        android:layout_height="@dimen/back_button_h"
+                        android:layout_marginStart="5sp"
+                        android:contentDescription="@string/back_button"
+                        android:src="@drawable/ic_arrow_right" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/text"
+                style="@style/medium_text_heading_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/quiz"
+                android:layout_marginTop="20sp"
+                android:text="@string/module" />
+
+            <!-- Group modules List | id - modules_list -->
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text"
+                android:layout_marginTop="20sp"
+                android:background="@drawable/background_recyclerview"
+                android:layout_marginBottom="10sp"
+                android:paddingStart="15sp"
+                android:overScrollMode="never"
+                android:paddingEnd="15sp"
+                android:paddingBottom="5sp"
+                android:paddingTop="10sp"/>
+
+            <TextView
+                android:id="@+id/footer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/recycler_view"
+                android:layout_marginTop="10sp"
+                style="@style/sub_heading_2"
+                android:textAlignment="center"
+                android:text="@string/footer"
+                android:onClick="footer"
+                tools:ignore="UsingOnClickInXml" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+</RelativeLayout>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.Placeholder"
+    android:background="@color/background">
+
+    <LinearLayout
+
+        android:id="@+id/logoLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true"
+        android:paddingTop="25sp"
+        android:paddingBottom="10sp">
+
+        <ImageView
+
+            android:layout_width="@dimen/logo_w"
+            android:layout_height="@dimen/logo_h"
+            android:contentDescription="@string/app_logo"
+            android:src="@drawable/ic_logo" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/logoLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/logoAnimation"
+                android:layout_width="350sp"
+                android:layout_height="350sp"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/mail" />
+
+            <TextView
+                android:id="@+id/textView"
+                style="@style/text_heading_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15sp"
+                android:layout_marginTop="15sp"
+                android:layout_marginEnd="15sp"
+                android:layout_marginBottom="15sp"
+                android:text="@string/sample_bio"
+                android:textAlignment="center" />
+
+            <Button
+                android:id="@+id/profile_button"
+                style="@style/button_dashboard_secondary_text_style"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="15sp"
+                android:layout_marginTop="15sp"
+                android:layout_marginEnd="15sp"
+                android:layout_marginBottom="15sp"
+                android:background="@drawable/button_background"
+                android:padding="15sp"
+                android:text="Done"
+                android:onClick="done"
+                tools:ignore="HardcodedText,UsingOnClickInXml" />
+        </LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="primary">#ffffff</color>
+
+    <color name="primaryOpposite">#000000</color>
+
+    <color name="background">#000000</color>
+    <color name="background_secondary">#232323</color>
+
+
+    <color name="accent_primary">#f60</color>
+    <color name="accent_secondary">#0983FE</color>
+
+    <color name="editTextColorOnFocus">#000000</color>
+    <color name="editTextColorNotOnFocus">#000000</color>
+    <color name="Outline">#707070</color>
+
+    <color name="textPrimary">#ffffff</color>
+    <color name="textSecondary">#828282</color>
+    <color name="textTertiary">#656565</color>
+
+
+    <color name="button">#000000</color>
+    <color name="button_secondary">#000000</color>
+    <color name="button_accent">#f60</color>
+    <color name="roundButton">#2EFFFFFF</color>
+
+    <color name="dashBoardButtonColor">#1B1B1B</color>
+    <color name="dashBoardTextColor">#ffffff</color>
+
+    <color name="err">#FF0000</color>
+
+    <color name="default_box_stroke_color" tools:overrise ="true">#707070</color>
+
+    <color name="opaque_background">#80FFFFFF</color>
+
+    <color name="rippleColor">#99DFDFDF</color>
+</resources>

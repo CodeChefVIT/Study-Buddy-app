@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.JoinGroup"
+    android:background="@color/background"
+    android:id="@+id/relLayout">
+
+    <RelativeLayout
+        android:layout_marginTop="25sp"
+        android:id="@+id/detailsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true">
+
+        <LinearLayout
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:onClick="back"
+            tools:ignore="UsingOnClickInXml">
+            <ImageView
+                android:layout_width="@dimen/back_button_w"
+                android:layout_height="@dimen/back_button_h"
+                android:contentDescription="@string/back_button"
+                android:src="@drawable/ic_arrow_left"
+                android:layout_marginStart="20sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:layout_marginStart="5sp"
+                android:text="@string/dashboard"
+                android:fontFamily="@font/ibmplexsanssemibold"
+                android:textColor="@color/accent_secondary"/>
+        </LinearLayout>
+
+        <TextView
+            style="@style/page_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Join Group" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/detailsLayout">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/name_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20sp"
+                android:orientation="vertical"
+                android:paddingTop="15sp"
+                android:paddingStart="15sp"
+                android:paddingEnd="15sp">
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/text_heading_2"
+                    android:text="Join Group"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/form"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="15sp">
+
+
+                <!--Text Fields-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15sp"
+                    android:layout_marginBottom="7sp"
+                    android:fontFamily="@font/ibmplexsanssemibold"
+                    android:text="Group Code"
+                    android:textColor="@color/textSecondary" />
+
+                <EditText
+                    android:id="@+id/grpCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_background"
+                    android:hint="@string/sample_invite_code"
+                    android:inputType="text"
+                    android:textAlignment="center"
+                    android:letterSpacing=".3"
+                    style="@style/editText"/>
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/members"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15sp"
+                android:background="@drawable/button_background"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:onClick="sendRequest"
+                android:orientation="horizontal"
+                android:paddingStart="20sp"
+                android:paddingTop="15sp"
+                android:paddingEnd="20sp"
+                android:paddingBottom="15sp">
+
+                <TextView
+                    style="@style/group_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:text="Send Request"
+                    android:textColor="@color/background" />
+
+
+                <ImageView
+                    android:layout_width="23sp"
+                    android:layout_height="23sp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="5sp"
+                    android:contentDescription="@string/back_button"
+                    android:src="@drawable/ic_send" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <View
+                    android:layout_width="0sp"
+                    android:layout_height="1sp"
+                    android:layout_weight="1"
+                    android:background="@color/textSecondary" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Or"
+                    android:gravity="center"
+                    style="@style/sub_heading_3"
+                    android:layout_weight=".2"/>
+                <View
+                    android:layout_width="0sp"
+                    android:layout_height="1sp"
+                    android:layout_weight="1"
+                    android:background="@color/textSecondary" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/add_module"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/members"
+                android:layout_marginTop="15sp"
+                android:background="@drawable/button_outline"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:onClick="scanQR"
+                android:orientation="horizontal"
+                android:paddingStart="20sp"
+                android:paddingTop="15sp"
+                android:paddingEnd="20sp"
+                android:paddingBottom="15sp"
+                android:layout_marginStart="15sp"
+                android:layout_marginEnd="15sp">
+
+                <TextView
+                    style="@style/group_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Scan QR Code" />
+
+                <ImageView
+                    android:layout_width="25sp"
+                    android:layout_height="25sp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="5sp"
+                    android:contentDescription="@string/back_button"
+                    android:src="@drawable/ic_qrcode" />
+
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

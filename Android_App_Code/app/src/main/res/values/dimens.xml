@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="corner_radius">5dp</dimen>
+    <dimen name="stroke_width">1.5dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="stroke_width_on_focus">3dp</dimen>
+    <dimen name="dashboard_button_corner_radius">10dp</dimen>
+    <dimen name="padding">15sp</dimen>
+    <dimen name="logo_w">50sp</dimen>
+    <dimen name="logo_h">50sp</dimen>
+    <dimen name="edit_text_padding">15sp</dimen>
+    <dimen name="back_button_w">15sp</dimen>
+    <dimen name="back_button_h">15sp</dimen>
+    <dimen name="group_button_w">17dp</dimen>
+    <dimen name="group_button_h">17dp</dimen>
+</resources>

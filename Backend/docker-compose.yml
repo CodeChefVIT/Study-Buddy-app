@@ -1,0 +1,33 @@
+version: "3.8"
+services:
+  mongodb:
+    image: mongo:5.0.2
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+    ports:
+      - 25071:25071
+    volumes:
+      - ../../study_buddy_db:/data/db
+  app:
+    depends_on:
+      - mongodb
+    build: .
+    env_file: ./.env
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=6530
+      - MONGO_URL=mongodb://root:root@mongodb:27017/
+    stdin_open: true
+    tty: true
+  
+  nginx:
+    image: nginx:1.17.9
+    ports:
+      - "6530:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - app
