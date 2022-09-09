@@ -1,6 +1,9 @@
 import { useState } from "react";
 import ErrorModal from "../error/error.component";
 
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
+
 const defaultFormFields = {
   oldPass: "",
   newPass: "",
@@ -11,6 +14,7 @@ const ResetPass = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { oldPass, newPass, confirmPass } = formFields;
   const [error, setError] = useState();
+  const [loading, setLoading] = useState(false);
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
@@ -27,8 +31,7 @@ const ResetPass = () => {
       return;
     }
 
-    console.log(formFields);
-
+    setLoading(true);
     const response = await fetch(`${process.env.REACT_APP_URL}/user/edit`, {
       method: "PATCH",
       headers: {
@@ -43,12 +46,13 @@ const ResetPass = () => {
       setError({
         message: "Password Updated Sucessfully!",
       });
-
+      setLoading(false);
       resetFormFields();
     } else {
       setError({
         message: "Old Password is Wrong",
       });
+      setLoading(false);
     }
   };
 
@@ -101,7 +105,20 @@ const ResetPass = () => {
           id="confirmPass"
         />
 
-        <button className="button mar-t">Save Changes</button>
+        {loading ? (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "left",
+              padding: "10px",
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        ) : (
+          <button className="button mar-t">Save Changes</button>
+        )}
       </form>
     </div>
   );

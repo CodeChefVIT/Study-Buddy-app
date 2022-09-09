@@ -12,6 +12,11 @@ const NavigationAuth = () => {
         <nav className="main-nav">
           <ul className="main-nav-list">
             <li>
+              <Link to="/dashboard" className="main-nav-link">
+                My Groups
+              </Link>
+            </li>
+            <li>
               <Link to="/create-study-grp" className="main-nav-link">
                 Create Study Group
               </Link>

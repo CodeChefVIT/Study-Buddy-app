@@ -4,13 +4,18 @@ import { useNavigate } from "react-router-dom";
 
 import ErrorModal from "../error/error.component";
 
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
+
 const JoinGrpCard = ({ group }) => {
   const { inviteCode, name, subject, membersLength, members } = group;
   const [data, setData] = useState([]);
   const navigate = useNavigate();
   const [error, setError] = useState();
+  const [loading, setLoading] = useState(false);
 
   const navigateSendReq = () => {
+    setLoading(true);
     fetch(`${process.env.REACT_APP_URL}/groups/request/${inviteCode}`, {
       method: "GET",
       headers: {
@@ -19,7 +24,10 @@ const JoinGrpCard = ({ group }) => {
       },
     }).then((response) => {
       if (response.status === 200) {
-        navigate(`/dashboard`);
+        setError({
+          message: "Request sent successfully",
+        });
+        setLoading(false);
       } else {
         setError({
           message: "You have already sent a request to this group",
@@ -38,17 +46,26 @@ const JoinGrpCard = ({ group }) => {
       <div className="box">
         <div className="grp-con">
           <h2 className="heading-primary-sm-2 align-l">{name}</h2>
-          <button onClick={navigateSendReq} className="button">
-            Join Group
-          </button>
+          {loading ? (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <CircularProgress />
+            </Box>
+          ) : (
+            <button onClick={navigateSendReq} className="button">
+              Join Group
+            </button>
+          )}
         </div>
-        <div className="mar">
-          <h2 className="heading-tertiary-sm align-l">
-            {inviteCode} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {subject}
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Members:{" "}
-            {membersLength ? membersLength : 0}
-          </h2>
-        </div>
+        <h2 className="heading-tertiary-sm align-l mar">
+          {inviteCode} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {subject}
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Members:{" "}
+          {membersLength ? membersLength : 0}
+        </h2>
       </div>
     </div>
   );
