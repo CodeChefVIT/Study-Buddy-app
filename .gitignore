@@ -8,6 +8,7 @@
 # Node Modules
 Backend/node_modules
 Backend/.env
+Backend/dist
 
 #Folders
 UIUX
