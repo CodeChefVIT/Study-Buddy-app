@@ -16,10 +16,10 @@ export default class SendEmail {
       });
       if (process.env.NODE_ENV !== "test") {
         await transporter.sendMail({
-          from: 'StudyBuddy CodeChef VIT <no-reply@studybuddy.cc>',
+          from: "StudyBuddy CodeChef VIT <no-reply@studybuddy.cc>",
           to: email,
           subject,
-          text
+          text,
         });
         Log.info("Email sent");
       }

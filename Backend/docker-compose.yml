@@ -22,4 +22,3 @@ services:
       - MONGO_URL=mongodb://root:root@mongodb:27017/
     stdin_open: true
     tty: true
-  

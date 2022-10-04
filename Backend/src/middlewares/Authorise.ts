@@ -1,5 +1,5 @@
 import { NextFunction, Response } from "express";
-import Request from "../interfaces/IRequest"
+import Request from "../interfaces/IRequest";
 import jwt from "jsonwebtoken";
 
 // export func
