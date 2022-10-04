@@ -1,9 +1,18 @@
 FROM node:16-alpine
 
-RUN mkdir -p /usr/src/
-WORKDIR /usr/src/
+WORKDIR /usr
+COPY package.json ./
+COPY tsconfig.json ./
+RUN ls -a
+RUN yarn install
+COPY src ./src
+RUN yarn run build
 
-COPY package.json /usr/src/
+
+FROM node:16-alpine
+WORKDIR /usr
+COPY package.json ./
 RUN yarn install --production=true
-COPY . /usr/src/
-CMD ["node", "src/index.js"]
+
+COPY --from=0 /usr/dist .
+CMD ["node", "index.js"]
